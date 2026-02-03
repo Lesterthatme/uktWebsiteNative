@@ -1,0 +1,58 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const pageTitle = document.querySelector("h5.fw-bold");
+
+  // Get the current page filename
+  const currentPage = window.location.pathname.split("/").pop();
+
+  // Change the title if on announcement.php
+  if (currentPage === "announcement.php") {
+    pageTitle.textContent = "Announcement";
+  }
+  else if (currentPage === "news.php") {
+    pageTitle.textContent = "News";
+  }
+  else if (currentPage === "page_poster.php") {
+    pageTitle.textContent = "Page Poster";
+  }
+  else if (currentPage === "Manage_Department.php") {
+    pageTitle.textContent = "Department";
+  }
+
+  else if (currentPage === "view_department.php") {
+    pageTitle.textContent = "Department";
+  }
+  else if (currentPage === "admission_requirements.php") {
+    pageTitle.textContent = "Student";
+  }
+  else if (currentPage === "downloadable_forms.php") {
+    pageTitle.textContent = "Student";
+  }
+  else if (currentPage === "developers.php") {
+    pageTitle.textContent = "About";
+  }
+  else if (currentPage === "university_profile.php") {
+    pageTitle.textContent = "About";
+  }
+  else if (currentPage === "university_background.php") {
+    pageTitle.textContent = "About";
+  }
+  else if (currentPage === "university_vmgo.php") {
+    pageTitle.textContent = "About";
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const currentPage = window.location.pathname.split("/").pop();
+    const targetPages = ["page_management.php","announcement.php","news.php","page_poster.php"];
+    const menuItems = document.querySelectorAll(".sidebar-menu-item a");
+    menuItems.forEach(item => {
+        const menuHref = item.getAttribute("href");
+        if (targetPages.includes(menuHref)) {
+            if (menuHref === currentPage) {
+                item.parentElement.classList.add("active");
+            } else {
+                item.parentElement.classList.remove("active");
+            }
+        }
+    });
+});

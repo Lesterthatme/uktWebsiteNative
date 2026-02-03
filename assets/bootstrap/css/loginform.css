@@ -1,0 +1,290 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /*background: url('../../images/univ.jpg') no-repeat center center/cover;*/
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(108, 108, 108, 0.6);
+    z-index: 0;
+}
+.form-control:focus {
+    border-color: #c2c2c2 !important;
+    box-shadow: 0 0 5px rgba(190, 190, 190, 0.5) !important; 
+  }
+  
+  
+.login-container {
+    width: 90%;
+    max-width: 500px;
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    width: 120px;
+    margin-bottom: 15px;
+}
+
+.bottom-images {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.bottom-images img {
+    width: 40px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.signup-text {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #7d7d7d;
+}
+
+.signup-text a {
+    color: #198754;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+.login-container h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #198754;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #198754;
+    margin-top: -5px;
+}
+
+.login-container .subtitle2 {
+    font-size: 0.9rem;
+    color: #7d7d7d;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.form-control:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.form-control:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 4px rgba(25, 135, 84, 0.4);
+}
+
+.btn-success {
+    background: #198754;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    transition: background 0.3s ease;
+}
+
+.btn-success:hover {
+    background: #146c43;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    color: #7d7d7d;
+}
+
+.options a {
+    color: #198754;
+    text-decoration: none;
+}
+
+.form-label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+ .modal-content {
+  border-radius: 20px;
+} 
+.parent-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+
+  font-family: "Poppins", serif;
+}
+.construction-container {
+  text-align: center;
+  max-width: 900px;
+}
+
+.error-icon {
+  font-size: 90px;
+  color: rgb(169, 19, 42);
+  margin-bottom: 20px;
+  display: inline-block; 
+  animation: shake 0.8s infinite;
+}
+
+@keyframes popIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-3px); }
+    }
+
+.construction-container h2 {
+  font-weight: 700;
+  font-size: 28px;
+  color: #333;
+}
+
+.construction-container p {
+  font-size: 14px;
+  color: #666;
+}
+.read-more {
+  color: #07522f;
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  margin-top: auto; /* Pushes the read more button to bottom */
+  
+}
+.read-more:hover {
+  transform: translateX(3px);
+}
+
+.success-icon {
+      font-size: 90px;
+      color: #059669;
+      margin-bottom: 20px;
+      display: inline-block; 
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-container {
+        width: 95%;
+        padding: 30px;
+    }
+
+    .logo {
+        width: 100px;
+    }
+
+    .bottom-images img {
+        width: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .logo {
+        width: 80px;
+    }
+
+    .form-control {
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+
+    .btn-primary {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}

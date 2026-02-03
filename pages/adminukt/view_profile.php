@@ -1,0 +1,333 @@
+<?php
+require '../../connection/dbconnection.php';
+session_start();
+
+// Fetch all site settings start
+$settings = [];
+$sql = "SELECT * FROM site_settings LIMIT 1";
+$result = mysqli_query($conn, $sql);
+
+if ($row = mysqli_fetch_assoc($result)) {
+    $settings = $row;
+
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
+}
+// Fetch all site settings end
+
+
+// for changing password start
+$message = '';
+
+date_default_timezone_set('Asia/Phnom_Penh'); // Set timezone to Cambodia
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $current_password = $_POST['current_password'];
+    $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    // Fetch the current password and user details from the database
+    $query = "SELECT * FROM user_account WHERE user_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if (!$user) {
+        echo "<script>
+            alert('User not found.');
+            window.location.href = 'login.php';
+        </script>";
+        exit;
+    } else {
+        // Check if the entered current password matches the stored password
+        if ($current_password === $user['password']) {
+            // Check if the new password and confirm password match
+            if ($new_password === $confirm_password) {
+                // Update the password in the database
+                $query = "UPDATE user_account SET password = ? WHERE user_id = ?";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param('si', $new_password, $user_id);
+                if ($stmt->execute()) {
+                    // Insert into history_log
+                    $description = "Password Updated";
+                    $log_date = date('Y-m-d'); // Cambodia date
+                    $log_time = date('H:i:s'); // Cambodia time
+
+                    $log_query = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
+                    $log_stmt = $conn->prepare($log_query);
+                    $log_stmt->bind_param('sssi', $description, $log_date, $log_time, $user_id);
+                    $log_stmt->execute();
+
+                    echo "<script>
+                        alert('Password updated successfully!');
+                        window.location.href = 'view_profile';
+                    </script>";
+                    exit;
+                } else {
+                    echo "<script>
+                        alert('Failed to update password. Please try again.');
+                        window.location.href = 'view_profile';
+                    </script>";
+                    exit;
+                }
+            } else {
+                echo "<script>
+                        alert('New password and confirm password do not match.');
+                        window.location.href = 'view_profile';
+                    </script>";
+                exit;
+            }
+        } else {
+            echo "<script>
+            alert('Current password is incorrect');
+            window.location.href = 'view_profile';
+        </script>";
+            exit;
+        }
+    }
+}
+// for changing password end 
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($settings['websitetitle_admin']); ?></title>
+    <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.3">
+    <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
+</head>
+
+<body class="bg-light">
+
+    <!-- include side bar start -->
+    <?php include 'include/alert.php'; ?>
+    <?php include 'include/alert.php'; ?>
+    <?php include 'include/sidebar.php'; ?>
+    <!-- include side bar end -->
+
+    <main class="bg-light">
+
+        <!-- include navbar start -->
+        <?php include 'include/navbar.php'; ?>
+        <!-- include navbar end -->
+
+        <div class="p-4">
+            <div class="row">
+                <div class="card border-0 pb-3">
+
+                    <!-- <input type="text" name="user_id" value="<?php echo $user['user_id']; ?>"> -->
+                    <div class="card-body">
+                        <div class="container d-flex justify-content-center">
+                            <div class="account_profile-card w-100" style="max-width: 1600px;">
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center text-center text-md-start">
+                                        <img src="<?= $user_image; ?>" alt="Profile Image" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                                        <div class="ms-3">
+                                            <h4 class="mb-0"><?php echo $user['username'] ?? 'Admin UKT'; ?></h4>
+                                            <small class="text-muted"><?php echo $user['email'] ?? 'admin@gmail.com'; ?></small>
+                                        </div>
+                                    </div>
+                                    <div class="d-inline-flex gap-2">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-toggle="tooltip"
+                                            data-bs-placement="top" title="Click here to update password">
+                                            <i class="ri-pencil-line"></i> Update Password
+                                        </button>
+                                        <a href="edit_profile" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Click to update profile"><i class="ri-edit-2-line"></i> Edit Profile</a>
+                                    </div>
+
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" name="ap_firstname" value="<?php echo $user['ap_firstname'] ?? ''; ?>" disabled>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Middle Name</label>
+                                        <input type="text" class="form-control" name="ap_mi" value="<?php echo $user['ap_mi'] ?? ''; ?>" disabled>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" name="ap_lastname" value="<?php echo $user['ap_lastname'] ?? ''; ?>" disabled>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Birthday</label>
+                                        <input type="text" class="form-control" name="birthday"
+                                            value="<?php echo !empty($user['birthday']) ? date('F j, Y', strtotime($user['birthday'])) : ''; ?>"
+                                            disabled>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Age</label>
+                                        <input type="text" class="form-control" name="age" value="<?php echo $user['age'] ?? ''; ?>" disabled>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Sex</label>
+                                        <input type="text" class="form-control" name="sex" value="<?php echo $user['sex'] ?? ''; ?>" disabled>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control" name="username" value="<?php echo $user['username'] ?? ''; ?>" disabled>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="text" class="form-control" name="email" value="<?php echo $user['email'] ?? ''; ?>" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <?php include 'include/footer.php'; ?>
+        </div>
+
+        <!-- Modal for changing password start-->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Password</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="">
+                                <?php if (!empty($message)): ?>
+                                    <div class="alert <?= strpos($message, 'successfully') !== false ? 'alert-success' : 'alert-danger'; ?>">
+                                        <?= htmlspecialchars($message); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <form method="POST" action="">
+                                    <div class="mb-3">
+                                        <label for="current_password" class="form-label"><strong>Current Password</strong></label>
+                                        <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter Current Password" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="new_password" class="form-label"><strong>New Password</strong></label>
+                                        <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter New Password" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirm_password" class="form-label"><strong>Confirm New Password</strong></label>
+                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm New Password" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-dynamic w-100">Update Password</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Modal for changing password end-->
+    </main>
+
+    <!-- start js -->
+    <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/bootstrap/js/jquery-3.7.1.js"></script>
+    <script src="../../assets/bootstrap/js/script.js"></script>
+    <script src="../../assets/bootstrap/js/carousel.js"></script>
+    <script src="../../assets/bootstrap/js/drag_and_drop.js?=v1.0"></script>
+    <script src="../../assets/bootstrap/js/activeLink.js?v=1.5"></script>
+    <script src="../../assets/bootstrap/js/toast_msg.js"></script>
+    <script src="../../assets/bootstrap/js/site_settings.js"></script>
+    <!-- end js -->
+
+    <!-- START >> JS SCRIPT IN ALERT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("Checking for toast message...");
+
+            <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
+                let toastType = "<?php echo $_SESSION['toastType']; ?>";
+                let message = "<?php echo $_SESSION['toastMsg']; ?>";
+
+                // If success, show "Success", else show "Failed"
+                let title = (toastType === "toast-success") ? "Success" : "Failed";
+
+                console.log("Toast Found:", title, message);
+                showToast(toastType, title, message);
+
+                // Unset session variables after displaying the toast
+                <?php unset($_SESSION['toastMsg']);
+                unset($_SESSION['toastType']); ?>
+            <?php } else { ?>
+                console.log("No toast message found.");
+            <?php } ?>
+        });
+
+        function showToast(type, title, message) {
+            let toast = document.getElementById("toastBox");
+            let icon = document.getElementById("toastIcon");
+            let titleElement = document.getElementById("toastTitle");
+            let messageElement = document.getElementById("toastMessage");
+
+            if (!toast) {
+                console.error("Toast box element not found!");
+                return;
+            }
+
+            // Remove previous styles
+            toast.classList.remove("toast-show", "toast-success", "toast-info", "toast-warning", "toast-error");
+
+            // Add new class
+            toast.classList.add(type, "toast-show");
+
+            // Set title and message
+            titleElement.textContent = title;
+            messageElement.textContent = message;
+
+            // Set icon based on type
+            switch (type) {
+                case "toast-success":
+                    icon.className = "ri-checkbox-circle-line toast-icon";
+                    break;
+                case "toast-info":
+                    icon.className = "ri-information-line toast-icon";
+                    break;
+                case "toast-warning":
+                    icon.className = "ri-alert-line toast-icon";
+                    break;
+                case "toast-error":
+                    icon.className = "ri-close-circle-line toast-icon";
+                    break;
+                default:
+                    icon.className = "ri-information-line toast-icon"; // Default icon
+            }
+
+            // Show toast
+            toast.style.display = "flex";
+
+            // Hide after 3 seconds
+            setTimeout(closeToast, 3000);
+        }
+
+        function closeToast() {
+            let toast = document.getElementById("toastBox");
+            toast.classList.remove("toast-show");
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 500);
+        }
+    </script>
+    <!-- END >> JS SCRIPT IN ALERT -->
+</body>
+
+</html>

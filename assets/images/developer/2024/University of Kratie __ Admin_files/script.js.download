@@ -1,0 +1,111 @@
+// Sidebar toggle start
+$(document).ready(function() {
+
+    $('.sidebar-dropdown-menu').slideUp('fast');
+
+    $('.sidebar-menu-item.has-dropdown > a, .sidebar-dropdown-menu-item.has-dropdown > a').click(function(e) {
+        e.preventDefault();
+
+        if (!$(this).parent().hasClass('focused')) {
+            $(this).parent().parent().find('.sidebar-dropdown-menu').slideUp('fast');
+            $(this).parent().parent().find('.has-dropdown').removeClass('focused');
+        }
+
+        $(this).next().slideToggle('fast');
+        $(this).parent().toggleClass('focused');
+    });
+
+    $('.sidebar-toggle').click(function() {
+        $('.sidebar').toggleClass('collapsed');
+
+        $('.sidebar.collapsed').mouseleave(function() {
+            $('.sidebar-dropdown-menu').slideUp('fast');
+            $('.sidebar-menu-item.has-dropdown, .sidebar-dropdown-menu-item.has-dropdown').removeClass('focused');
+        });
+    });
+
+    $('.sidebar-overlay').click(function() {
+        $('.sidebar').addClass('collapsed');
+
+        $('.sidebar-dropdown-menu').slideUp('fast');
+        $('.sidebar-menu-item.has-dropdown, .sidebar-dropdown-menu-item.has-dropdown').removeClass('focused');
+    });
+
+    if (window.innerWidth < 768) {
+        $('.sidebar').addClass('collapsed');
+    }
+
+    // Add active class for dropdowns
+    const currentPage = window.location.pathname.split("/").pop(); // Get current page
+
+    $('.sidebar-dropdown-menu-item a').each(function() {
+        let menuHref = $(this).attr('href');
+
+        if (menuHref === currentPage) {
+            $(this).addClass('activeLink'); // Highlight active sub-menu item
+            $(this).closest('.sidebar-dropdown-menu').slideDown('fast'); // Expand the parent dropdown
+            $(this).closest('.has-dropdown').addClass('focused activeLink'); // Highlight parent menu
+        }
+    });
+
+});
+
+
+
+// for icon selector start
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("icon-container");
+    const selectedIcon = document.getElementById("selected-icon");
+    const response = await fetch("https://cdn.jsdelivr.net/npm/remixicon@latest/fonts/remixicon.css");
+    const cssText = await response.text();
+    const iconMatches = [...cssText.matchAll(/\.ri-(.*?):before/g)];
+    const icons = iconMatches.map(match => `ri-${match[1]}`);
+    
+    function renderIcons() {
+        container.innerHTML = "";
+        icons.forEach(icon => {
+            const li = document.createElement("li");
+            li.classList.add("icon-item");
+            li.innerHTML = `<i class="${icon}"></i> ${icon}`;
+            li.addEventListener("click", () => {
+                selectedIcon.textContent = icon;
+                document.getElementById("iconDropdown").textContent = icon;
+            });
+            container.appendChild(li);
+        });
+    }
+    
+    renderIcons();
+});
+
+// for icon selector end
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the current page from URL
+    const currentPage = window.location.pathname.split("/").pop();
+
+    // Define an array of pages to target
+    const targetPages = ["page_management.php"]; // Add more pages if needed
+
+    // Select all sidebar menu items
+    const menuItems = document.querySelectorAll(".sidebar-menu-item a");
+
+    menuItems.forEach(item => {
+        const menuHref = item.getAttribute("href");
+
+        if (targetPages.includes(menuHref)) {
+            // If the current page matches, add the "active" class
+            if (menuHref === currentPage) {
+                item.parentElement.classList.add("active");
+            } else {
+                item.parentElement.classList.remove("active");
+            }
+        }
+    });
+});
+
+
+
+

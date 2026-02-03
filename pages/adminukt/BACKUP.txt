@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/images/officiallogo (1).png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>University of Kratie || Admin</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?v=2.8">
+  <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
+</head>
+
+<body class="bg-light">
+  <!-- Include Sidebar -->
+  <?php include 'include/sidebar.php'; ?>
+
+  <main class="bg-light">
+    <!-- Include Navbar -->
+    <?php include 'include/navbar.php'; ?>
+
+    <!-- Content -->
+    <div class="p-4">
+      <div class="row">
+        <div class="card border-0 pb-3">
+          <div class="card-body">
+            <div class="doc-tabs-container mt-3">
+              <ul class="doc-tabs d-flex list-unstyled">
+                <li class="me-3">
+                  <a class="doc-link active" href="#" data-page="about_org.php">About Student Organizations</a>
+                </li>
+                <li class="me-3">
+                  <a class="doc-link" href="#" data-page="list_org.php">List of Organizations</a>
+                </li>
+              </ul>
+              <hr class="doc-tabs-divider">
+            </div>
+            
+            <!-- Dynamic Content -->
+            <div class="content_org">
+            <div class="content_org">
+    <?php
+    // Default page to load
+    $default_page = isset($_GET['page']) ? $_GET['page'] : 'about_org.php';
+    include $default_page;
+    ?>
+</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <?php include 'include/footer.php'; ?>
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script src="../../assets/bootstrap/js/jquery-3.7.1.js"></script>
+  <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/bootstrap/js/script.js"></script>
+  <script src="../../assets/bootstrap/js/carousel.js"></script>
+  <script src="../../assets/bootstrap/js/drag_and_drop.js?v=2.1"></script>
+  <script src="../../assets/bootstrap/js/activeLink.js?v=1.7"></script>
+  <script src="../../assets/bootstrap/js/logs.js?v=1.4"></script>
+  <script src="../../assets/bootstrap/js/site_settings.js?v=1.0"></script>
+
+  <!-- JavaScript to Load Content Dynamically -->
+  <script>
+    $(document).ready(function () {
+        function loadContent(page) {
+            $.ajax({
+                url: page, // Load PHP file dynamically
+                type: "GET",
+                success: function (data) {
+                    $(".content_org").html(data); // Replace content with loaded page
+                    console.log(page + " loaded!");
+
+                    // Update the URL without reloading the page
+                    history.pushState(null, null, "?page=" + page);
+
+                    // Reload all JavaScript files to ensure full functionality
+                    reloadScripts();
+                },
+                error: function () {
+                    console.error("Failed to load " + page);
+                }
+            });
+        }
+
+        // Function to reload all JavaScript files after loading new content
+        function reloadScripts() {
+            let scripts = [
+                "../../assets/bootstrap/js/jquery-3.7.1.js",
+                "../../assets/bootstrap/js/bootstrap.bundle.min.js",
+                "../../assets/bootstrap/js/script.js",
+                "../../assets/bootstrap/js/carousel.js",
+                "../../assets/bootstrap/js/drag_and_drop.js?v=2.1",
+                "../../assets/bootstrap/js/activeLink.js?v=1.7",
+                "../../assets/bootstrap/js/logs.js?v=1.4",
+                "../../assets/bootstrap/js/site_settings.js?v=1.0"
+            ];
+
+            // Remove old scripts to prevent duplication
+            $("script.dynamic-script").remove();
+
+            // Append each script dynamically
+            scripts.forEach(function (src) {
+                let script = document.createElement("script");
+                script.src = src;
+                script.classList.add("dynamic-script");
+                document.body.appendChild(script);
+            });
+        }
+
+        // Load correct page based on URL on first load
+        let urlParams = new URLSearchParams(window.location.search);
+        let initialPage = urlParams.get("page") || "about_org.php";
+        loadContent(initialPage);
+
+        // Handle tab click
+        $(".doc-link").click(function (e) {
+            e.preventDefault(); // Prevent default link behavior
+            let page = $(this).data("page");
+            loadContent(page);
+
+            // Update active state
+            $(".doc-link").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+</script>
+
+
+  </script>
+
+</body>
+</html>

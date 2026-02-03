@@ -1,0 +1,35 @@
+RewriteEngine On
+
+# -------------------------------------
+# 1️⃣ Custom routing rules for clean URLs
+# -------------------------------------
+# Simple pages like /vmgo or /university_profile
+RewriteRule ^([a-zA-Z0-9_-]+)/?$ index.php?page=$1 [L,QSA]
+
+# Colleges page with department slug
+# Example: /colleges/cs
+RewriteRule ^colleges/([^/]+)/?$ index.php?page=colleges&department_slug=$1 [L,QSA]
+
+# News view page
+# Example: /news_view/some-news
+RewriteRule ^news_view/([^/]+)/?$ index.php?page=news_view&news_slug=$1 [L,QSA]
+
+# Announcement view page
+# Example: /announcement_view/some-announcement
+RewriteRule ^announcement_view/([^/]+)/?$ index.php?page=announcement_view&announcement_slug=$1 [L,QSA]
+
+# View album page
+# Example: /view_album/album-name
+RewriteRule ^view_album/([^/]+)/?$ index.php?page=view_album&album_slug=$1 [L,QSA]
+
+# -------------------------------------
+# 2️⃣ Remove .php extension for all files
+# -------------------------------------
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*?)/?$ $1.php [L,QSA]
+
+# -------------------------------------
+# 3️⃣ Redirect requests with .php extension to clean URL
+# -------------------------------------
+RewriteCond %{THE_REQUEST} \s/([^/]+)\.php [NC]
+RewriteRule ^ /%1 [R=301,L]

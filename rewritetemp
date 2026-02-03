@@ -1,0 +1,24 @@
+RewriteEngine On
+
+# Remove .php extension
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*?)/?$ $1.php [L,QSA]
+
+# Redirect requests with .php extension to the URL without it
+RewriteCond %{THE_REQUEST} \s/([^/]+)\.php [NC]
+RewriteRule ^ /%1 [R=301,L]
+RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?page=$1 [L,QSA]
+# RewriteRule ^colleges&department_id=([a-zA-Z0-9_-]+)$ index.php?page=colleges&department_slug=$1 [QSA,L]
+# RewriteRule ^colleges&department_slug=([a-zA-Z0-9_-]+)$ index.php?page=colleges&department_slug=$1 [QSA,L]
+RewriteRule ^colleges&department_slug=([^/?#]+)$ index.php?page=colleges&department_slug=$1 [QSA,L]
+
+
+RewriteRule ^news_view?news_slug=([a-zA-Z0-9_-]+)$ index.php?page=news_view?news_slug=$1 [QSA,L]
+RewriteRule ^announcement_view?annoucement_slug=([a-zA-Z0-9_-]+)$ index.php?page=announcement_view_view?announcement_slug=$1 [QSA,L]
+RewriteRule ^view_album?album_slug=([a-zA-Z0-9_-]+)$ index.php?page=view_album?album_slug=$1 [QSA,L]
+
+
+
+
+
+
