@@ -11,28 +11,26 @@ session_start();
 
 // temp commented
 // Auto-login with remember_me cookie
-// if (isset($_COOKIE['remember_me'])) {
-//     $session_token = $_COOKIE['remember_me'];
+if (isset($_COOKIE['remember_me'])) {
+    $session_token = $_COOKIE['remember_me'];
 
-//     $stmt = $conn->prepare("SELECT * FROM user_account WHERE session_token = ?");
-//     $stmt->bind_param("s", $session_token);
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-//     $user = $result->fetch_assoc();
+    $stmt = $conn->prepare("SELECT * FROM user_account WHERE session_token = ?");
+    $stmt->bind_param("s", $session_token);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
-//     if ($user) {
-//         $_SESSION['user_id'] = $user['user_id'];
-//         $_SESSION['username'] = $user['username'];
-//         $_SESSION['email'] = $user['email'];
-//         $_SESSION['user_type'] = $user['user_type'];
-//         header("Location: page_management");
-//         exit();
-//     }
-// }
+    if ($user) {
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['user_type'] = $user['user_type'];
+        header("Location: page_management.php");
+        exit();
+    }
+}
 
 $message = isset($_GET['message']) ? $_GET['message'] : '';
-
-
 
 // display university logo and university name start
 $query = "SELECT university_name, university_logo FROM university_profile LIMIT 1";
@@ -47,32 +45,6 @@ if ($result->num_rows > 0) {
     $university_name = "University Name";
     $university_logo = "default-logo.png";
 }
-// display university logo and university name end
-
-// temp commented
-// if (isset($_POST['clear_session'])) {
-//     $identifier = trim($_POST['user_identifier']);
-
-//     if ($identifier) {
-//         // Prepare the query
-//         $query = "UPDATE user_account SET session_token = NULL WHERE username = ? OR email = ?";
-//         $stmt = $conn->prepare($query);
-//         $stmt->bind_param("ss", $identifier, $identifier);
-
-//         if ($stmt->execute()) {
-//             if ($stmt->affected_rows > 0) {
-//                 echo "<script>alert('Session token cleared successfully.'); window.location.href='login';</script>";
-//             } else {
-//                 echo "<script>alert('No user found with the provided username or email.'); window.location.href='login';</script>";
-//             }
-//         } else {
-//             echo "<script>alert('Error clearing session token: " . addslashes($stmt->error) . "'); window.location.href='login';</script>";
-//         }
-//         $stmt->close();
-//     } else {
-//         echo "<script>alert('Please enter a valid email or username.'); window.location.href='login';</script>";
-//     }
-// }
 
 // Fetch all site settings start
 $settings = [];
@@ -148,9 +120,6 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <?= $message ?>
                     </p>
                 <?php endif; ?>
-
-                <!-- this is temp -->
-                <p>example</p>
             </div>
             <div class="mb-3">
                 <input type="text" name="email" class="form-control" id="email" placeholder="E-mail or Username"
@@ -170,7 +139,9 @@ if ($row = mysqli_fetch_assoc($result)) {
             </div>
             <button type="submit" name="login_button" class="btn btn-dynamic w-100 mt-3 py-2 fw-bold">Login</button>
         </form>
-
+        <div class="pt-2">
+            <p>Don't have an account? <a href="signup">Signup</a></p>
+        </div>
         <!-- New images at the bottom -->
         <div class="bottom-images">
             <img src="../../assets/images/basc.png" alt="Image 1">
@@ -181,7 +152,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <!-- Clear Session Modal -->
     <div class="modal fade" id="clearSessionModal" tabindex="-1" aria-labelledby="clearSessionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form method="POST" action="">
+            <form method="POST" action="../../function/php/auth/login.php">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="clearSessionModalLabel">Clear Session</h5>
