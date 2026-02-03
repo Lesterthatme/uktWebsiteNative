@@ -149,7 +149,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                     </p>
                 <?php endif; ?>
 
-
+                <!-- this is temp -->
+                <p>example</p>
             </div>
             <div class="mb-3">
                 <input type="text" name="email" class="form-control" id="email" placeholder="E-mail or Username"
@@ -161,7 +162,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             </div>
             <div class="options">
                 <div>
-                    <input type="checkbox" id="remember" name="remember"  />
+                    <input type="checkbox" id="remember" name="remember" />
                     <label for="remember">Remember me</label>
                 </div>
 
