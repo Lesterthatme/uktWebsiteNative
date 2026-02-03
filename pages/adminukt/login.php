@@ -2,8 +2,6 @@
 include '../../connection/dbconnection.php';
 session_start();
 
-// Set timezone
-date_default_timezone_set('Asia/Phnom_Penh');
 
 // Already logged in - prevent access
 // if (isset($_SESSION['user_id'])) {
@@ -11,102 +9,30 @@ date_default_timezone_set('Asia/Phnom_Penh');
 //     exit();
 // }
 
+// temp commented
 // Auto-login with remember_me cookie
-if (isset($_COOKIE['remember_me'])) {
-    $session_token = $_COOKIE['remember_me'];
+// if (isset($_COOKIE['remember_me'])) {
+//     $session_token = $_COOKIE['remember_me'];
 
-    $stmt = $conn->prepare("SELECT * FROM user_account WHERE session_token = ?");
-    $stmt->bind_param("s", $session_token);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+//     $stmt = $conn->prepare("SELECT * FROM user_account WHERE session_token = ?");
+//     $stmt->bind_param("s", $session_token);
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+//     $user = $result->fetch_assoc();
 
-    if ($user) {
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['email'] = $user['email'];
-        $_SESSION['user_type'] = $user['user_type'];
-        header("Location: page_management");
-        exit();
-    }
-}
+//     if ($user) {
+//         $_SESSION['user_id'] = $user['user_id'];
+//         $_SESSION['username'] = $user['username'];
+//         $_SESSION['email'] = $user['email'];
+//         $_SESSION['user_type'] = $user['user_type'];
+//         header("Location: page_management");
+//         exit();
+//     }
+// }
 
-$message = '';
+$message = isset($_GET['message']) ? $_GET['message'] : '';
 
-if (isset($_POST["login_button"])) {
-    $login_value = isset($_POST["email"]) ? trim($_POST["email"]) : '';
-    $password = isset($_POST["password"]) ? $_POST["password"] : '';
 
-    if (empty($login_value)) {
-        echo "<script>alert('Email or Username is required');</script>";
-    }
-
-    if (empty($password)) {
-        echo "<script>alert('Password is required');</script>";
-    }
-
-    if ($message == '') {
-        $query = "SELECT * FROM user_account WHERE (email = ? OR username = ?) AND password = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("sss", $login_value, $login_value, $password);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-
-            if ($row['user_type'] !== 'Administrator') {
-                echo "<script>
-                alert('You don\\'t have a privilege to log in as an Administrator'); window.location.href = 'login';</script>";
-                exit;
-            }
-
-            if (!empty($row['session_token'])) {
-                echo "<script>alert('You are already logged in. Please log out the previous session.'); window.location.href = 'login';</script>";
-                exit;
-            }
-
-            // Generate and save session token
-            session_regenerate_id();
-            $session_token = session_id();
-
-            $update_query = "UPDATE user_account SET session_token = ? WHERE user_id = ?";
-            $update_stmt = $conn->prepare($update_query);
-            $update_stmt->bind_param("si", $session_token, $row['user_id']);
-            $update_stmt->execute();
-
-            $_SESSION['user_id'] = $row['user_id'];
-            $_SESSION['username'] = $row['username'];
-            $_SESSION['email'] = $row['email'];
-            $_SESSION['user_type'] = $row['user_type'];
-            $_SESSION['session_token'] = $session_token;
-
-            // Logging
-            $description = "Account Logged in";
-            $log_date = date('Y-m-d');
-            $log_time = date('H:i:s');
-            $user_id = $row['user_id'];
-
-            $log_query = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
-            $log_stmt = $conn->prepare($log_query);
-            $log_stmt->bind_param("sssi", $description, $log_date, $log_time, $user_id);
-            $log_stmt->execute();
-
-            // Set Remember Me cookie (valid for 30 days)
-            if (isset($_POST['remember'])) {
-                setcookie("remember_me", $session_token, time() + (30 * 24 * 60 * 60), "/");
-            } else {
-                setcookie("remember_me", "", time() - 3600, "/");
-            }
-
-            header("Location: page_management");
-            exit;
-        } else {
-            echo "<script>alert('Invalid username, email or password!'); window.location.href = 'login';</script>";
-            exit;
-        }
-    }
-}
 
 // display university logo and university name start
 $query = "SELECT university_name, university_logo FROM university_profile LIMIT 1";
@@ -123,29 +49,30 @@ if ($result->num_rows > 0) {
 }
 // display university logo and university name end
 
-if (isset($_POST['clear_session'])) {
-    $identifier = trim($_POST['user_identifier']);
+// temp commented
+// if (isset($_POST['clear_session'])) {
+//     $identifier = trim($_POST['user_identifier']);
 
-    if ($identifier) {
-        // Prepare the query
-        $query = "UPDATE user_account SET session_token = NULL WHERE username = ? OR email = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("ss", $identifier, $identifier);
+//     if ($identifier) {
+//         // Prepare the query
+//         $query = "UPDATE user_account SET session_token = NULL WHERE username = ? OR email = ?";
+//         $stmt = $conn->prepare($query);
+//         $stmt->bind_param("ss", $identifier, $identifier);
 
-        if ($stmt->execute()) {
-            if ($stmt->affected_rows > 0) {
-                echo "<script>alert('Session token cleared successfully.'); window.location.href='login';</script>";
-            } else {
-                echo "<script>alert('No user found with the provided username or email.'); window.location.href='login';</script>";
-            }
-        } else {
-            echo "<script>alert('Error clearing session token: " . addslashes($stmt->error) . "'); window.location.href='login';</script>";
-        }
-        $stmt->close();
-    } else {
-        echo "<script>alert('Please enter a valid email or username.'); window.location.href='login';</script>";
-    }
-}
+//         if ($stmt->execute()) {
+//             if ($stmt->affected_rows > 0) {
+//                 echo "<script>alert('Session token cleared successfully.'); window.location.href='login';</script>";
+//             } else {
+//                 echo "<script>alert('No user found with the provided username or email.'); window.location.href='login';</script>";
+//             }
+//         } else {
+//             echo "<script>alert('Error clearing session token: " . addslashes($stmt->error) . "'); window.location.href='login';</script>";
+//         }
+//         $stmt->close();
+//     } else {
+//         echo "<script>alert('Please enter a valid email or username.'); window.location.href='login';</script>";
+//     }
+// }
 
 // Fetch all site settings start
 $settings = [];
@@ -214,11 +141,15 @@ if ($row = mysqli_fetch_assoc($result)) {
         </div>
         <p class="subtitle"><?php echo htmlspecialchars($settings['website_tagline']); ?></p>
 
-        <form method="POST">
+        <form method="POST" action="../../function/php/auth/login.php">
             <div>
                 <?php if ($message != ''): ?>
-                    <ul><?php echo $message; ?></ul>
+                    <p class="text-danger m-0">
+                        <?= $message ?>
+                    </p>
                 <?php endif; ?>
+
+
             </div>
             <div class="mb-3">
                 <input type="text" name="email" class="form-control" id="email" placeholder="E-mail or Username"
@@ -230,7 +161,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             </div>
             <div class="options">
                 <div>
-                    <input type="checkbox" id="remember" name="remember" checked />
+                    <input type="checkbox" id="remember" name="remember"  />
                     <label for="remember">Remember me</label>
                 </div>
 

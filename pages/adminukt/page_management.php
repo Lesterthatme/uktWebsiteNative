@@ -41,17 +41,17 @@ if ($row = mysqli_fetch_assoc($result)) {
 <body class="bg-light">
 
   <!-- include side bar start -->
-  <?php include 'include/alert.php';?>
-  <?php include 'confirmation.php';?>
+  <?php include 'include/alert.php'; ?>
+  <?php include 'confirmation.php'; ?>
   <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
 
   <main class="bg-light">
 
     <!-- include navbar start -->
-    <?php include 'include/navbar.php';?>
+    <?php include 'include/navbar.php'; ?>
     <!-- include navbar end -->
-     
+
     <!-- start: Content -->
     <div class="p-4">
       <div class="row">
@@ -77,7 +77,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
               <h5 class="card-title fs-6 mb-2 mb-md-0">Highlights</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic float-end" data-bs-toggle="modal"
-                data-bs-target="#addHighlightModal" data-bs-toggle="tooltip" data-bs-placement="top" 
+                data-bs-target="#addHighlightModal" data-bs-toggle="tooltip" data-bs-placement="top"
                 title="Click to add highlights">
                 <i class="ri-add-line"></i> Add Highlights
               </button>
@@ -103,7 +103,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <label for="icon_class" class="form-label">Select Icon</label>
                         <div class="dropdown">
                           <button class="btn btn-dynamic dropdown-toggle w-100" type="button" id="iconDropdown"
-                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" 
+                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Click here to select icon">
                             Select Icon
                           </button>
@@ -132,8 +132,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" name="add_highlights" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip" 
-                       data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
+                      <button type="submit" name="add_highlights" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
                     </div>
                   </div>
                 </form>
@@ -174,8 +174,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <div class="card p-4 custom-card position-relative text-center me-3 mb-3" style="flex: 1 1 100%; max-width: 300px;">
                           <!-- Dropdown menu -->
                           <div class="dropdown three-dots position-absolute top-0 end-0 m-2">
-                            <button class="btn p-0 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" 
-                            data-bs-placement="top" title="Click here to see the action">
+                            <button class="btn p-0 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip"
+                              data-bs-placement="top" title="Click here to see the action">
                               <span></span><span></span><span></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -183,15 +183,15 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <a class="dropdown-item text-dark" href="javascript:void(0);" data-bs-toggle="modal"
                                   data-bs-target="#editHighlightModal" data-id="<?= $card['h_id'] ?>"
                                   data-icon="<?= htmlspecialchars($card['h_icon']) ?>" data-title="<?= htmlspecialchars($card['h_title']) ?>"
-                                  data-description="<?= htmlspecialchars($card['h_description']) ?>" data-bs-toggle="tooltip" 
+                                  data-description="<?= htmlspecialchars($card['h_description']) ?>" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click here to edit this highlights">
                                   <i class="ri-pencil-line"></i> Edit
                                 </a>
                               </li>
                               <li>
                                 <a class="dropdown-item text-dark" href="javascript:void(0);" onclick="confirmDeletion(<?= $card['h_id'] ?>)"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to delete this highlights">
-                                <i class="ri-delete-bin-line"></i> Delete
+                                  data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to delete this highlights">
+                                  <i class="ri-delete-bin-line"></i> Delete
                                 </a>
                               </li>
                             </ul>
@@ -225,8 +225,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                   <?php endforeach; ?>
                 </div>
               <?php endif; ?>
-            </div>    <!-- end here -->
-         
+            </div> <!-- end here -->
+
             <?php if ($totalHighlights > 3): ?>
               <button class="carousel-control-prev custom-carousel-btn" type="button"
                 data-bs-target="#partnerCarousel" data-bs-slide="prev">
@@ -258,7 +258,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <label for="modal_h_icon" class="form-label">Icon</label>
                         <div class="dropdown">
                           <button type="button" class="btn btn-dynamic dropdown-toggle w-100" id="editIconDropdown"
-                            data-bs-toggle="dropdown" aria-expanded="false"  data-bs-toggle="tooltip" 
+                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Click here to select icon">
                             Select Icon
                           </button>
@@ -287,8 +287,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-dynamic" data-bs-toggle="tooltip" 
-                      data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
+                      <button type="submit" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
                     </div>
                   </form>
                 </div>
