@@ -4,7 +4,7 @@ require '../../connection/dbconnection.php';
 session_start();
 
 
-$page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2025';
+$page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2026';
 
 
 // Fetch all site settings start
@@ -67,7 +67,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               <hr class="doc-tabs-divider">
             </div>
             <?php
-            $page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2025';
+            $page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2026';
             ?>
             <h5 class="fw-semibold text-muted">Developers</h5>
             <p class="card-text text-muted small">Information Technology Students from Bulacan Agricultural State College.</p>

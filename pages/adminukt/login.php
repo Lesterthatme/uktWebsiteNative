@@ -139,9 +139,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             </div>
             <button type="submit" name="login_button" class="btn btn-dynamic w-100 mt-3 py-2 fw-bold">Login</button>
         </form>
-        <div class="pt-2">
-            <p>Don't have an account? <a href="signup">Signup</a></p>
-        </div>
+
         <!-- New images at the bottom -->
         <div class="bottom-images">
             <img src="../../assets/images/basc.png" alt="Image 1">

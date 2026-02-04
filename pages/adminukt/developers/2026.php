@@ -106,7 +106,7 @@
 <div class="d-flex flex-wrap justify-content-center gap-4">
     <div class="Developer_card">
         <div class="header">
-            <img src="../../assets/images/developer/updated/kimberly.jpg" alt="Profile Picture">
+            <img src="../../assets/images/developer/2026/student1.png" alt="Profile Picture" class="img-fluid object-fit-cover">
         </div>
         <div class="info">
             <h3>Lester Arjay B. Merino</h3>
@@ -114,42 +114,41 @@
             <p>San Ildefonso Bulacan, Philippines</p>
             <p>Bulacan Agricultural State College</p>
             <div class="socials">
-                <a href="https://www.facebook.com/bikernaerot/"><i class="ri-facebook-box-fill"></i></a>
-                <a href="https://github.com/Lesterthatme"><i class="ri-github-fill"></i></a>
+                <a target="_blank" href="https://www.facebook.com/bikernaerot/"><i class="ri-facebook-box-fill"></i></a>
+                <a target="_blank" href="https://github.com/Lesterthatme"><i class="ri-github-fill"></i></a>
             </div>
         </div>
     </div>
     <div class="Developer_card">
         <div class="header">
-            <img src="../../assets/images/developer/updated/carl.jpeg" alt="Profile Picture">
+            <img src="../../assets/images/developer/2026/student2.jpg" alt="Profile Picture" class="img-fluid object-fit-cover">
         </div>
         <div class="info">
-            <h3>Carl Angelo L. Aquino</h3>
-            <p class="fw-bold">Front-End Web Developer</p>
-
-            <p>San Miguel Bulacan, Philippines</p>
+            <h3>Jessa V. Baniador</h3>
+            <p class="fw-bold">Data Quality Assurance & Administrator</p>
+            <p>San Ildefonso Bulacan, Philippines</p>
             <p>Bulacan Agricultural State College</p>
             <div class="socials">
-                <a href="#"><i class="ri-facebook-box-fill"></i></a>
-                <a href="#"><i class="ri-github-fill"></i></a>
+                <a target="_blank" href="https://www.facebook.com/Jssbndr"><i class="ri-facebook-box-fill"></i></a>
+                <a target="_blank" href="https://github.com/Sseej"><i class="ri-github-fill"></i></a>
             </div>
         </div>
     </div>
     <div class="Developer_card">
         <div class="header">
-            <img src="../../assets/images/developer/updated/ronald.jpeg" alt="Profile Picture">
+            <img src="../../assets/images/developer/2026/student3.jpg" alt="Profile Picture" class="img-fluid object-fit-cover">
         </div>
         <div class="info">
-            <h3>Ronaldo F. Payawal Jr.</h3>
-            <p class="fw-bold">Back-End Web Developer</p>
-
-            <p>San Miguel Bulacan, Philippines</p>
+            <h3>Louie C. Jabonillo</h3>
+            <p class="fw-bold">Multimedia</p>
+            <p>San Ildefonso Bulacan, Philippines</p>
             <p>Bulacan Agricultural State College</p>
             <div class="socials">
-                <a href="#"><i class="ri-facebook-box-fill"></i></a>
-                <a href="#"><i class="ri-github-fill"></i></a>
+                <a target="_blank" href="https://www.facebook.com/CoachWowie"><i class="ri-facebook-box-fill"></i></a>
+                <a target="_blank" href="https://github.com/Louie1234567890"><i class="ri-github-fill"></i></a>
             </div>
         </div>
     </div>
+
 
 </div>
