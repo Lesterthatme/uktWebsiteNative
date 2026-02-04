@@ -15,7 +15,6 @@
 </head>
 
 <body>
-
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 col-sm-12">
@@ -26,27 +25,27 @@
                             <p class="text-muted fs-7">Join us by filling out the details below</p>
                         </div>
 
-                        <form method="POST" action="/function/php/auth/signup.php">
+                        <form method="POST" action="/ukt/function/php/auth/signup.php">
                             <div class="profile-pic-container">
                                 <img src="../../assets/images/officiallogo (1).png" alt="Profile Picture" id="profile-pic">
                                 <label for="profile-upload" class="upload-icon">
                                     <i class="ri-camera-fill"></i>
                                 </label>
-                                <input type="file" id="profile-upload" accept="image/*" onchange="previewImage(event)">
+                                <input type="file" id="profile-upload" name="profile-upload" accept="image/*" onchange="previewImage(event)">
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="firstname" class="form-label">First Name <span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="firstname" placeholder="Enter your first name" required>
+                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter your first name" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="middlename" class="form-label">Middle Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter your Middle name" id="middlename">
+                                    <input type="text" class="form-control" placeholder="Enter your Middle name" id="middlename" name="middlename">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="lastname" class="form-label">Last Name <span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" placeholder="Enter your Last name" id="lastname" required>
+                                    <input type="text" class="form-control" placeholder="Enter your Last name" id="lastname" required name="lastname">
                                 </div>
                             </div>
                             <div class="row mb-3">

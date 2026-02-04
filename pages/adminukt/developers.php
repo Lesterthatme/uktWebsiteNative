@@ -4,7 +4,7 @@ require '../../connection/dbconnection.php';
 session_start();
 
 
-$page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2025';
+$page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2026';
 
 
 // Fetch all site settings start
@@ -27,7 +27,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
 <head>
   <meta charset="UTF-8">
- <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
+  <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($settings['websitetitle_admin']); ?></title>
   <!-- start css  -->
@@ -37,14 +37,15 @@ if ($row = mysqli_fetch_assoc($result)) {
   <!-- Remix icon -->
   <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
 </head>
+
 <body class="bg-light">
   <!-- include side bar start -->
-  <?php include 'include/alert.php';?>
-  <?php include 'include/sidebar.php';?>
+  <?php include 'include/alert.php'; ?>
+  <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
   <main class="bg-light">
     <!-- include navbar start -->
-    <?php include 'include/navbar.php';?>
+    <?php include 'include/navbar.php'; ?>
     <!-- include navbar end -->
     <!-- start: Content -->
     <div class="p-4">
@@ -53,6 +54,9 @@ if ($row = mysqli_fetch_assoc($result)) {
           <div class="card-body">
             <div class="doc-tabs-container">
               <ul class="doc-tabs d-flex list-unstyled">
+                <li class="me-3">
+                  <a class="doc-link <?= ($page == 'developers/2026') ? 'active' : '' ?>" href="?page=2026">2026</a>
+                </li>
                 <li class="me-3">
                   <a class="doc-link <?= ($page == 'developers/2025') ? 'active' : '' ?>" href="?page=2025">2025</a>
                 </li>
@@ -63,12 +67,12 @@ if ($row = mysqli_fetch_assoc($result)) {
               <hr class="doc-tabs-divider">
             </div>
             <?php
-            $page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2025';
+            $page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2026';
             ?>
             <h5 class="fw-semibold text-muted">Developers</h5>
             <p class="card-text text-muted small">Information Technology Students from Bulacan Agricultural State College.</p>
             <div class="developers">
-            <?php include $page . '.php'; ?>
+              <?php include $page . '.php'; ?>
             </div>
           </div>
         </div>
@@ -90,20 +94,20 @@ if ($row = mysqli_fetch_assoc($result)) {
   end js -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-  const links = document.querySelectorAll(".doc-link");
-  const urlParams = new URLSearchParams(window.location.search);
-  const currentPage = urlParams.get("page") || "2025.php";
-  links.forEach(link => {
-    const linkPage = link.getAttribute("href").split("=")[1];
+      const links = document.querySelectorAll(".doc-link");
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentPage = urlParams.get("page") || "2025.php";
+      links.forEach(link => {
+        const linkPage = link.getAttribute("href").split("=")[1];
 
-    if (linkPage === currentPage) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
-    }
-  });
-});
-
+        if (linkPage === currentPage) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    });
   </script>
 </body>
+
 </html>

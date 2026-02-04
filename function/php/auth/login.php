@@ -30,10 +30,10 @@ if (isset($_POST["login_button"])) {
 
 
             // bakit need pa neto e meron na ngang auto direct ngani (2026)
-            // if (!empty($row['session_token'])) {
-            //     header("Location: /ukt/pages/adminukt/login.php?message=You are already logged in. Please log out the previous session.");
-            //     exit;
-            // }
+            if (!empty($row['session_token'])) {
+                header("Location: /ukt/pages/adminukt/login.php?message=You are already logged in. Please log out the previous session.");
+                exit;
+            }
 
             // Generate and save session token
             session_regenerate_id();
@@ -85,4 +85,25 @@ if (isset($_POST["login_button"])) {
         header("Location: /ukt/pages/adminukt/login.php?message=Something Went Wrong. Please try again.");
         exit;
     }
+}
+
+
+if (isset($_POST['clear_session'])) {
+    $identifier = trim($_POST['user_identifier']);
+
+    // Prepare the query
+    $query = "UPDATE user_account SET session_token = NULL WHERE username = ? OR email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ss", $identifier, $identifier);
+
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            header("Location: /ukt/pages/adminukt/login.php?message=Session token cleared successfully.");
+        } else {
+            header("Location: /ukt/pages/adminukt/login.php?message=No user found with the provided username or email.");
+        }
+    } else {
+        header("Location: /ukt/pages/adminukt/login.php?message=Something Went Wrong.");
+    }
+    exit;
 }
