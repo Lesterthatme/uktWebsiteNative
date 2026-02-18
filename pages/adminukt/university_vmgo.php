@@ -3,19 +3,20 @@
 session_start();
 include '../../connection/dbconnection.php';
 
-$query = "SELECT university_mission, university_vision, university_goal FROM university_vmgo";
+$query = "SELECT university_mission, university_vision, university_goal, university_core FROM university_vmgo";
 $result = mysqli_query($conn, $query);
 
 if (!$result) {
   die("Query Failed: " . mysqli_error($conn));
 }
 
-$mission = $vision = $goal = "";
+$mission = $vision = $goal = $core = "";
 
 if ($row = mysqli_fetch_assoc($result)) {
   $mission = $row['university_mission'];
   $vision = $row['university_vision'];
   $goal = $row['university_goal'];
+  $core = $row['university_core'];
 }
 
 // Fetch all site settings start
@@ -71,8 +72,55 @@ if ($row = mysqli_fetch_assoc($result)) {
         <div class="card border-0 pb-3">
           <div class="card-body">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-              <h5 class="card-title fs-6 mb-2 mb-md-0">Vision, Mission & Goal</h5>
+              <h5 class="card-title fs-6 mb-2 mb-md-0">Vision, Mission, Goal & Core</h5>
             </div>
+
+            <!-- Modal for editing core start-->
+            <div class="modal fade" id="core" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Edit Core</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body pb-0">
+                    <form method="POST" action="../../function/vmgo_function.php" role="dialog">
+                      <input type="hidden" name="vmgo_id" id="vmgo_id" value="<?php echo $vmgo_id; ?>">
+                      <div class="row mb-3">
+                        <label class="form-label fw-semibold text-muted">Core</label>
+                        <textarea class="form-control" id="summernote_core" name="university_core" rows="3"
+                          placeholder="Enter University Core"><?php echo ($core); ?></textarea>
+                        <div id="summernote_core"></div>
+                        <script>
+                          $('#summernote_core').summernote({
+                            placeholder: 'Hello stand alone ui',
+                            tabsize: 2,
+                            height: 120,
+                            toolbar: [
+                              ['style', ['style']],
+                              ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+                              ['fontname', ['fontname']],
+                              ['fontsize', ['fontsize']],
+                              ['color', ['color']],
+                              ['para', ['ol', 'ul', 'paragraph', 'height']],
+                              ['insert', ['link']],
+                              ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
+                            ]
+                          });
+                        </script>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" name="update_core" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Click to save"><i class="ri-save-fill"></i>
+                          Save</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal for editing core end-->
 
             <!-- Modal for editing mission start-->
             <div class="modal fade" id="mission" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -215,11 +263,10 @@ if ($row = mysqli_fetch_assoc($result)) {
             </div>
             <!-- Modal for editing goal end-->
 
-            <!-- Page Poster start -->
-            <?php
 
-            ?>
+            <!-- Page Poster start -->
             <div class="vmgo_card_container">
+
               <div class="vmgo_card mission position-relative">
                 <i class="ri-flag-line"></i>
                 <h5>MISSION</h5>
@@ -271,6 +318,26 @@ if ($row = mysqli_fetch_assoc($result)) {
                   </ul>
                 </div>
               </div>
+
+              <div class="vmgo_card core position-relative">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <h5>Core</h5>
+                <p><?php echo ($core); ?></p>
+                <div class="dropdown position-absolute top-0 end-0">
+                  <button class="btn btn-link text-dark p-0" type="button" id="dropdownCore" data-bs-toggle="dropdown"
+                    aria-expanded="false" style="text-decoration: none !important;">
+                    <i class="ri-more-2-fill fs-5"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" style="left: auto; right: 100%;"
+                    aria-labelledby="dropdownCore">
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#core" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Click to update this core"><i class="ri-pencil-line fs-4"></i> Edit</a></li>
+                  </ul>
+                </div>
+              </div>
+
             </div>
             <!-- Page Poster End -->
           </div>
