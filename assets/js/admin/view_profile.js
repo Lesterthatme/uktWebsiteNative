@@ -27,3 +27,4 @@ function validatePassword() {
 document.getElementById("confirm_password").addEventListener("input", () => {
   validatePassword();
 });
+

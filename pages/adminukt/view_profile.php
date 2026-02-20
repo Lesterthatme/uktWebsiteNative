@@ -151,7 +151,7 @@ $message = isset($_GET['message']) ? $_GET['message'] : '';
                                     <div class="mb-3">
                                         <label for="new_password" class="form-label"><strong>New Password</strong></label>
                                         <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter New Password" required>
-                                    </div>
+                                        </div>
                                     <div class="mb-3">
                                         <label for="confirm_password" class="form-label"><strong>Confirm New Password</strong></label>
                                         <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm New Password" required>
