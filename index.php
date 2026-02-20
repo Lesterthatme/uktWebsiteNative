@@ -49,7 +49,7 @@ if ($row = mysqli_fetch_assoc($result)) {
   <!-- 2026 dev added -->
   <link rel="stylesheet" href="assets/css/additional.css">
   <!-- tailwind -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
   <!-- /2026 dev added -->
 
 </head>

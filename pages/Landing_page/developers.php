@@ -1,3 +1,4 @@
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <div id="modalElement" class="fixed inset-0 bg-gray-600/50 flex items-end justify-center z-50 hidden">
 
     <!-- Modal Box -->
@@ -147,7 +148,7 @@
         background-attachment: fixed;
         padding: 60px 0;
      ">
-    
+
     <!-- Bootstrap Overlay -->
     <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
 
@@ -209,8 +210,8 @@
             </div>
 
         </div>
-        <div data-aos="fade-up" data-aos-duration="2000" class="d-flex justify-content-center cursor-pointer">
-            <a id="clickBtn" style="color: white;" class="fs-4">Pre-Service Teacher <i class="bi bi-box-arrow-up-right"></i></a>
+        <div data-aos="fade-up" data-aos-duration="2000" class="d-flex justify-content-center cursor-pointer ">
+            <a id="clickBtn" class="fs-4 text-white ">Pre-Service Teacher <i class="bi bi-box-arrow-up-right"></i></a>
         </div>
     </div>
 </div>
