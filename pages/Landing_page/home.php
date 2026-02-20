@@ -71,7 +71,7 @@ if ($result && $result->num_rows > 0) {
   }
   ?>
   <div class="president-card">
-    <div class="image-container" data-aos="zoom-out" data-aos-duration="1500">
+    <div class="image-container !text-center" data-aos="zoom-out" data-aos-duration="1500">
       <img src="assets/uploads/rector_image/<?= htmlspecialchars($card['image']) ?>" alt="University President">
     </div>
     <div class="info" data-aos="zoom-out" data-aos-duration="1500">

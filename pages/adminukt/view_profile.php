@@ -4,6 +4,7 @@ session_start();
 
 // Fetch all site settings start
 $settings = [];
+
 $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
@@ -15,82 +16,8 @@ if ($row = mysqli_fetch_assoc($result)) {
         $title_cm = htmlspecialchars($settings['websitetitle_cm']);
     }
 }
-// Fetch all site settings end
 
-
-// for changing password start
-$message = '';
-
-date_default_timezone_set('Asia/Phnom_Penh'); // Set timezone to Cambodia
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $current_password = $_POST['current_password'];
-    $new_password = $_POST['new_password'];
-    $confirm_password = $_POST['confirm_password'];
-
-    // Fetch the current password and user details from the database
-    $query = "SELECT * FROM user_account WHERE user_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-
-    if (!$user) {
-        echo "<script>
-            alert('User not found.');
-            window.location.href = 'login.php';
-        </script>";
-        exit;
-    } else {
-        // Check if the entered current password matches the stored password
-        if ($current_password === $user['password']) {
-            // Check if the new password and confirm password match
-            if ($new_password === $confirm_password) {
-                // Update the password in the database
-                $query = "UPDATE user_account SET password = ? WHERE user_id = ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param('si', $new_password, $user_id);
-                if ($stmt->execute()) {
-                    // Insert into history_log
-                    $description = "Password Updated";
-                    $log_date = date('Y-m-d'); // Cambodia date
-                    $log_time = date('H:i:s'); // Cambodia time
-
-                    $log_query = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
-                    $log_stmt = $conn->prepare($log_query);
-                    $log_stmt->bind_param('sssi', $description, $log_date, $log_time, $user_id);
-                    $log_stmt->execute();
-
-                    echo "<script>
-                        alert('Password updated successfully!');
-                        window.location.href = 'view_profile';
-                    </script>";
-                    exit;
-                } else {
-                    echo "<script>
-                        alert('Failed to update password. Please try again.');
-                        window.location.href = 'view_profile';
-                    </script>";
-                    exit;
-                }
-            } else {
-                echo "<script>
-                        alert('New password and confirm password do not match.');
-                        window.location.href = 'view_profile';
-                    </script>";
-                exit;
-            }
-        } else {
-            echo "<script>
-            alert('Current password is incorrect');
-            window.location.href = 'view_profile';
-        </script>";
-            exit;
-        }
-    }
-}
-// for changing password end 
+$message = isset($_GET['message']) ? $_GET['message'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -104,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.3">
     <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
+
+    <script src="../../assets/js/admin/view_profile.js" defer></script>
 </head>
 
 <body class="bg-light">
@@ -198,6 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <!-- Modal for changing password start-->
+        <!-- <div style="display: block;" class="modal"> -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -213,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <?= htmlspecialchars($message); ?>
                                     </div>
                                 <?php endif; ?>
-                                <form method="POST" action="">
+                                <form method="POST" action="/ukt/function/php/auth/adminChangePassword.php">
                                     <div class="mb-3">
                                         <label for="current_password" class="form-label"><strong>Current Password</strong></label>
                                         <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter Current Password" required>
@@ -226,7 +156,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <label for="confirm_password" class="form-label"><strong>Confirm New Password</strong></label>
                                         <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm New Password" required>
                                     </div>
-                                    <button type="submit" class="btn btn-dynamic w-100">Update Password</button>
+                                    <div>
+                                        <ul class="text-danger list-unstyled" id="errorMsg">
+                                            <!-- this is dynamic -->
+                                        </ul>
+                                    </div>
+                                    <button type="submit" name="updatePassBtn" class="btn btn-dynamic w-100">Update Password</button>
                                 </form>
 
                             </div>

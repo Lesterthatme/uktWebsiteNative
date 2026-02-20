@@ -87,7 +87,7 @@ if (isset($_POST["login_button"])) {
     }
 }
 
-
+//if mag clear lang to
 if (isset($_POST['clear_session'])) {
     $identifier = trim($_POST['user_identifier']);
 
