@@ -19,7 +19,6 @@ if ($row = mysqli_fetch_assoc($result)) {
     $title_cm = htmlspecialchars($settings['websitetitle_cm']);
   }
 }
-// Fetch all site settings end
 ?>
 
 <!DOCTYPE html>
@@ -33,30 +32,23 @@ if ($row = mysqli_fetch_assoc($result)) {
   <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?v=3.1">
   <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
-
 </head>
-
 <body class="bg-light">
-
   <!-- include side bar start -->
-  <?php include 'include/alert.php';?>
-  <?php include 'confirmation.php';?>
-  <?php include 'include/sidebar.php';?>
+  <?php include 'include/alert.php'; ?>
+  <?php include 'confirmation.php'; ?>
+  <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
-
   <main class="bg-light">
-
     <!-- include navbar start -->
     <?php include 'include/navbar.php'; ?>
     <!-- include navbar end -->
-
     <!-- Start: Content -->
     <div class="p-4">
       <div class="row">
         <div class="card border-0 pb-3">
           <div class="card-body">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3"></div>
-
             <!-- Container Nav -->
             <div class="doc-tabs-container mt-3">
               <ul class="doc-tabs d-flex list-unstyled">
@@ -91,15 +83,16 @@ if ($row = mysqli_fetch_assoc($result)) {
                   <div class="float-end">
                     <!-- <h5 class="card-title fs-6 mb-2 mb-md-0">Highlights</h5> -->
                     <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic float-end MT-1"
-                      data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-toggle="tooltip" 
-                     data-bs-placement="top" title="Click to add content manager">
+                      data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-toggle="tooltip"
+                      data-bs-placement="top" title="Click to add content manager">
                       <i class="ri-add-line"></i> Add User </button>
                   </div>
                 </div>
 
                 <!-- START >> ADD USER MODAL -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
+                <!-- <div class="modal" style="display: block;"> -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
                   <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -108,7 +101,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div>
                       <div class="modal-body">
 
-                        <form action="../../function/add_accountfunction.php" method="POST"
+                        <form action="../../function/php/create/addAccount.php" method="POST"
                           enctype="multipart/form-data">
                           <div class="profile-pic-container">
                             <img src="../../assets/images/profile (1).png" alt="Profile Picture" id="profile-pic">
@@ -190,18 +183,18 @@ if ($row = mysqli_fetch_assoc($result)) {
                             </div>
                           </div>
 
-                          <!-- <div class="mb-3">
+                          <div class="mb-3">
                             <label for="role" class="form-label"><strong>Role</strong></label>
                             <select class="form-control w-auto" id="role" name="role" required
                               style="min-width: 180px;">
                               <option value="content_manager" selected>Content Manager</option>
-                              <option value="librarian" selected>Librarian</option>
+                              <option value="librarian" disabled>Librarian</option>
                             </select>
-                          </div> -->
+                          </div>
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" name="add_account" class="btn btn-dynamic"  data-bs-toggle="tooltip" 
-                        data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
+                        <button type="submit" name="addAccountBtn" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                          data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
                           Save</button>
                       </div>
                     </div>
@@ -212,16 +205,12 @@ if ($row = mysqli_fetch_assoc($result)) {
               </div>
 
               <?php
-              include '../../connection/dbconnection.php';
-
               $sql = "SELECT ua.user_id, ua.username, ua.email, ua.image, ua.user_type, ua.account_status,
                            ap.ap_firstname, ap.ap_mi, ap.ap_lastname, ap.birthday, ap.age, ap.sex
                            FROM user_account ua
                            LEFT JOIN authorized_person ap ON ua.user_id = ap.user_id
                            WHERE ua.account_status = 'pending'";
-
               $result = $conn->query($sql);
-
               if (!$result) {
                 die("Query failed: " . $conn->error);
               }
@@ -246,7 +235,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <tr>
                           <td class="text-center">
                             <img src="../../assets/uploads/profile_pic/<?= (!empty($row['image']) && file_exists("../../assets/uploads/profile_pic/" . $row['image']))
-                              ? htmlspecialchars($row['image']) : 'default-profile.jpeg' ?>" alt="User"
+                                                                          ? htmlspecialchars($row['image']) : 'default-profile.jpeg' ?>" alt="User"
                               class="img-fluid rounded" style="width: 40px; height: 40px; object-fit: cover;">
                           </td>
                           <td class="text-center">
@@ -264,9 +253,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                           </td>
                           <td class="text-center">
                             <div class="dropdown">
-                              <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" 
-                              data-bs-toggle="tooltip" data-bs-placement="top" 
-                              title="Click here to see the action">
+                              <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Click here to see the action">
                                 <i class="ri-more-2-fill"></i>
                               </button>
                               <ul class="dropdown-menu">
@@ -279,17 +268,17 @@ if ($row = mysqli_fetch_assoc($result)) {
                                     data-birthday="<?= htmlspecialchars($row['birthday']) ?>"
                                     data-age="<?= htmlspecialchars($row['age']) ?>"
                                     data-sex="<?= htmlspecialchars($row['sex']) ?>"
-                                    data-user-type="<?= htmlspecialchars($row['user_type']) ?>" 
-                                   data-bs-toggle="tooltip"  data-bs-placement="top" 
-                                   title="Click to view profile">
-                                   <i class="ri-eye-line"></i> View Profile
+                                    data-user-type="<?= htmlspecialchars($row['user_type']) ?>"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Click to view profile">
+                                    <i class="ri-eye-line"></i> View Profile
                                   </a>
                                 </li>
                                 <li>
                                   <a class="dropdown-item text-dark"
                                     href="../../function/approve_user.php?user_id=<?= $row['user_id']; ?>"
-                                    onclick="return confirm('Are you sure you want to approve this user?');" 
-                                    data-bs-toggle="tooltip" data-bs-placement="top" 
+                                    onclick="return confirm('Are you sure you want to approve this user?');"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="Click to approved the account registration">
                                     <i class="ri-user-follow-fill"></i> Approve
                                   </a>
@@ -298,7 +287,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                   <a class="dropdown-item text-dark"
                                     href="../../function/deny_user.php?user_id=<?= $row['user_id']; ?>"
                                     onclick="return confirm('Are you sure you want to deny this user?');"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" 
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="Click to denied the account registration">
                                     <i class="ri-user-unfollow-fill"></i> Deny
                                   </a>
@@ -320,7 +309,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                               </div>
                               <div class="modal-body text-center">
                                 <img src="../../assets/uploads/profile_pic/<?= (!empty($row['image']) && file_exists("../../assets/uploads/profile_pic/" . $row['image']))
-                                  ? htmlspecialchars($row['image']) : 'default-profile.jpeg' ?>" alt="Profile Picture"
+                                                                              ? htmlspecialchars($row['image']) : 'default-profile.jpeg' ?>" alt="Profile Picture"
                                   class="rounded-circle" width="100">
 
                                 <h5 class="mt-2">
@@ -329,11 +318,11 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <p class="text-muted"><?= htmlspecialchars($row['email']) ?></p>
                                 <hr>
                                 <div class="text-start">
-                                <p><strong>Role:</strong> <?= htmlspecialchars($row['user_type']) ?></p>
-                                <p><strong>Birthday:</strong> <?= htmlspecialchars($row['birthday']) ?></p>
-                                <p><strong>Age:</strong> <?= htmlspecialchars($row['age']) ?></p>
-                                <p><strong>Sex:</strong> <?= htmlspecialchars($row['sex']) ?></p>
-                              </div>
+                                  <p><strong>Role:</strong> <?= htmlspecialchars($row['user_type']) ?></p>
+                                  <p><strong>Birthday:</strong> <?= htmlspecialchars($row['birthday']) ?></p>
+                                  <p><strong>Age:</strong> <?= htmlspecialchars($row['age']) ?></p>
+                                  <p><strong>Sex:</strong> <?= htmlspecialchars($row['sex']) ?></p>
+                                </div>
                               </div>
                               <!-- <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -385,14 +374,14 @@ if ($row = mysqli_fetch_assoc($result)) {
 
       if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = function(e) {
           profilePic.src = e.target.result;
         };
         reader.readAsDataURL(file);
       }
     }
 
-    document.getElementById("birthday").addEventListener("change", function () {
+    document.getElementById("birthday").addEventListener("change", function() {
       let birthDate = new Date(this.value);
       let today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
@@ -407,9 +396,9 @@ if ($row = mysqli_fetch_assoc($result)) {
   </script>
   <!-- end js -->
 
-    <!-- START >> JS SCRIPT IN ALERT -->
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
+  <!-- START >> JS SCRIPT IN ALERT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
       console.log("Checking for toast message...");
 
       <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
@@ -453,11 +442,20 @@ if ($row = mysqli_fetch_assoc($result)) {
 
       // Set icon based on type
       switch (type) {
-        case "toast-success": icon.className = "ri-checkbox-circle-line toast-icon"; break;
-        case "toast-info": icon.className = "ri-information-line toast-icon"; break;
-        case "toast-warning": icon.className = "ri-alert-line toast-icon"; break;
-        case "toast-error": icon.className = "ri-close-circle-line toast-icon"; break;
-        default: icon.className = "ri-information-line toast-icon"; // Default icon
+        case "toast-success":
+          icon.className = "ri-checkbox-circle-line toast-icon";
+          break;
+        case "toast-info":
+          icon.className = "ri-information-line toast-icon";
+          break;
+        case "toast-warning":
+          icon.className = "ri-alert-line toast-icon";
+          break;
+        case "toast-error":
+          icon.className = "ri-close-circle-line toast-icon";
+          break;
+        default:
+          icon.className = "ri-information-line toast-icon"; // Default icon
       }
 
       // Show toast

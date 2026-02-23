@@ -9,6 +9,7 @@ $query = "SELECT ua.username, ua.email, ua.image,
           FROM user_account ua
           INNER JOIN authorized_person ap ON ua.user_id = ap.user_id
           WHERE ua.user_id = ?";
+
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $user_id);
 $stmt->execute();
@@ -17,77 +18,6 @@ $user = $result->fetch_assoc();
 
 $user_image = !empty($user['image']) ? '../../assets/uploads/' . $user['image'] : '../../assets/uploads/officiallogo.png';
 
-// update account functio start
-date_default_timezone_set('Asia/Phnom_Penh');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firstname = $_POST['ap_firstname'];
-    $mi = $_POST['ap_mi'];
-    $lastname = $_POST['ap_lastname'];
-    $birthday = $_POST['birthday'];
-    $email = $_POST['email'];
-    $username = $_POST['username'];
-    $sex = $_POST['sex'];
-
-    // Check if user exists
-    $fetch_query = "SELECT username FROM user_account WHERE user_id = ?";
-    $stmt = $conn->prepare($fetch_query);
-    $stmt->bind_param('i', $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $current_user = $result->fetch_assoc();
-
-    if (!$current_user) {
-        $_SESSION['toastMsg'] = "User not found.";
-        $_SESSION['toastType'] = "toast-error";
-        header("Location: edit_profile");
-        exit;
-    }
-
-    // Handle profile image upload
-    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-        $image_tmp_name = $_FILES['profile_image']['tmp_name'];
-        $image_name = time() . "_" . $_FILES['profile_image']['name']; // Prevent duplicate names
-        $upload_dir = '../../assets/uploads/profile_pic/';
-        $image_path = $upload_dir . basename($image_name);
-
-        if (move_uploaded_file($image_tmp_name, $image_path)) {
-            $update_image_query = "UPDATE user_account SET image = ? WHERE user_id = ?";
-            $stmt = $conn->prepare($update_image_query);
-            $stmt->bind_param('si', $image_name, $user_id);
-            $stmt->execute();
-        }
-    }
-
-    // Update authorized_person table
-    $query = "UPDATE authorized_person SET ap_firstname = ?, ap_mi = ?, ap_lastname = ?, birthday = ?, sex = ? WHERE user_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('sssssi', $firstname, $mi, $lastname, $birthday, $sex, $user_id);
-    $stmt->execute();
-
-    // Update user_account table
-    $query = "UPDATE user_account SET email = ?, username = ? WHERE user_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('ssi', $email, $username, $user_id);
-    $stmt->execute();
-
-    // Log the action
-    $description = "Admin Profile Updated.";
-    $log_date = date('Y-m-d');
-    $log_time = date('H:i:s');
-
-    $log_query = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
-    $log_stmt = $conn->prepare($log_query);
-    $log_stmt->bind_param('sssi', $description, $log_date, $log_time, $user_id);
-    $log_stmt->execute();
-
-    // Set session message for toast alert
-    $_SESSION['toastMsg'] = "Profile updated successfully!";
-    $_SESSION['toastType'] = "toast-success";
-
-    header("Location: view_profile"); // Redirect to profile page
-    exit;
-}
 
 // Fetch all site settings start
 $settings = [];
@@ -181,7 +111,7 @@ if ($row = mysqli_fetch_assoc($result)) {
         <div class="p-4">
             <div class="row">
                 <div class="card border-0 pb-3">
-                    <form id="update-form" method="POST" enctype="multipart/form-data">
+                    <form id="update-form" method="POST" action="/ukt/function/php/auth/adminEditProfile.php" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="container d-flex justify-content-center">
                                 <div class="account_profile-card w-100" style="max-width: 1600px;">
@@ -247,7 +177,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                             <input type="email" class="form-control" name="email" value="<?php echo $user['email'] ?? ''; ?>">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-dynamic float-end mt-3" data-bs-toggle="tooltip"
+                                    <button type="submit" name="editProfileBtn"  class="btn btn-dynamic float-end mt-3" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save
                                     </button>
                                 </div>
