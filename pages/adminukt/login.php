@@ -72,7 +72,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($settings['websitetitle_admin']); ?></title>
-    <link re    l="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/loginform.css?v=1.3">
     <script type="text/javascript">
         function noBack() {

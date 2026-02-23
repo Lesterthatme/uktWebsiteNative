@@ -48,8 +48,6 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- 2026 dev added -->
   <link rel="stylesheet" href="assets/css/additional.css">
-  <!-- tailwind -->
-  
   <!-- /2026 dev added -->
 
 </head>
