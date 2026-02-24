@@ -134,8 +134,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                       <i class="ri-add-line"></i> Add User </button>
                   </div>
                 </div>
-                 <!-- START >> ADD USER MODAL -->
-                 <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <!-- START >> ADD USER MODAL -->
+                <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel"
                   aria-hidden="true">
                   <div class="modal-dialog modal-xl">
                     <div class="modal-content">
@@ -145,7 +145,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div>
                       <div class="modal-body">
 
-                        <form action="../../function/add_accountfunction.php" method="POST"
+                        <form action="../../function/php/create/addAccount.php" method="POST"
                           enctype="multipart/form-data">
                           <div class="profile-pic-container">
                             <img src="../../assets/images/profile (1).png" alt="Profile Picture" id="profile-pic">
@@ -237,8 +237,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                           </div> -->
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" name="add_account" class="btn btn-dynamic"  data-bs-toggle="tooltip" 
-                        data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
+                        <button type="submit" name="addAccountBtn" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                          data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
                           Save</button>
                       </div>
                     </div>
@@ -249,7 +249,6 @@ if ($row = mysqli_fetch_assoc($result)) {
 
               </div>
               <?php
-              include '../../connection/dbconnection.php';
 
               $query = "SELECT ua.user_id, ua.username, ua.email, ua.image, ua.user_type, ua.account_status,
                            ap.ap_firstname, ap.ap_mi, ap.ap_lastname, ap.birthday, ap.age, ap.sex

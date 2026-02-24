@@ -61,7 +61,7 @@ if (isset($_POST['addAccountBtn'])) {
         if ($stmt_check->num_rows > 0) {
             $_SESSION['toastMsg'] = "Error: Email already exists!";
             $_SESSION['toastType'] = "toast-error";
-            header("Location: ../pages/adminukt/approved_account");
+            header("Location: /ukt/pages/adminukt/pending_account.php");
             exit();
         }
 
