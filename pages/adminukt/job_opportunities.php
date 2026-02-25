@@ -7,12 +7,27 @@ include '../../connection/dbconnection.php';
 $query = "SELECT job_id, job_description, posted_date, application_deadline, contact_email
            FROM job_opportunities WHERE up_id = 1";
 $result = mysqli_query($conn, $query);
+if (!$result) {
+    die("Query Failed: " . mysqli_error($conn));
+}
 $job_data = mysqli_fetch_assoc($result);
+if ($result->num_rows > 0) {
 
-$job_description = $job_data['job_description'];
-$posted_date = $job_data['posted_date'];
-$application_deadline = $job_data['application_deadline'];
-$contact_email = $job_data['contact_email'];
+
+    $job_description = $job_data['job_description'];
+    $posted_date = $job_data['posted_date'];
+    $application_deadline = $job_data['application_deadline'];
+    $contact_email =  $job_data['contact_email'];
+    $posted_date = $job_data['posted_date'];
+} else {
+    $job_description = '';
+    $posted_date = '';
+    $application_deadline = '';
+    $contact_email = '';
+    $posted_date = '';
+}
+
+
 
 
 // Fetch all site settings start
@@ -21,12 +36,12 @@ $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-  $settings = $row;
+    $settings = $row;
 
-  if (!empty($settings)) {
-    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-  }
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
 }
 // Fetch all site settings end
 ?>
@@ -38,7 +53,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($settings['websitetitle_admin']); ?></title> 
+    <title><?php echo htmlspecialchars($settings['websitetitle_admin']); ?></title>
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.4">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -80,12 +95,12 @@ if ($row = mysqli_fetch_assoc($result)) {
                             <hr class="doc-tabs-divider">
                         </div>
                         <button type="button" class="btn btn-sm rounded-2 px-4 float-end btn-dynamic" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"  data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to edit this overview">
+                            data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to edit this overview">
                             <i class="ri-edit-2-line"></i> Edit Overview
                         </button>
                         <p class="card-text text-muted small">Don’t forget to update this section whenever a new opportunity is added!</p>
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-                          
+
                         </div>
 
                         <!-- Modal for editing background start-->
@@ -114,12 +129,12 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                                                     <div class="mb-3">
                                                         <label for="contact_email" class="form-label"><strong>Contact Email</strong></label>
-                                                        <input type="email" class="form-control" name="contact_email" value="<?= $job_data['contact_email'] ?>" required>
+                                                        <input type="email" class="form-control" name="contact_email" value="<?= $contact_email?>" required>
                                                     </div>
 
                                                     <label for=""><strong>Job Description</strong></label>
                                                     <textarea id="summernote" name="job_description" class="form-control mb-2"
-                                                        style="height: 20vh;"><?= $job_data['job_description'] ?></textarea>
+                                                        style="height: 20vh;"><?= $job_description?></textarea>
 
                                                     <div id="summernote"></div>
                                                     <script>
@@ -144,8 +159,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" name="update_job" class="btn btn-dynamic" data-bs-toggle="tooltip" 
-                                                 data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
+                                                <button type="submit" name="update_job" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
                                             </div>
                                         </form>
                                     </div>
@@ -160,9 +175,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                             <div class="row">
                                 <div class="col-md-8">
                                     <p class="lead"><?php echo $job_description; ?></p>
-                                    <p><strong>Contact Email:</strong> <?php echo $job_data['contact_email']; ?></p>
-                                    <p class="text-muted mb-0"><strong>Application Deadline:</strong> <?php echo date("F j, Y", strtotime($job_data['application_deadline'])); ?></p>
-                                    <p class="text-muted mb-0"><strong>Date updated:</strong> <?php echo date("F j, Y", strtotime($job_data['posted_date'])); ?></p>
+                                    <p><strong>Contact Email:</strong> <?php echo $contact_email ?></p>
+                                    <p class="text-muted mb-0"><strong>Application Deadline:</strong> <?php echo date("F j, Y", strtotime($application_deadline)); ?></p>
+                                    <p class="text-muted mb-0"><strong>Date updated:</strong> <?php echo date("F j, Y", strtotime($posted_date)); ?></p>
 
                                 </div>
                             </div>

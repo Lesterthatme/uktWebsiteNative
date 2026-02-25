@@ -227,14 +227,14 @@ if ($row = mysqli_fetch_assoc($result)) {
                             </div>
                           </div>
 
-                          <!-- <div class="mb-3">
+                          <div class="mb-3">
                             <label for="role" class="form-label"><strong>Role</strong></label>
                             <select class="form-control w-auto" id="role" name="role" required
                               style="min-width: 180px;">
                               <option value="content_manager" selected>Content Manager</option>
-                              <option value="librarian" selected>Librarian</option>
+                              <option value="librarian" disabled>Librarian</option>
                             </select>
-                          </div> -->
+                          </div>
                       </div>
                       <div class="modal-footer">
                         <button type="submit" name="addAccountBtn" class="btn btn-dynamic" data-bs-toggle="tooltip"
@@ -384,6 +384,18 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- START >> JS SCRIPT IN ALERT -->
   <script>
+    document.getElementById("birthday").addEventListener("change", function() {
+      let birthDate = new Date(this.value);
+      let today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      let monthDiff = today.getMonth() - birthDate.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      document.getElementById("age").value = age;
+    });
     document.addEventListener("DOMContentLoaded", function() {
       console.log("Checking for toast message...");
 
