@@ -59,6 +59,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                 <li class="me-3">
                   <a class="doc-link" href="approved_account">Approved</a>
                 </li>
+                <li class="me-3">
+                  <a class="doc-link" href="blocked_account">Blocked</a>
+                </li>
               </ul>
               <hr class="doc-tabs-divider">
             </div>

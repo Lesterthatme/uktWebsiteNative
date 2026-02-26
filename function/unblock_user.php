@@ -8,7 +8,7 @@ if (!isset($_SESSION['session_token']) || !isset($_SESSION['user_id'])) {
     exit;
 }
 
-$admin_user_id = $_SESSION['user_id']; 
+$admin_user_id = $_SESSION['user_id'];
 
 if (isset($_GET['user_id'])) {
     $blocked_user_id = intval($_GET['user_id']);
@@ -22,12 +22,12 @@ if (isset($_GET['user_id'])) {
     $userStmt->close();
 
     if ($blocked_username) {
-        $query = "UPDATE user_account SET account_status = 'blocked' WHERE user_id = ?";
+        $query = "UPDATE user_account SET account_status = 'approved' WHERE user_id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("i", $blocked_user_id);
 
         if ($stmt->execute()) {
-            $description = "Blocked user $blocked_username.";
+            $description = "Unblocked user $blocked_username.";
             $log_date = date("Y-m-d");
             $log_time = date("H:i:s");
 
@@ -38,7 +38,7 @@ if (isset($_GET['user_id'])) {
             $logStmt->close();
 
             // Toast Success Alert
-            $_SESSION['toastMsg'] = "User account has been blocked successfully.";
+            $_SESSION['toastMsg'] = "User account has been unblocked successfully.";
             $_SESSION['toastType'] = "toast-success";
         } else {
             // Toast Error Alert
@@ -57,4 +57,3 @@ if (isset($_GET['user_id'])) {
     header("Location: ../pages/adminukt/approved_account");
     exit();
 }
-?>

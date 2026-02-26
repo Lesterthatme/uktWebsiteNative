@@ -12,8 +12,6 @@ if (!$result) {
 }
 $job_data = mysqli_fetch_assoc($result);
 if ($result->num_rows > 0) {
-
-
     $job_description = $job_data['job_description'];
     $posted_date = $job_data['posted_date'];
     $application_deadline = $job_data['application_deadline'];
@@ -102,74 +100,6 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
 
                         </div>
-
-                        <!-- Modal for editing background start-->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Update Job Description
-                                        </h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body pb-0">
-                                        <form method="POST" action="../../function/job_function.php" role="dialog">
-                                            <input type="hidden" name="job_id" value="<?= $job_data['job_id'] ?>">
-                                            <div class="row">
-                                                <div class="col-md-12 mb-3">
-                                                    <div class="mb-3">
-                                                        <label for="posted_date" class="form-label"><strong>Date</strong></label>
-                                                        <input type="date" class="form-control" name="posted_date" style="width: 200px;" value="<?= $job_data['posted_date'] ?>" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="application_deadline" class="form-label"><strong>Application Deadline</strong></label>
-                                                        <input type="date" class="form-control" name="application_deadline" style="width: 200px;" value="<?= $job_data['application_deadline'] ?>" required>
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <label for="contact_email" class="form-label"><strong>Contact Email</strong></label>
-                                                        <input type="email" class="form-control" name="contact_email" value="<?= $contact_email?>" required>
-                                                    </div>
-
-                                                    <label for=""><strong>Job Description</strong></label>
-                                                    <textarea id="summernote" name="job_description" class="form-control mb-2"
-                                                        style="height: 20vh;"><?= $job_description?></textarea>
-
-                                                    <div id="summernote"></div>
-                                                    <script>
-                                                        $('#summernote').summernote({
-                                                            placeholder: 'Hello stand alone ui',
-                                                            tabsize: 2,
-                                                            height: 120,
-                                                            toolbar: [
-                                                                ['style', ['style']],
-                                                                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-                                                                ['fontname', ['fontname']],
-                                                                ['fontsize', ['fontsize']],
-                                                                ['color', ['color']],
-                                                                ['para', ['ol', 'ul', 'paragraph', 'height']],
-                                                                ['table', ['table']],
-                                                                ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
-                                                            ],
-                                                            fontNames: ['Poppins', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-                                                            fontNamesIgnoreCheck: ['Poppins']
-                                                        });
-                                                    </script>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" name="update_job" class="btn btn-dynamic" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Modal for editing background end-->
-
                         <!-- viewing job description start -->
                         <div class="container-fluid">
                             <div class="row">
@@ -187,6 +117,72 @@ if ($row = mysqli_fetch_assoc($result)) {
                     </div>
                 </div>
             </div>
+            <!-- Modal for editing background start-->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Update Job Description
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body pb-0">
+                            <form method="POST" action="../../function/job_function.php" role="dialog">
+                                <input type="hidden" name="job_id" value="<?= $job_data['job_id'] ?>">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="mb-3">
+                                            <label for="posted_date" class="form-label"><strong>Date</strong></label>
+                                            <input type="date" class="form-control" name="posted_date" style="width: 200px;" value="<?= $job_data['posted_date'] ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="application_deadline" class="form-label"><strong>Application Deadline</strong></label>
+                                            <input type="date" class="form-control" name="application_deadline" style="width: 200px;" value="<?= $job_data['application_deadline'] ?>" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="contact_email" class="form-label"><strong>Contact Email</strong></label>
+                                            <input type="email" class="form-control" name="contact_email" value="<?= $contact_email ?>" required>
+                                        </div>
+
+                                        <label for=""><strong>Job Description</strong></label>
+                                        <textarea id="summernote" name="job_description" class="form-control mb-2"
+                                            style="height: 20vh;"><?= $job_description ?></textarea>
+
+                                        <div id="summernote"></div>
+                                        <script>
+                                            $('#summernote').summernote({
+                                                placeholder: 'Hello stand alone ui',
+                                                tabsize: 2,
+                                                height: 120,
+                                                toolbar: [
+                                                    ['style', ['style']],
+                                                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+                                                    ['fontname', ['fontname']],
+                                                    ['fontsize', ['fontsize']],
+                                                    ['color', ['color']],
+                                                    ['para', ['ol', 'ul', 'paragraph', 'height']],
+                                                    ['table', ['table']],
+                                                    ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
+                                                ],
+                                                fontNames: ['Poppins', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+                                                fontNamesIgnoreCheck: ['Poppins']
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" name="update_job" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Modal for editing background end-->
             <?php include 'include/footer.php'; ?>
         </div>
     </main>
