@@ -1,9 +1,9 @@
 <?php
 include '../connection/dbconnection.php';
 session_start();
-date_default_timezone_set('Asia/Phnom_Penh');
 
 if (isset($_POST['update_job'])) {
+    
     $job_description = mysqli_real_escape_string($conn, $_POST['job_description']);
     $posted_date = mysqli_real_escape_string($conn, $_POST['posted_date']);
     $application_deadline = mysqli_real_escape_string($conn, $_POST['application_deadline']);

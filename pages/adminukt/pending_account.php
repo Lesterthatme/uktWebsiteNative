@@ -33,6 +33,7 @@ if ($row = mysqli_fetch_assoc($result)) {
   <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?v=3.1">
   <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
 </head>
+
 <body class="bg-light">
   <!-- include side bar start -->
   <?php include 'include/alert.php'; ?>
@@ -57,6 +58,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                 </li>
                 <li class="me-3">
                   <a class="doc-link" href="approved_account">Approved</a>
+                </li>
+                <li class="me-3">
+                  <a class="doc-link" href="blocked_account">Blocked</a>
                 </li>
               </ul>
               <hr class="doc-tabs-divider">
@@ -91,7 +95,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                 <!-- START >> ADD USER MODAL -->
                 <!-- <div class="modal" style="display: block;"> -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
                   <div class="modal-dialog modal-xl">
                     <div class="modal-content">
