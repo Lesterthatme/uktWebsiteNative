@@ -2,9 +2,9 @@
 session_start();
 
 include '../../connection/dbconnection.php';
-
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
 }
 // Fetch admission requirements
 $sql = "SELECT * FROM university_form";
@@ -44,10 +44,10 @@ if ($row = mysqli_fetch_assoc($result)) {
 
 <body class="bg-light">
 
-   <!-- include side bar start -->
-   <?php include 'include/alert.php';?>
-  <?php include 'confirmation.php';?>
-  <?php include 'include/sidebar.php';?>
+  <!-- include side bar start -->
+  <?php include 'include/alert.php'; ?>
+  <?php include 'confirmation.php'; ?>
+  <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
 
   <main class="bg-light">
@@ -188,7 +188,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                   <ul class="dropdown-menu dropdown-menu-end" style="width: 100px;"> <!-- Decreased width -->
                                     <li>
                                       <a href="#viewModal<?= $form_id ?>" class="dropdown-item text-dark" data-bs-toggle="modal" title="View form description">
-                                      <i class="ri-eye-line"></i> View
+                                        <i class="ri-eye-line"></i> View
                                       </a>
                                     </li>
                                     <li>

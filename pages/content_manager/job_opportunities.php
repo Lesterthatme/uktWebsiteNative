@@ -2,7 +2,10 @@
 session_start();
 
 include '../../connection/dbconnection.php';
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
+}
 // Query to get the job data
 $query = "SELECT job_id, job_description, posted_date, application_deadline, contact_email
            FROM job_opportunities WHERE up_id = 1";
@@ -20,12 +23,12 @@ $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-  $settings = $row;
+    $settings = $row;
 
-  if (!empty($settings)) {
-    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-  }
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
 }
 // Fetch all site settings end
 ?>
@@ -37,7 +40,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title> 
+    <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.4">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -79,12 +82,12 @@ if ($row = mysqli_fetch_assoc($result)) {
                             <hr class="doc-tabs-divider">
                         </div>
                         <button type="button" class="btn btn-sm rounded-2 px-4 float-end btn-dynamic" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"  data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to edit this overview">
+                            data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to edit this overview">
                             <i class="ri-edit-2-line"></i> Edit Overview
                         </button>
                         <p class="card-text text-muted small">Don’t forget to update this section whenever a new opportunity is added!</p>
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-                          
+
                         </div>
 
                         <!-- Modal for editing background start-->
@@ -108,7 +111,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="application_deadline" class="form-label"><strong>Application Deadline</strong></label>
-                                                        <input type="date" class="form-control" name="application_deadline" style="width: 200px;"  value="<?= $job_data['application_deadline'] ?>" required>
+                                                        <input type="date" class="form-control" name="application_deadline" style="width: 200px;" value="<?= $job_data['application_deadline'] ?>" required>
                                                     </div>
 
                                                     <div class="mb-3">
@@ -143,8 +146,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" name="update_job" class="btn btn-dynamic" data-bs-toggle="tooltip" 
-                                                 data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
+                                                <button type="submit" name="update_job" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
                                             </div>
                                         </form>
                                     </div>

@@ -1,6 +1,10 @@
 <?php
-session_start();
 include '../../connection/dbconnection.php';
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 
 // Query to get the university profile data
 $query = "SELECT university_logo, university_name, university_background FROM university_profile WHERE up_id = 1";
@@ -183,7 +187,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                 <div class="col-md-8">
                   <h4 class="fw-bold" style="font-family: 'Times New Roman', Times, serif;">
                     <?php echo htmlspecialchars($university_name); ?>
-                </h4>
+                  </h4>
                 </div>
 
                 <!-- Background -->

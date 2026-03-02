@@ -3,12 +3,17 @@
 session_start();
 
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    exit;
+}
 // Get album_id from URL
 if (!isset($_GET['album_id']) || empty($_GET['album_id'])) {
     echo "Invalid album.";
     exit;
 }
+
+
 
 $album_id = intval($_GET['album_id']);
 // Fetch album details
@@ -32,12 +37,12 @@ $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-  $settings = $row;
+    $settings = $row;
 
-  if (!empty($settings)) {
-    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-  }
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
 }
 // Fetch all site settings end
 ?>
@@ -59,7 +64,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
     <?php include 'include/alert.php'; ?>
     <?php include 'include/sidebar.php'; ?>
-    <?php include 'confirmation.php';?>
+    <?php include 'confirmation.php'; ?>
 
     <main class="bg-light">
         <?php include 'include/navbar.php'; ?>
@@ -69,8 +74,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
                         <h5 class="mb-0"><?php echo htmlspecialchars($album['album_name']); ?></h5>
                         <div class="d-flex gap-2"> <!-- Added div to wrap buttons -->
-                            <a href="university_album" class="btn btn-sm rounded-2 px-4 btn-outline-secondary" 
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Back to the album"><i class="ri-arrow-left-line"></i> Back</a>
+                            <a href="university_album" class="btn btn-sm rounded-2 px-4 btn-outline-secondary"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Back to the album"><i class="ri-arrow-left-line"></i> Back</a>
                             <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="top"
                                 title="Click to add a new photo">
@@ -120,7 +125,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 $image_path = "../../assets/uploads/university_gallery/" . $image['image_name'];
                                 $image_id = $image['image_id']; // Assuming `image_id` exists in your table
                                 $images[] = $image_path;
-                            ?>
+                        ?>
                                 <div style="position: relative; width: 200px; height: 200px;">
                                     <img src="<?php echo $image_path; ?>"
                                         class="gallery-image"
@@ -274,7 +279,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         }).then(() => {
                             location.reload(); // Reloads the page after clicking OK
                         });
-                        return; 
+                        return;
                     }
 
                     const reader = new FileReader();
@@ -297,7 +302,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     previewContainer.appendChild(imageWrapper);
 
                     reader.onload = function(e) {
-                      
+
                         const imgElement = document.createElement('img');
                         imgElement.src = e.target.result;
                         imgElement.style.width = '100%';
@@ -357,12 +362,12 @@ if ($row = mysqli_fetch_assoc($result)) {
             });
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
         });
-    });
     </script>
 
     <!-- script for deleting image end -->

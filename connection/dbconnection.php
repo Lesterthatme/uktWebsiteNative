@@ -12,3 +12,6 @@ if ($conn->connect_error) {
 }
 
 $conn->query("SET time_zone = '+07:00'");
+
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ukt/config/config.php';

@@ -1,6 +1,10 @@
 <?php
 require '../../connection/dbconnection.php';
 session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    exit;
+}
 $user_id = $_SESSION['user_id'];
 // Fetch user details
 $query = "SELECT ua.username, ua.email, ua.image, 
@@ -177,7 +181,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                             <input type="email" class="form-control" name="email" value="<?php echo $user['email'] ?? ''; ?>">
                                         </div>
                                     </div>
-                                    <button type="submit" name="editProfileBtn"  class="btn btn-dynamic float-end mt-3" data-bs-toggle="tooltip"
+                                    <button type="submit" name="editProfileBtn" class="btn btn-dynamic float-end mt-3" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save
                                     </button>
                                 </div>

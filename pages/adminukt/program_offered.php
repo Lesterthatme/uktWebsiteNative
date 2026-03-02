@@ -3,7 +3,10 @@ include 'include/alert.php';
 session_start();
 include 'confirmation.php';
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 
 ?>
 

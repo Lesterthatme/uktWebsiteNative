@@ -1,7 +1,10 @@
 <?php
 session_start();
 include '../../connection/dbconnection.php';
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    exit;
+}
 $user_id = $_SESSION['user_id']; 
 
 // Fetch all site settings start

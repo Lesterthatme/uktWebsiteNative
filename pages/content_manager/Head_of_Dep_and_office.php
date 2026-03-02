@@ -130,7 +130,7 @@ if ($conn->connect_error) {
                           <span></span><span></span><span></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a></li>
+                          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a></li>
                           <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                         </ul>
                       </div>

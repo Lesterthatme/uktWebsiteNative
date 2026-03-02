@@ -37,16 +37,16 @@ if (!empty($user['image']) && file_exists('../../assets/uploads/profile_pic/' . 
   <!-- Pending Accounts Notification -->
   <div class="dropdown me-4">
     <a href="#" class="text-decoration-none position-relative" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="ri-notification-4-fill" style="font-size: 24px; color: black;"></i>
-        <span id="pending-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
-            <?= $pending_count; ?>
-        </span>
+      <i class="ri-notification-4-fill" style="font-size: 24px; color: black;"></i>
+      <span id="pending-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+        <?= $pending_count; ?>
+      </span>
     </a>
 
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
-        <li id="notification-message" class="dropdown-item text-muted">No new notifications</li>
+      <li id="notification-message" class="dropdown-item text-muted">No new notifications</li>
     </ul>
-</div>
+  </div>
 
   <div class="dropdown">
     <div class="d-flex align-items-center cursor-pointer dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -71,7 +71,7 @@ if (!empty($user['image']) && file_exists('../../assets/uploads/profile_pic/' . 
     Swal.fire({
       html: `
         <h3>Are you sure?</h3>
-        <p>Do you want to logout?</p>`,  // Replace with a <p> tag
+        <p>Do you want to logout?</p>`, // Replace with a <p> tag
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -81,62 +81,62 @@ if (!empty($user['image']) && file_exists('../../assets/uploads/profile_pic/' . 
       didOpen: () => {
         // Optionally apply custom styling to the h3 and p tags if needed
         const titleElement = document.querySelector('h3');
-        titleElement.style.fontSize = '24px';  // Example: Change font size
-        titleElement.style.marginBottom = '10px';  // Example: Add margin to the bottom
+        titleElement.style.fontSize = '24px'; // Example: Change font size
+        titleElement.style.marginBottom = '10px'; // Example: Add margin to the bottom
 
         const paraElement = document.querySelector('p');
-        paraElement.style.fontSize = '16px';  // Example: Adjust paragraph font size
+        paraElement.style.fontSize = '16px'; // Example: Adjust paragraph font size
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "logout.php";
+        window.location.href = "../../actions/contentManagerDestroyer.php";
       }
     });
   }
 </script>
 
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --> 
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script>
-function fetchPendingNotifications() {
-  $.ajax({
-    url: "get_pending_count.php",
-    method: "GET",
-    dataType: "json",
-    success: function (response) {
-      // Update notification bell count (only unread messages)
-      if (response.unread_messages > 0) {
-        $("#pending-badge").text(response.unread_messages).show();
-      } else {
-        $("#pending-badge").hide();
+  function fetchPendingNotifications() {
+    $.ajax({
+      url: "get_pending_count.php",
+      method: "GET",
+      dataType: "json",
+      success: function(response) {
+        // Update notification bell count (only unread messages)
+        if (response.unread_messages > 0) {
+          $("#pending-badge").text(response.unread_messages).show();
+        } else {
+          $("#pending-badge").hide();
+        }
+
+        // Clear old notifications
+        $("#notification-message").html("");
+
+        // Add unread messages notification
+        if (response.unread_messages > 0) {
+          let messageText = response.unread_messages === 1 ?
+            "1 new message, view it now" :
+            `${response.unread_messages} new messages, view them now`;
+          $("#notification-message").append(
+            `<a href="message" class="dropdown-item">📩 ${messageText}</a>`
+          );
+        } else {
+          $("#notification-message").text("No new notifications");
+        }
+
+        // If no notifications, show default text
+        if (response.unread_messages === 0) {
+          $("#notification-message").text("No new notifications");
+        }
+      },
+      error: function() {
+        console.log("Error fetching notifications.");
       }
+    });
+  }
 
-      // Clear old notifications
-      $("#notification-message").html("");
-
-      // Add unread messages notification
-      if (response.unread_messages > 0) {
-        let messageText = response.unread_messages === 1 ? 
-          "1 new message, view it now" : 
-          `${response.unread_messages} new messages, view them now`;
-        $("#notification-message").append(
-          `<a href="message" class="dropdown-item">📩 ${messageText}</a>`
-        );
-      }else{
-        $("#notification-message").text("No new notifications");
-      }
-
-      // If no notifications, show default text
-      if (response.unread_messages === 0) {
-        $("#notification-message").text("No new notifications");
-      }
-    },
-    error: function () {
-      console.log("Error fetching notifications.");
-    }
-  });
-}
-
-// Fetch notifications every second
-setInterval(fetchPendingNotifications, 500);
-fetchPendingNotifications();
+  // Fetch notifications every second
+  setInterval(fetchPendingNotifications, 500);
+  fetchPendingNotifications();
 </script>

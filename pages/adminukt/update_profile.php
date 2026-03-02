@@ -1,6 +1,12 @@
 <?php include 'include/alert.php';
-
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +60,7 @@
                       <small class="text-muted">admin@gmail.com</small>
                     </div>
                   </div>
-                  
+
                 </div>
                 <hr>
                 <div class="row">
@@ -107,7 +113,7 @@
                 </div>
                 <button class="btn btn-success float-end mt-3"><i class="ri-save-fill"></i> Save</button>
               </div>
-              
+
             </div>
 
 

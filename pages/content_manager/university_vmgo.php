@@ -1,7 +1,11 @@
 <?php
 
-session_start();
 include '../../connection/dbconnection.php';
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 
 $query = "SELECT university_mission, university_vision, university_goal FROM university_vmgo";
 $result = mysqli_query($conn, $query);
@@ -220,7 +224,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
             ?>
             <div class="vmgo_card_container">
-                              <div class="vmgo_card vision position-relative">
+              <div class="vmgo_card vision position-relative">
                 <i class="ri-eye-line"></i>
                 <h5>VISION</h5>
                 <p><?php echo ($vision); ?></p>
@@ -236,7 +240,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                   </ul>
                 </div>
               </div>
-                
+
               <div class="vmgo_card mission position-relative">
                 <i class="ri-flag-line"></i>
                 <h5>MISSION</h5>

@@ -2,7 +2,6 @@
 session_start();
 include '../../connection/dbconnection.php';
 
-date_default_timezone_set('Asia/Phnom_Penh');
 
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
@@ -46,4 +45,3 @@ session_destroy();
 
 header('Location: login');
 exit;
-?>

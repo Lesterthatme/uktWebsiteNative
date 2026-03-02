@@ -2,8 +2,8 @@
 require '../../connection/dbconnection.php';
 session_start();
 
-if (!isset($_SESSION['session_token'])) {
-    header('location:login.php');
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
     exit;
 }
 
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = $_SESSION['user_id'];
         $log_description = "You updated the highlight: $h_title";
         date_default_timezone_set('Asia/Phnom_Penh');
-        
+
         $conn->query("INSERT INTO history_log (description, log_date, log_time, user_id) 
                       VALUES ('$log_description', CURDATE(), CURTIME(), $user_id)");
 
@@ -40,4 +40,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: ../content_manager/page_management");
     exit();
 }
-?>

@@ -1,7 +1,10 @@
 <?php
 include 'include/alert.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 include 'confirmation.php';
 ?>
 
@@ -109,7 +112,7 @@ include 'confirmation.php';
                       </div>
 
                       <button type="submit" name="add_research" class="btn btn-dynamic"><i class="ri-save-fill"></i>
-                      Save </button>
+                        Save </button>
                     </form>
 
                   </div>
@@ -198,7 +201,7 @@ include 'confirmation.php';
                     <?php
                     if ($result->num_rows > 0) {
                       while ($row = $result->fetch_assoc()) {
-                        ?>
+                    ?>
                         <tr>
                           <td><?php echo htmlspecialchars($row['research_title']); ?></td>
                           <td><?php echo htmlspecialchars($row['researcher_name']); ?></td>
@@ -251,7 +254,7 @@ include 'confirmation.php';
                             </div>
                           </td>
                         </tr>
-                        <?php
+                    <?php
                       }
                     } else {
                       echo "<tr><td colspan='5'>No research projects found.</td></tr>";
@@ -403,7 +406,7 @@ include 'confirmation.php';
 
   <!-- START >> JS SCRIPT IN ALERT -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       console.log("Checking for toast message...");
 
       <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
@@ -447,11 +450,20 @@ include 'confirmation.php';
 
       // Set icon based on type
       switch (type) {
-        case "toast-success": icon.className = "ri-checkbox-circle-line toast-icon"; break;
-        case "toast-info": icon.className = "ri-information-line toast-icon"; break;
-        case "toast-warning": icon.className = "ri-alert-line toast-icon"; break;
-        case "toast-error": icon.className = "ri-close-circle-line toast-icon"; break;
-        default: icon.className = "ri-information-line toast-icon"; // Default icon
+        case "toast-success":
+          icon.className = "ri-checkbox-circle-line toast-icon";
+          break;
+        case "toast-info":
+          icon.className = "ri-information-line toast-icon";
+          break;
+        case "toast-warning":
+          icon.className = "ri-alert-line toast-icon";
+          break;
+        case "toast-error":
+          icon.className = "ri-close-circle-line toast-icon";
+          break;
+        default:
+          icon.className = "ri-information-line toast-icon"; // Default icon
       }
 
       // Show toast
@@ -473,8 +485,8 @@ include 'confirmation.php';
 
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      window.openDeleteModal = function (element) {
+    document.addEventListener("DOMContentLoaded", function() {
+      window.openDeleteModal = function(element) {
         var researchId = element.getAttribute('data-id');
         var researchTitle = element.getAttribute('data-title');
 
@@ -490,11 +502,11 @@ include 'confirmation.php';
         document.getElementById("confirmationModal-Research-Projects").style.display = "flex";
       };
 
-      window.closeModal = function () {
+      window.closeModal = function() {
         document.getElementById("confirmationModal-Research-Projects").style.display = "none";
       };
 
-      window.closeModalOutside = function (event) {
+      window.closeModalOutside = function(event) {
         if (event.target.id === "confirmationModal-Research-Projects") {
           closeModal();
         }

@@ -1,7 +1,10 @@
 <?php
 require '../../connection/dbconnection.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }

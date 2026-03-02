@@ -1,7 +1,10 @@
 <?php
 session_start();
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    exit;
+}
 include '../../function/department_function.php';
 if (isset($_GET['department_id'])) {
     $department_id = intval($_GET['department_id']);
@@ -24,12 +27,12 @@ $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-  $settings = $row;
+    $settings = $row;
 
-  if (!empty($settings)) {
-    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-  }
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
 }
 // Fetch all site settings end
 ?>
@@ -62,7 +65,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <main class="bg-light">
 
         <!-- include navbar start -->
-        <?php include 'include/navbar.php';?>
+        <?php include 'include/navbar.php'; ?>
         <!-- include navbar end -->
 
         <div class="p-4">
@@ -86,7 +89,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
                             <h5 class="card-title fs-6 mb-2 mb-md-0">Managed <?= htmlspecialchars($department_name) ?> Department </h5>
                             <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-toggle="tooltip"
-                            title="Click here to add program">
+                                title="Click here to add program">
                                 <i class="ri-add-line"></i> Add Program
                             </button>
                         </div>
@@ -167,7 +170,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                             </div>
                                             <div class="mt-3 text-start">
                                                 <button type="submit" name="add_program" class="btn btn-dynamic float-end" data-bs-toggle="tooltip"
-                                                title="Click to save"><i class="ri-save-line"></i> Save
+                                                    title="Click to save"><i class="ri-save-line"></i> Save
                                                 </button>
                                             </div>
                                         </form>
@@ -247,7 +250,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                     <td class="text-center">
                                                         <div class="dropdown">
                                                             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
-                                                            title="Click here to see the action">
+                                                                title="Click here to see the action">
                                                                 <i class="ri-more-2-fill"></i>
                                                             </button>
                                                             <ul class="dropdown-menu">
@@ -256,7 +259,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#viewModal<?= $row['program_id'] ?>" data-bs-toggle="tooltip"
                                                                         title="Click here to view details">
-                                                                        <i class="ri-eye-line"></i> View 
+                                                                        <i class="ri-eye-line"></i> View
                                                                     </a>
                                                                 </li>
 
@@ -355,7 +358,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                                                                     <div class="modal-footer pb-0">
                                                                         <button type="submit" name="update_program" class="btn btn-dynamic" data-bs-toggle="tooltip"
-                                                                        title="Click to save"><i class="ri-save-line"></i>Save</button>
+                                                                            title="Click to save"><i class="ri-save-line"></i>Save</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -438,82 +441,82 @@ if ($row = mysqli_fetch_assoc($result)) {
     <script src="../../assets/bootstrap/js/activeLink.js?=v1.1"></script>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      console.log("Checking for toast message...");
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("Checking for toast message...");
 
-      <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
-        let toastType = "<?php echo $_SESSION['toastType']; ?>";
-        let message = "<?php echo $_SESSION['toastMsg']; ?>";
+            <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
+                let toastType = "<?php echo $_SESSION['toastType']; ?>";
+                let message = "<?php echo $_SESSION['toastMsg']; ?>";
 
-        // If success, show "Success", else show "Failed"
-        let title = (toastType === "toast-success") ? "Success" : "Failed";
+                // If success, show "Success", else show "Failed"
+                let title = (toastType === "toast-success") ? "Success" : "Failed";
 
-        console.log("Toast Found:", title, message);
-        showToast(toastType, title, message);
+                console.log("Toast Found:", title, message);
+                showToast(toastType, title, message);
 
-        // Unset session variables after displaying the toast
-        <?php unset($_SESSION['toastMsg']);
-        unset($_SESSION['toastType']); ?>
-      <?php } else { ?>
-        console.log("No toast message found.");
-      <?php } ?>
-    });
+                // Unset session variables after displaying the toast
+                <?php unset($_SESSION['toastMsg']);
+                unset($_SESSION['toastType']); ?>
+            <?php } else { ?>
+                console.log("No toast message found.");
+            <?php } ?>
+        });
 
-    function showToast(type, title, message) {
-      let toast = document.getElementById("toastBox");
-      let icon = document.getElementById("toastIcon");
-      let titleElement = document.getElementById("toastTitle");
-      let messageElement = document.getElementById("toastMessage");
+        function showToast(type, title, message) {
+            let toast = document.getElementById("toastBox");
+            let icon = document.getElementById("toastIcon");
+            let titleElement = document.getElementById("toastTitle");
+            let messageElement = document.getElementById("toastMessage");
 
-      if (!toast) {
-        console.error("Toast box element not found!");
-        return;
-      }
+            if (!toast) {
+                console.error("Toast box element not found!");
+                return;
+            }
 
-      // Remove previous styles
-      toast.classList.remove("toast-show", "toast-success", "toast-info", "toast-warning", "toast-error");
+            // Remove previous styles
+            toast.classList.remove("toast-show", "toast-success", "toast-info", "toast-warning", "toast-error");
 
-      // Add new class
-      toast.classList.add(type, "toast-show");
+            // Add new class
+            toast.classList.add(type, "toast-show");
 
-      // Set title and message
-      titleElement.textContent = title;
-      messageElement.textContent = message;
+            // Set title and message
+            titleElement.textContent = title;
+            messageElement.textContent = message;
 
-      // Set icon based on type
-      switch (type) {
-        case "toast-success":
-          icon.className = "ri-checkbox-circle-line toast-icon";
-          break;
-        case "toast-info":
-          icon.className = "ri-information-line toast-icon";
-          break;
-        case "toast-warning":
-          icon.className = "ri-alert-line toast-icon";
-          break;
-        case "toast-error":
-          icon.className = "ri-close-circle-line toast-icon";
-          break;
-        default:
-          icon.className = "ri-information-line toast-icon"; // Default icon
-      }
+            // Set icon based on type
+            switch (type) {
+                case "toast-success":
+                    icon.className = "ri-checkbox-circle-line toast-icon";
+                    break;
+                case "toast-info":
+                    icon.className = "ri-information-line toast-icon";
+                    break;
+                case "toast-warning":
+                    icon.className = "ri-alert-line toast-icon";
+                    break;
+                case "toast-error":
+                    icon.className = "ri-close-circle-line toast-icon";
+                    break;
+                default:
+                    icon.className = "ri-information-line toast-icon"; // Default icon
+            }
 
-      // Show toast
-      toast.style.display = "flex";
+            // Show toast
+            toast.style.display = "flex";
 
-      // Hide after 3 seconds
-      setTimeout(closeToast, 3000);
-    }
+            // Hide after 3 seconds
+            setTimeout(closeToast, 3000);
+        }
 
-    function closeToast() {
-      let toast = document.getElementById("toastBox");
-      toast.classList.remove("toast-show");
-      setTimeout(() => {
-        toast.style.display = "none";
-      }, 500);
-    }
-  </script>
-  <!-- END >> JS SCRIPT IN ALERT -->
+        function closeToast() {
+            let toast = document.getElementById("toastBox");
+            toast.classList.remove("toast-show");
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 500);
+        }
+    </script>
+    <!-- END >> JS SCRIPT IN ALERT -->
 
 </body>
 

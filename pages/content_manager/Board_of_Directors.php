@@ -1,19 +1,22 @@
 <?php
 require '../../connection/dbconnection.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-    $settings = $row;
+  $settings = $row;
 
-    if (!empty($settings)) {
-        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-    }
+  if (!empty($settings)) {
+    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+  }
 }
 // Fetch all site settings end
 ?>
@@ -24,7 +27,7 @@ if ($row = mysqli_fetch_assoc($result)) {
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title> 
+  <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>
   <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.9">
   <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">

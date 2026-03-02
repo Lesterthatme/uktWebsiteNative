@@ -27,20 +27,20 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-          <div class="mb-3">
-            <label class="form-label fw-semibold text-muted">Upload Image:</label>
-            <div class="upload-area" id="editUploadArea"> <!-- Changed ID -->
-              <img src="https://cdn-icons-png.flaticon.com/512/126/126477.png" alt="Upload Icon">
-              <p class="mb-0">Drag & Drop <br><span class="text-success">or browse</span></p>
-              <small class="text-muted">Supports: JPEG, JPG, PNG</small>
-              <input type="file" id="editFileInput" class="d-none" accept="image/jpeg, image/jpg, image/png"> <!-- Changed ID -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold text-muted">Upload Image:</label>
+              <div class="upload-area" id="editUploadArea"> <!-- Changed ID -->
+                <img src="https://cdn-icons-png.flaticon.com/512/126/126477.png" alt="Upload Icon">
+                <p class="mb-0">Drag & Drop <br><span class="text-success">or browse</span></p>
+                <small class="text-muted">Supports: JPEG, JPG, PNG</small>
+                <input type="file" id="editFileInput" class="d-none" accept="image/jpeg, image/jpg, image/png"> <!-- Changed ID -->
+              </div>
+              <div id="editPreviewContainer" class="preview-container d-none"> <!-- Changed ID -->
+                <button type="button" class="delete-btn" id="editDeleteBtn">&times;</button> <!-- Changed ID -->
+                <img id="editPreviewImage" class="preview-img" alt="Preview Image"> <!-- Changed ID -->
+              </div>
             </div>
-            <div id="editPreviewContainer" class="preview-container d-none"> <!-- Changed ID -->
-              <button type="button" class="delete-btn" id="editDeleteBtn">&times;</button> <!-- Changed ID -->
-              <img id="editPreviewImage" class="preview-img" alt="Preview Image"> <!-- Changed ID -->
-            </div>
-          </div>
-           
+
             <div id="editPreviewContainer" class="preview-container d-none"> <!-- Changed ID -->
               <button type="button" class="delete-btn" id="editDeleteBtn">&times;</button> <!-- Changed ID -->
               <img id="editPreviewImage" class="preview-img" alt="Preview Image"> <!-- Changed ID -->
@@ -79,5 +79,3 @@
     </div>
   </div>
 </div>
-
-

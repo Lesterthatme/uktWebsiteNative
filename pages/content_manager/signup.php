@@ -1,78 +1,15 @@
 <?php
 session_start();
 include '../../connection/dbconnection.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $first_name = $conn->real_escape_string($_POST['ap_firstname']);
-    $mi = $conn->real_escape_string($_POST['ap_mi']);
-    $last_name = $conn->real_escape_string($_POST['ap_lastname']);
-    $birthday = $conn->real_escape_string($_POST['birthday']);
-    $age = $conn->real_escape_string($_POST['age']);
-    $sex = $conn->real_escape_string($_POST['sex']);
-    $username = $conn->real_escape_string($_POST['username']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $password = $conn->real_escape_string($_POST['password']);
-    $confirm_password = $conn->real_escape_string($_POST['confirm_password']);
-
-    // Check if email already exists
-    $email_query = "SELECT email FROM user_account WHERE email = '$email'";
-    $email_result = $conn->query($email_query);
-
-    if ($email_result->num_rows > 0) {
-        $_SESSION['alreadyExist_message'] = 'Email already exists!';
-        header("Location: signup.php");
-        exit;
-    }
-
-    // Check if passwords match
-    if ($password !== $confirm_password) {
-        $_SESSION['passNotMatch'] = 'Password and Confirm Password do not match!';
-        header("Location: signup");
-        exit;
-    }
-
-    // Handle image upload
-    $upload_folder = '../../assets/uploads/profile_pic/';
-    $default_image = "default-profile.jpeg";
-    $image = $_FILES['image']['name'];
-    $image_tmp = $_FILES['image']['tmp_name'];
-
-    if (!empty($image)) {
-        if (!file_exists($upload_folder)) {
-            mkdir($upload_folder, 0777, true); // Ensure folder exists
-        }
-        move_uploaded_file($image_tmp, $upload_folder . $image);
-        $final_image = $image;
-    } else {
-        $final_image = $default_image;
-    }
-
-    // Insert into user_account
-    $insert_user_account = "INSERT INTO user_account (username, email, password, image, user_type, account_status) 
-                            VALUES ('$username', '$email', '$password', '$final_image', 'Content manager', 'pending')";
-
-    if ($conn->query($insert_user_account)) {
-        $user_id = $conn->insert_id;
-
-        // Insert into authorized_person
-        $insert_authorized_person = "INSERT INTO authorized_person (ap_firstname, ap_mi, ap_lastname, birthday, age, sex, user_id) 
-                                     VALUES ('$first_name', '$mi', '$last_name', '$birthday', '$age', '$sex', '$user_id')";
-
-        if ($conn->query($insert_authorized_person)) {
-            echo "<script>
-                alert('Signup successful!');
-                window.location.href = 'login';
-            </script>";
-            exit;
-        }
-    } else {
-        echo "Error: " . $conn->error;
-    }
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="../../assets/images/officiallogo (1).png" />
@@ -95,10 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <?php
                         if (isset($_SESSION['passNotMatch'])) {
-                                            echo "<script>
+                            echo "<script>
                             alert('{$_SESSION['passNotMatch']}');
                         </script>";
-                            unset($_SESSION['passNotMatch']); 
+                            unset($_SESSION['passNotMatch']);
                         }
 
                         if (isset($_SESSION['alreadyExist_message'])) {
@@ -110,10 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         if (isset($_SESSION['imageError'])) {
                             echo "<script>alert('{$_SESSION['imageError']}');</script>";
-                            unset($_SESSION['imageError']); 
+                            unset($_SESSION['imageError']);
                         }
                         ?>
-                        <form id="signup" action="" method="post" enctype="multipart/form-data"
+                        <form id="signup" action="../../function/php/auth/signup.php" method="post" enctype="multipart/form-data"
                             onsubmit="return validateForm()">
                             <div class="profile-pic-container">
                                 <img src="../../assets/images/officiallogo (1).png" alt="Profile Picture"
@@ -191,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         placeholder="Confirm Password" required>
                                 </div>
                             </div>
-                            <button type="submit" name="save" class="btn btn-success w-100 mb-3">Sign Up</button>
+                            <button type="submit" name="signupBtn" class="btn btn-success w-100 mb-3">Sign Up</button>
                         </form>
                         <p class="signup-text">
                             Already Have an account? <a href="login.php">Login</a>

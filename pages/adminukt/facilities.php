@@ -4,7 +4,10 @@ include("../../connection/dbconnection.php");
 include '../../function/department_function.php';
 $department_id = $_GET['department_id'] ?? null;
 $department_name = '';
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    exit;
+}
 // Check if there is an existing Main Building
 $main_building_exists = false;
 if ($department_id) {
@@ -32,12 +35,12 @@ $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-  $settings = $row;
+    $settings = $row;
 
-  if (!empty($settings)) {
-    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-  }
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
 }
 // Fetch all site settings end
 ?>
@@ -364,7 +367,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             new bootstrap.Modal(document.getElementById(modalIds[nextIndex])).show();
         }
     </script>
-   
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/bootstrap/js/Logs.js?v=1.1"></script>
     <script src="../../assets/bootstrap/js/site_settings.js"></script>
@@ -372,7 +375,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <script src="../../assets/bootstrap/js/carousel2itemslide.js?=v1.7"></script>
     <script src="../../assets/bootstrap/js/drag_and_drop.js?=v1.0"></script>
     <script src="../../assets/bootstrap/js/activeLink.js?=v1.1"></script>
-     <script>
+    <script>
         function previewImage_edit(event, facilityId) {
             const input = event.target;
             const preview = document.getElementById('previewImage' + facilityId);

@@ -3,6 +3,10 @@
 include '../../connection/dbconnection.php';
 session_start();
 // Fetch all site settings start
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
@@ -121,71 +125,71 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="row">
               <?php while ($row = mysqli_fetch_assoc($result)): ?>
                 <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-  <div class="card announcement-card h-100 w-100" style="cursor: pointer;"
-    onclick="window.location='view_album?album_id=<?php echo $row['album_id']; ?>'">
+                  <div class="card announcement-card h-100 w-100" style="cursor: pointer;"
+                    onclick="window.location='view_album?album_id=<?php echo $row['album_id']; ?>'">
 
-    <?php
-    $album_id = $row['album_id'];
+                    <?php
+                    $album_id = $row['album_id'];
 
-    $thumbnail_query = "SELECT image_name FROM university_image WHERE album_id = $album_id LIMIT 1";
-    $thumbnail_result = mysqli_query($conn, $thumbnail_query);
-    $thumbnail_row = mysqli_fetch_assoc($thumbnail_result);
+                    $thumbnail_query = "SELECT image_name FROM university_image WHERE album_id = $album_id LIMIT 1";
+                    $thumbnail_result = mysqli_query($conn, $thumbnail_query);
+                    $thumbnail_row = mysqli_fetch_assoc($thumbnail_result);
 
-    $image_count_query = "SELECT COUNT(*) AS image_count FROM university_image WHERE album_id = $album_id";
-    $image_count_result = mysqli_query($conn, $image_count_query);
-    $image_count_row = mysqli_fetch_assoc($image_count_result);
-    $image_count = $image_count_row['image_count'];
+                    $image_count_query = "SELECT COUNT(*) AS image_count FROM university_image WHERE album_id = $album_id";
+                    $image_count_result = mysqli_query($conn, $image_count_query);
+                    $image_count_row = mysqli_fetch_assoc($image_count_result);
+                    $image_count = $image_count_row['image_count'];
 
-    $thumbnail_path = ($thumbnail_row)
-      ? "../../assets/uploads/university_gallery/" . $thumbnail_row['image_name']
-      : "../../assets/uploads/university_gallery/default_image.jpg";
-    ?>
+                    $thumbnail_path = ($thumbnail_row)
+                      ? "../../assets/uploads/university_gallery/" . $thumbnail_row['image_name']
+                      : "../../assets/uploads/university_gallery/default_image.jpg";
+                    ?>
 
-    <div class="image-container" style="position: relative; height: 180px; background: #f8f9fa;">
-      <img src="<?php echo $thumbnail_path; ?>" class="card-img-top w-100" alt="Album Thumbnail"
-        style="height: 100%; object-fit: cover;">
-      <span class="<?php echo ($row['status'] === 'Active') ? 'announcement-status-active' : 'announcement-status-inactive'; ?>">
-        <?php echo $row['status']; ?>
-      </span>
+                    <div class="image-container" style="position: relative; height: 180px; background: #f8f9fa;">
+                      <img src="<?php echo $thumbnail_path; ?>" class="card-img-top w-100" alt="Album Thumbnail"
+                        style="height: 100%; object-fit: cover;">
+                      <span class="<?php echo ($row['status'] === 'Active') ? 'announcement-status-active' : 'announcement-status-inactive'; ?>">
+                        <?php echo $row['status']; ?>
+                      </span>
 
-      <div class="date-label">
-        Created on: <?php echo date("F d, Y", strtotime($row['date_created'])); ?>
-      </div>
-    </div>
+                      <div class="date-label">
+                        Created on: <?php echo date("F d, Y", strtotime($row['date_created'])); ?>
+                      </div>
+                    </div>
 
-    <div class="card-body">
-      <div class="dropdown three-dots-accord">
-        <button class="btn p-0 border-0 float-end" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-          onclick="event.stopPropagation();">
-          <span></span><span></span><span></span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end" onclick="event.stopPropagation();">
-          <li>
-            <a class="dropdown-item text-dark" href="#editModal<?php echo $row['album_id']; ?>" data-bs-toggle="modal">
-              <i class="ri-pencil-line"></i> Edit
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item text-dark" href="../../function/album_function.php?album_id=<?php echo $row['album_id']; ?>"
-              onclick="return confirm('Are you sure you want to delete this album?')">
-              <i class="ri-delete-bin-line"></i> Delete
-            </a>
-          </li>
-        </ul>
-      </div>
+                    <div class="card-body">
+                      <div class="dropdown three-dots-accord">
+                        <button class="btn p-0 border-0 float-end" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                          onclick="event.stopPropagation();">
+                          <span></span><span></span><span></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" onclick="event.stopPropagation();">
+                          <li>
+                            <a class="dropdown-item text-dark" href="#editModal<?php echo $row['album_id']; ?>" data-bs-toggle="modal">
+                              <i class="ri-pencil-line"></i> Edit
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item text-dark" href="../../function/album_function.php?album_id=<?php echo $row['album_id']; ?>"
+                              onclick="return confirm('Are you sure you want to delete this album?')">
+                              <i class="ri-delete-bin-line"></i> Delete
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
 
-      <h6 class="card-title"><?php echo htmlspecialchars($row['album_name']); ?></h6>
-      <p class="card-text text-muted text-justify">
-        <?php echo htmlspecialchars($row['album_description']); ?>
-      </p>
-      <p class="text-muted mb-0" style="font-size: 13px;">
-        <?php
-        echo ($image_count == 0) ? "No image" : (($image_count == 1) ? "1 Item" : "$image_count Items");
-        ?>
-      </p>
-    </div>
-  </div>
-</div>
+                      <h6 class="card-title"><?php echo htmlspecialchars($row['album_name']); ?></h6>
+                      <p class="card-text text-muted text-justify">
+                        <?php echo htmlspecialchars($row['album_description']); ?>
+                      </p>
+                      <p class="text-muted mb-0" style="font-size: 13px;">
+                        <?php
+                        echo ($image_count == 0) ? "No image" : (($image_count == 1) ? "1 Item" : "$image_count Items");
+                        ?>
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
 
                 <!-- EDIT ADMISSION START-->

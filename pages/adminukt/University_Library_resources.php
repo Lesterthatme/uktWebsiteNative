@@ -1,7 +1,10 @@
 <?php
 include 'include/alert.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 include 'confirmation.php';
 ?>
 
@@ -201,14 +204,14 @@ include 'confirmation.php';
                         <td>{$row['publication_year']}</td>
                         <td>{$row['resource_ISBN']}</td>
                        <td>";
-                          if ($row['resource_status'] === 'Active') {
-                              echo "<span class='badge bg-success'>Active</span>";
-                          } elseif ($row['resource_status'] === 'Inactive') {
-                              echo "<span class='badge bg-danger'>Inactive</span>";
-                          } else {
-                              echo "<span class='badge bg-secondary'>Unknown</span>";
-                          }
-                          echo "</td>
+                        if ($row['resource_status'] === 'Active') {
+                          echo "<span class='badge bg-success'>Active</span>";
+                        } elseif ($row['resource_status'] === 'Inactive') {
+                          echo "<span class='badge bg-danger'>Inactive</span>";
+                        } else {
+                          echo "<span class='badge bg-secondary'>Unknown</span>";
+                        }
+                        echo "</td>
                         <td>
                             <div class='dropdown'>
                                 <button class='btn btn-light btn-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
@@ -446,9 +449,9 @@ include 'confirmation.php';
   </script>
   <!-- end js -->
 
-      <!-- START >> JS SCRIPT IN ALERT -->
-      <script>
-    document.addEventListener("DOMContentLoaded", function () {
+  <!-- START >> JS SCRIPT IN ALERT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
       console.log("Checking for toast message...");
 
       <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
@@ -492,11 +495,20 @@ include 'confirmation.php';
 
       // Set icon based on type
       switch (type) {
-        case "toast-success": icon.className = "ri-checkbox-circle-line toast-icon"; break;
-        case "toast-info": icon.className = "ri-information-line toast-icon"; break;
-        case "toast-warning": icon.className = "ri-alert-line toast-icon"; break;
-        case "toast-error": icon.className = "ri-close-circle-line toast-icon"; break;
-        default: icon.className = "ri-information-line toast-icon"; // Default icon
+        case "toast-success":
+          icon.className = "ri-checkbox-circle-line toast-icon";
+          break;
+        case "toast-info":
+          icon.className = "ri-information-line toast-icon";
+          break;
+        case "toast-warning":
+          icon.className = "ri-alert-line toast-icon";
+          break;
+        case "toast-error":
+          icon.className = "ri-close-circle-line toast-icon";
+          break;
+        default:
+          icon.className = "ri-information-line toast-icon"; // Default icon
       }
 
       // Show toast
@@ -516,20 +528,20 @@ include 'confirmation.php';
   </script>
   <!-- END >> JS SCRIPT IN ALERT -->
 
- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      window.openDeleteModal = function (element) {
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      window.openDeleteModal = function(element) {
         var resourcesId = element.getAttribute('data-id');
         var resourcesTitle = element.getAttribute('data-title');
         document.getElementById("ResourcesconfirmDelete").setAttribute("href", "../../function/libraryresources_function.php?delete_id=" + resourcesId);
         document.getElementById("confirmationModal-LibraryResources").style.display = "flex";
       };
 
-      window.closeModal = function () {
+      window.closeModal = function() {
         document.getElementById("confirmationModal-LibraryResources").style.display = "none";
       };
 
-      window.closeModalOutside = function (event) {
+      window.closeModalOutside = function(event) {
         if (event.target.id === "confirmationModal-LibraryResources") {
           closeModal();
         }

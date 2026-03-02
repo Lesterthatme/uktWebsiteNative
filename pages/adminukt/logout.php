@@ -38,16 +38,13 @@ if (isset($_SESSION['user_id'])) {
                 $log_stmt->close();
             }
         }
-        $statement->close();
     }
 }
-
-session_unset();
-session_destroy();
 
 // Remove cookie
 setcookie("remember_me", "", time() - 3600, "/");
 
-header('Location: login');
+
+header('Location: ' . BASE_URL . 'actions/adminDestroyer.php');
+
 exit;
-?>

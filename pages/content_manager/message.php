@@ -1,19 +1,22 @@
 <?php
 session_start();
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-  $settings = $row;
+    $settings = $row;
 
-  if (!empty($settings)) {
-    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-  }
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
 }
 // Fetch all site settings end
 ?>
@@ -25,7 +28,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title> 
+    <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -37,8 +40,8 @@ if ($row = mysqli_fetch_assoc($result)) {
 
 <body class="bg-light">
 
-     <!-- include side bar start -->
-     <?php include 'include/alert.php'; ?>
+    <!-- include side bar start -->
+    <?php include 'include/alert.php'; ?>
     <?php include 'confirmation.php'; ?>
     <?php include 'include/sidebar.php'; ?>
     <!-- include side bar end -->
@@ -46,7 +49,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <main class="bg-light">
 
         <!-- include navbar start -->
-        <?php include 'include/navbar.php';?>
+        <?php include 'include/navbar.php'; ?>
         <!-- include navbar end -->
 
         <!-- start: Content -->
@@ -54,7 +57,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="row">
                 <div class="card border-0 pb-3">
                     <div class="card-body">
-                    <div class="doc-tabs-container mt-3">
+                        <div class="doc-tabs-container mt-3">
                             <ul class="doc-tabs d-flex list-unstyled">
                                 <li class="me-3">
                                     <a class="doc-link active" href="message">Inbox</a>
@@ -92,7 +95,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                             <div class="dropdown">
                                 <button class="btn btn-light dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                   Sort By
+                                    Sort By
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="filterDropdown">
                                     <li><a class="dropdown-item filter-btn" href="#" data-filter="">All</a></li>

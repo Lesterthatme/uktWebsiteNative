@@ -2,8 +2,9 @@
 include("../../connection/dbconnection.php");
 session_start();
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    exit;
 }
 
 if (isset($_GET['message_id'])) {

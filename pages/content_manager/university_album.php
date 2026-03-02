@@ -1,19 +1,23 @@
 <?php
 
-include '../../connection/dbconnection.php';
 session_start();
+include '../../connection/dbconnection.php';
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-  $settings = $row;
+    $settings = $row;
 
-  if (!empty($settings)) {
-    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-  }
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
 }
 // Fetch all site settings end
 ?>
@@ -38,9 +42,9 @@ if ($row = mysqli_fetch_assoc($result)) {
 <body class="bg-light">
 
     <!-- include side bar start -->
-     <?php include 'include/alert.php';?>
-     <?php include 'confirmation.php';?>
-    <?php include 'include/sidebar.php';?>
+    <?php include 'include/alert.php'; ?>
+    <?php include 'confirmation.php'; ?>
+    <?php include 'include/sidebar.php'; ?>
     <!-- include side bar end -->
 
     <main class="bg-light">
@@ -58,8 +62,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
                             <h5 class="card-title fs-6 mb-2 mb-md-0">University Album</h5>
                             <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Click to add new album">
-                            <i class="ri-add-line"></i> Add Album
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click to add new album">
+                                <i class="ri-add-line"></i> Add Album
                             </button>
                         </div>
                         <p class="card-text text-muted small">This Albums is for University Events</p>
@@ -105,8 +109,8 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                                             <hr>
                                             <button type="submit" name="add_album" class="btn btn-dynamic float-end"
-                                            data-bs-toggle="tooltip"  data-bs-placement="top" 
-                                            title="Click to save"><i class="ri-save-line"></i> Save</button>
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="Click to save"><i class="ri-save-line"></i> Save</button>
                                         </form>
                                     </div>
                                 </div>
@@ -155,13 +159,13 @@ if ($row = mysqli_fetch_assoc($result)) {
                                             <!-- Dropdown -->
                                             <div class="dropdown position-absolute top-0 end-0 m-2">
                                                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" onclick="event.stopPropagation();"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to see the action">                    
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to see the action">
                                                     <i class="ri-more-2-fill"></i>
                                                 </button>
                                                 <ul class="dropdown-menu" onclick="event.stopPropagation();">
                                                     <li>
-                                                        <a href="#editModal<?php echo $row['album_id']; ?>" class="dropdown-item text-warning" data-bs-toggle="modal"  data-bs-toggle="tooltip" 
-                                                           data-bs-placement="top" title="Click here to edit the details of this album">Edit Album</a>
+                                                        <a href="#editModal<?php echo $row['album_id']; ?>" class="dropdown-item text-warning" data-bs-toggle="modal" data-bs-toggle="tooltip"
+                                                            data-bs-placement="top" title="Click here to edit the details of this album">Edit Album</a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item text-danger delete-program"
@@ -240,9 +244,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                         <textarea class="form-control" name="album_description" rows="4" required><?php echo htmlspecialchars($row['album_description']); ?></textarea>
                                                     </div>
                                                     <hr>
-                                                    <button type="submit" name="update_album" class="btn btn-dynamic float-end"  data-bs-toggle="tooltip" 
-                                                    data-bs-placement="top" 
-                                                    title="Click to save"><i class="ri-save-line"></i> Save</button>
+                                                    <button type="submit" name="update_album" class="btn btn-dynamic float-end" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
+                                                        title="Click to save"><i class="ri-save-line"></i> Save</button>
 
                                                 </form>
 
@@ -292,7 +296,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         }).then(() => {
                             location.reload(); // Reloads the page after clicking OK
                         });
-                        return; 
+                        return;
                     }
 
                     const reader = new FileReader();
@@ -315,7 +319,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     previewContainer.appendChild(imageWrapper);
 
                     reader.onload = function(e) {
-                      
+
                         const imgElement = document.createElement('img');
                         imgElement.src = e.target.result;
                         imgElement.style.width = '100%';
@@ -357,7 +361,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                 }
             }
 
-            input.files = dt.files; 
+            input.files = dt.files;
         }
     </script>
 

@@ -2,7 +2,10 @@
 
 require '../../connection/dbconnection.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 // Fetch admission requirements
 $sql = "SELECT * FROM admission_requirement ";
 $result = $conn->query($sql);
@@ -40,15 +43,15 @@ if ($row = mysqli_fetch_assoc($result)) {
 <body class="bg-light">
 
   <!-- include side bar start -->
-  <?php include 'include/alert.php';?>
-  <?php include 'confirmation.php';?>
-  <?php include 'include/sidebar.php';?>
+  <?php include 'include/alert.php'; ?>
+  <?php include 'confirmation.php'; ?>
+  <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
 
   <main class="bg-light">
 
     <!-- include navbar start -->
-    <?php include 'include/navbar.php';?>
+    <?php include 'include/navbar.php'; ?>
     <!-- include navbar end -->
 
     <!-- start: Content -->
@@ -121,7 +124,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     if ($result->num_rows > 0) {
                       while ($row = $result->fetch_assoc()) {
                         // Properly format full name
-                       
+
                         echo "<tr>
                             <td><i class='" . htmlspecialchars($row['h_icon']) . "'></i></td>
                             <td>" . htmlspecialchars($row['h_title']) . "</td>
@@ -160,10 +163,10 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 </div>
                             </td>
                           </tr>";
-                              }
-                            } else {
-                              echo "<tr><td colspan='7'>No highlight archived available</td></tr>";
-                            }
+                      }
+                    } else {
+                      echo "<tr><td colspan='7'>No highlight archived available</td></tr>";
+                    }
                     ?>
                   </tbody>
                 </table>

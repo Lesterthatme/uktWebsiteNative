@@ -1,7 +1,10 @@
 <?php
 require '../../connection/dbconnection.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 // Fetch admission requirements
 $sql = "SELECT * FROM admission_requirement ";
 $result = $conn->query($sql);
@@ -194,7 +197,7 @@ if ($row = mysqli_fetch_assoc($result)) {
   <script src="../../assets/bootstrap/js/carousel.js?=v1.0"></script>
   <script src="../../assets/bootstrap/js/formDrag_and_Drop.js"></script>
   <script src="../../assets/bootstrap/js/activeLink.js?v=1.5"></script>
-    <script src="../../assets/bootstrap/js/logs.js"></script>
+  <script src="../../assets/bootstrap/js/logs.js"></script>
   <script src="../../assets/bootstrap/js/site_settings.js?v=1.4"></script>
 
   <script>

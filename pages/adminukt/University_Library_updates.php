@@ -1,7 +1,10 @@
 <?php
 include 'include/alert.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 include 'confirmation.php';
 ?>
 
@@ -135,7 +138,7 @@ include 'confirmation.php';
             </div>
 
             <div class="d-flex flex-column flex-md-row align-items-md-center mb-3">
-            <p class="card-text text-muted small">
+              <p class="card-text text-muted small">
                 Library Updates provide the latest news on new books, digital resources, services, and facility
                 improvements to enhance learning and research.
               </p>
@@ -377,12 +380,12 @@ include 'confirmation.php';
   <script src="../../assets/bootstrap/js/site_settings.js?v=1.0"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       // Get all view buttons
       const viewButtons = document.querySelectorAll(".view-btn");
 
       viewButtons.forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function() {
           // Get data attributes from the clicked button
           let title = this.getAttribute("data-title");
           let category = this.getAttribute("data-category");
@@ -400,9 +403,9 @@ include 'confirmation.php';
       });
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll(".edit-btn").forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function() {
           const id = this.getAttribute("data-id");
           const title = this.getAttribute("data-title");
           const category = this.getAttribute("data-category");
@@ -421,7 +424,7 @@ include 'confirmation.php';
     });
 
     // automatically get the data script start
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       let today = new Date().toISOString().split('T')[0];
       document.getElementById("date_published").value = today;
     });
@@ -431,7 +434,7 @@ include 'confirmation.php';
 
   <!-- START >> JS SCRIPT IN ALERT -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       console.log("Checking for toast message...");
 
       <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
@@ -475,11 +478,20 @@ include 'confirmation.php';
 
       // Set icon based on type
       switch (type) {
-        case "toast-success": icon.className = "ri-checkbox-circle-line toast-icon"; break;
-        case "toast-info": icon.className = "ri-information-line toast-icon"; break;
-        case "toast-warning": icon.className = "ri-alert-line toast-icon"; break;
-        case "toast-error": icon.className = "ri-close-circle-line toast-icon"; break;
-        default: icon.className = "ri-information-line toast-icon"; // Default icon
+        case "toast-success":
+          icon.className = "ri-checkbox-circle-line toast-icon";
+          break;
+        case "toast-info":
+          icon.className = "ri-information-line toast-icon";
+          break;
+        case "toast-warning":
+          icon.className = "ri-alert-line toast-icon";
+          break;
+        case "toast-error":
+          icon.className = "ri-close-circle-line toast-icon";
+          break;
+        default:
+          icon.className = "ri-information-line toast-icon"; // Default icon
       }
 
       // Show toast
@@ -500,19 +512,19 @@ include 'confirmation.php';
   <!-- END >> JS SCRIPT IN ALERT -->
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      window.openDeleteModal = function (element) {
+    document.addEventListener("DOMContentLoaded", function() {
+      window.openDeleteModal = function(element) {
         var updateId = element.getAttribute('data-id');
         var updateTitle = element.getAttribute('data-title');
         document.getElementById("UpdatesconfirmDelete").setAttribute("href", "../../function/libraryupdates_function.php?delete_id=" + updateId);
         document.getElementById("confirmationModal-LibraryUpdates").style.display = "flex";
       };
 
-      window.closeModal = function () {
+      window.closeModal = function() {
         document.getElementById("confirmationModal-LibraryUpdates").style.display = "none";
       };
 
-      window.closeModalOutside = function (event) {
+      window.closeModalOutside = function(event) {
         if (event.target.id === "confirmationModal-LibraryUpdates") {
           closeModal();
         }

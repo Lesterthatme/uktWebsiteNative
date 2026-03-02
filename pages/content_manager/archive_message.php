@@ -1,8 +1,11 @@
 <?php
 session_start();
 include '../../connection/dbconnection.php';
-
-$user_id = $_SESSION['user_id']; 
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
+$user_id = $_SESSION['user_id'];
 
 // Fetch all site settings start
 $settings = [];
@@ -28,9 +31,9 @@ if ($row = mysqli_fetch_assoc($result)) {
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>  
+  <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>
   <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.7"> 
+  <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.7">
   <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
 </head>
 
@@ -38,9 +41,9 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- include side bar start -->
   <?php include 'include/alert.php'; ?>
-    <?php include 'confirmation.php'; ?>
-    <?php include 'include/sidebar.php'; ?>
-    <!-- include side bar end -->
+  <?php include 'confirmation.php'; ?>
+  <?php include 'include/sidebar.php'; ?>
+  <!-- include side bar end -->
 
   <main class="bg-light">
     <!-- include navbar start -->

@@ -2,7 +2,10 @@
 session_start();
 include '../../function/partnership_function.php';
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 // Fetch admission requirements
 $sql = "SELECT * FROM admission_requirement ";
 $result = $conn->query($sql);
@@ -49,15 +52,15 @@ if ($row = mysqli_fetch_assoc($result)) {
 <body class="bg-light">
 
   <!-- include side bar start -->
-  <?php include 'include/alert.php';?>
-  <?php include 'confirmation.php';?>
-  <?php include 'include/sidebar.php';?>
+  <?php include 'include/alert.php'; ?>
+  <?php include 'confirmation.php'; ?>
+  <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
 
   <main class="bg-light">
 
     <!-- include navbar start -->
-    <?php include 'include/navbar.php';?>
+    <?php include 'include/navbar.php'; ?>
     <!-- include navbar end -->
 
     <!-- start: Content -->
@@ -68,7 +71,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
               <h5 class="card-title fs-6 mb-2 mb-md-0">Admission Requirements</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal" data-bs-target="#exampleModal"
-              data-bs-toggle="tooltip" data-bs-placement="top" title="Click to add admission requirement">
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Click to add admission requirement">
                 <i class="ri-add-line"></i> Add Requirements
               </button>
             </div>
@@ -122,7 +125,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div>
 
                       <button type="submit" name="add_requirement" class="btn btn-dynamic float-end"
-                      data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save </button>
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save </button>
                     </form>
                   </div>
                 </div>
@@ -194,23 +197,23 @@ if ($row = mysqli_fetch_assoc($result)) {
                           </td>
                           <td class="text-center">
                             <div class="dropdown">
-                              <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown"  data-bs-toggle="tooltip" 
-                              data-bs-placement="top" title="Click here to see the action">
+                              <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Click here to see the action">
                                 <i class="ri-more-2-fill"></i>
                               </button>
                               <ul class="dropdown-menu">
                                 <li>
                                   <a class="dropdown-item text-dark view-requirement" href="#"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#viewModal<?= $row['requirement_id'] ?>"  data-bs-toggle="tooltip" 
+                                    data-bs-target="#viewModal<?= $row['requirement_id'] ?>" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Click to view details">
-                                    <i class="ri-eye-line"></i> View 
+                                    <i class="ri-eye-line"></i> View
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#editModal<?php echo $row['requirement_id']; ?>"
                                     class="dropdown-item text-dark"
-                                    data-bs-toggle="modal"  data-bs-toggle="tooltip" 
+                                    data-bs-toggle="modal" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Click to edit this admission requirements">
                                     <i class="ri-pencil-line"></i> Edit
                                   </a>
@@ -218,7 +221,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <li>
                                   <a class="dropdown-item text-dark delete-requirement"
                                     href="../../function/content_manager/admission_requirementfunction.php?requirement_id=<?= $row['requirement_id'] ?>"
-                                    onclick="return confirm('Are you sure you want to delete this requirement?')" data-bs-toggle="tooltip" 
+                                    onclick="return confirm('Are you sure you want to delete this requirement?')" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Click delete this admission requirements">
                                     <i class="ri-delete-bin-line"></i> Delete
                                   </a>
@@ -271,7 +274,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                                   <div class="modal-footer pb-0">
                                     <button type="submit" name="update_requirement" class="btn btn-dynamic"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i>Save</button>
+                                      data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i>Save</button>
                                   </div>
                                 </form>
                               </div>
