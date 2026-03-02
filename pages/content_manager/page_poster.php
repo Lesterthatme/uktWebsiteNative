@@ -1,7 +1,10 @@
 <?php
 session_start();
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -36,16 +39,16 @@ if ($row = mysqli_fetch_assoc($result)) {
 
 <body class="bg-light">
 
-    <!-- include side bar start -->
-    <?php include 'include/alert.php';?>
-  <?php include 'confirmation.php';?>
+  <!-- include side bar start -->
+  <?php include 'include/alert.php'; ?>
+  <?php include 'confirmation.php'; ?>
   <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
 
   <main class="bg-light">
 
     <!-- include navbar start -->
-    <?php include 'include/navbar.php';?>
+    <?php include 'include/navbar.php'; ?>
     <!-- include navbar end -->
 
     <!-- start: Content -->
@@ -56,7 +59,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
               <h5 class="card-title fs-6 mb-2 mb-md-0">Manage Page Poster</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal" data-bs-target="#exampleModal"
-              data-bs-toggle="tooltip" data-bs-placement="top" title="Click to add poster">
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Click to add poster">
                 <i class="ri-add-line"></i> Add Poster
               </button>
             </div>
@@ -74,7 +77,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body pb-0">
-                  <form method="POST" action="../../function/content_manager/poster_function.php" enctype="multipart/form-data">
+                    <form method="POST" action="../../function/content_manager/poster_function.php" enctype="multipart/form-data">
                       <!-- Image Upload -->
                       <div class="mb-3">
                         <label class="form-label fw-semibold text-muted">Upload Image:</label>
@@ -98,8 +101,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                         </select>
                       </div> -->
                       <div class="modal-footer ">
-                        <button type="submit" name="add_poster" class="btn btn-dynamic"  data-bs-toggle="tooltip" 
-                         data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
+                        <button type="submit" name="add_poster" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                          data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
                           Save </button>
                       </div>
                     </form>
@@ -141,7 +144,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                           <span class="<?php echo $status_class; ?>"><?php echo $item['poster_status']; ?></span>
                           <div class="dropdown three-dots-poster">
                             <button class="btn p-0 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to see the action">
+                              data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to see the action">
                               <span></span><span></span><span></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -152,7 +155,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                   data-id="<?php echo $item['poster_id']; ?>"
                                   data-image="<?php echo $image_path; ?>"
                                   data-status="<?php echo $item['poster_status']; ?>"
-                                  data-date="<?php echo $item['poster_date']; ?>" data-bs-toggle="tooltip" 
+                                  data-date="<?php echo $item['poster_date']; ?>" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click here to edit this poster">
                                   <i class="ri-pencil-line"></i> Edit
                                 </a>
@@ -162,7 +165,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <a href="javascript:void(0);"
                                   class="dropdown-item text-dark text-decoration-none"
                                   data-id="<?= $item['poster_id'] ?>"
-                                  onclick="openModal(event, this.dataset.id);" data-bs-toggle="tooltip" 
+                                  onclick="openModal(event, this.dataset.id);" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click to delete this poster">
                                   <i class="ri-delete-bin-line"></i> Delete
                                 </a>
@@ -180,7 +183,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div>
                     </div>
                 <?php
-                    $isActive = false; 
+                    $isActive = false;
                   }
                 }
                 ?>
@@ -216,7 +219,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               </button>
             <?php } ?>
 
-           <!-- View Page Poster End-->
+            <!-- View Page Poster End-->
 
             <!-- edit modal start -->
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -227,7 +230,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body pb-0">
-                  <form method="POST" action="../../function/content_manager/poster_function.php" enctype="multipart/form-data">
+                    <form method="POST" action="../../function/content_manager/poster_function.php" enctype="multipart/form-data">
                       <input type="hidden" name="poster_id" id="edit-poster-id">
                       <input type="hidden" class="form-control" id="edit-date" name="poster_date" readonly>
                       <div class="mb-3">
@@ -251,8 +254,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                         </select>
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" name="update_poster" class="btn btn-dynamic"  data-bs-toggle="tooltip" 
-                        data-bs-placement="top" title="Click to save">
+                        <button type="submit" name="update_poster" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                          data-bs-placement="top" title="Click to save">
                           <i class="ri-save-fill"></i> Save
                         </button>
                       </div>

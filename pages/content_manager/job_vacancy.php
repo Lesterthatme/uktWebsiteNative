@@ -1,19 +1,22 @@
 <?php
 session_start();
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
 if ($row = mysqli_fetch_assoc($result)) {
-  $settings = $row;
+    $settings = $row;
 
-  if (!empty($settings)) {
-    $title_admin = htmlspecialchars($settings['websitetitle_admin']);
-    $title_cm = htmlspecialchars($settings['websitetitle_cm']);
-  }
+    if (!empty($settings)) {
+        $title_admin = htmlspecialchars($settings['websitetitle_admin']);
+        $title_cm = htmlspecialchars($settings['websitetitle_cm']);
+    }
 }
 // Fetch all site settings end
 ?>
@@ -25,7 +28,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title> 
+    <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>
     <!-- start css  -->
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.4">
@@ -50,7 +53,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <main class="bg-light">
 
         <!-- include navbar start -->
-        <?php include 'include/navbar.php';?>
+        <?php include 'include/navbar.php'; ?>
         <!-- include navbar end -->
 
         <!-- start: Content -->
@@ -88,7 +91,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                     <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date Posted:</strong></label>
                                                     <input type="date" class="form-control" id="date_added" name="date_posted" value="<?php echo date('Y-m-d'); ?>" required>
                                                 </div>
-                                                
+
                                             </div>
 
                                             <div class="row">
@@ -251,7 +254,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                                     <form action="../../function/content_manager/jobvacancy_function.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this job vacancy?')">
                                                                         <input type="hidden" name="vacancy_id" value="<?= $row['vacancy_id'] ?>">
                                                                         <button type="submit" name="delete_jobvacancy" class="dropdown-item text-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete this job vacancy">
-                                                                        <i class="ri-delete-bin-line"></i> Delete
+                                                                            <i class="ri-delete-bin-line"></i> Delete
                                                                         </button>
                                                                     </form>
                                                                 </li>

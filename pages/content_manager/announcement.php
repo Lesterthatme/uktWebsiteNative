@@ -1,6 +1,10 @@
 <?php
 include '../../connection/dbconnection.php';
 session_start();
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -182,8 +186,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                                     data-bs-target="#editModal"
                                     data-id="<?php echo $row['announcement_id']; ?>"
                                     data-title="<?php echo htmlspecialchars($title); ?>"
-                                     data-description="<?= htmlspecialchars($row['announcement_description'], ENT_QUOTES, 'UTF-8'); ?>"
-                                    
+                                    data-description="<?= htmlspecialchars($row['announcement_description'], ENT_QUOTES, 'UTF-8'); ?>"
+
                                     data-image="../../assets/uploads/announcement/<?php echo $image; ?>"
                                     data-status="<?php echo $status; ?>"
                                     data-bs-toggle="tooltip" data-bs-placement="top"
@@ -211,9 +215,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                               data-bs-target="#viewModal"
                               data-title="<?= htmlspecialchars($title, ENT_QUOTES); ?>"
                               data-description="<?= htmlspecialchars($row['announcement_description'], ENT_QUOTES, 'UTF-8'); ?>"
-                       
+
                               data-image="../../assets/uploads/announcement/<?= $image; ?>"
-                              data-bs-toggle="tooltip"  data-bs-placement="top"
+                              data-bs-toggle="tooltip" data-bs-placement="top"
                               title="Click to view this announcement"
                               onclick="setModalContent(this)">
                               Read More <i class="ri-arrow-right-line"></i>

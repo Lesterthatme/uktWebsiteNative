@@ -1,7 +1,10 @@
 <?php
 session_start();
 include '../../connection/dbconnection.php';
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
+}
 // Query to get the university profile data
 $query = "SELECT comlab_description FROM computer_laboratory WHERE up_id = 1";
 $result = mysqli_query($conn, $query);

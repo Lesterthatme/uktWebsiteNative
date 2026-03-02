@@ -2,9 +2,9 @@
 
 require '../../connection/dbconnection.php';
 session_start();
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
 }
 // Fetch  scholarship
 $sql = "SELECT * FROM rector";
@@ -32,11 +32,11 @@ if ($row = mysqli_fetch_assoc($result)) {
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title> 
+    <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.8"> 
-    <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css"> 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.8">
+    <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 </head>
@@ -52,7 +52,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <main class="bg-light">
 
         <!-- include navbar start -->
-        <?php include 'include/navbar.php';?>
+        <?php include 'include/navbar.php'; ?>
         <!-- include navbar end -->
 
         <!-- start: Content -->
@@ -75,7 +75,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
                             <h5 class="card-title fs-6 mb-2 mb-md-0">Manage Rector</h5>
                             <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="top" 
+                                data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="top"
                                 title="Click to add rector"><i class="ri-add-line"></i> Add Rector
                             </button>
                         </div>
@@ -177,8 +177,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                     });
                                                 </script>
                                             </div>
-                                            <button type="submit" name="add_rector" class="btn btn-dynamic float-end"  data-bs-toggle="tooltip" 
-                                            data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
+                                            <button type="submit" name="add_rector" class="btn btn-dynamic float-end" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
 
                                         </form>
                                     </div>
@@ -216,7 +216,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                         <div class="management_card">
                                             <div class="dropdown three-dots">
                                                 <button class="btn p-0 border-0" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false"  data-bs-toggle="tooltip" 
+                                                    aria-expanded="false" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="Click here to see the action">
                                                     <span></span><span></span><span></span>
                                                 </button>
@@ -224,7 +224,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                     <li>
                                                         <a class="dropdown-item text-dark view-requirement" href="#"
                                                             data-bs-toggle="modal"
-                                                            data-bs-target="#viewModal<?= $row['rector_id'] ?>" data-bs-toggle="tooltip" 
+                                                            data-bs-target="#viewModal<?= $row['rector_id'] ?>" data-bs-toggle="tooltip"
                                                             data-bs-placement="top" title="Click to view the rector details">
                                                             <i class="ri-eye-line"></i> View Details
                                                         </a>
@@ -232,7 +232,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                     <li>
                                                         <a href="#editModal<?php echo $row['rector_id']; ?>"
                                                             class="dropdown-item text-dark"
-                                                            data-bs-toggle="modal"  data-bs-toggle="tooltip" 
+                                                            data-bs-toggle="modal" data-bs-toggle="tooltip"
                                                             data-bs-placement="top" title="Click to edit details">
                                                             <i class="ri-pencil-line"></i> Edit
                                                         </a>
@@ -241,8 +241,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                         <form method="POST" action="../../function/content_manager/rector_function.php" style="display:inline;">
                                                             <input type="hidden" name="rector_id" value="<?= $row['rector_id']; ?>">
                                                             <button type="submit" name="delete_rector" class="dropdown-item text-dark"
-                                                                onclick="return confirm('Are you sure you want to delete this rector?');"  data-bs-toggle="tooltip" 
-                                                                data-bs-placement="top"title="Click to delete rector">
+                                                                onclick="return confirm('Are you sure you want to delete this rector?');" data-bs-toggle="tooltip"
+                                                                data-bs-placement="top" title="Click to delete rector">
                                                                 <i class="ri-delete-bin-line"></i> Delete
                                                             </button>
                                                         </form>
@@ -256,7 +256,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                             <div class="official_name">
                                                 <?php echo htmlspecialchars($row['first_name'] . ' ' . $row['middle_name'] . ' ' . $row['last_name']); ?>
                                             </div>
-                                             <div
+                                            <div
                                                 class="management-status-active <?php echo ($row['status'] == 'Inactive') ? 'announcement-status-inactive' : ''; ?>">
                                                 <?php echo htmlspecialchars($row['status']); ?>
                                             </div>
@@ -347,8 +347,8 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                                                             <div class="modal-footer pb-0">
                                                                 <button type="submit" name="update_rector" class="btn btn-dynamic"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save">
-                                                                <i class="ri-save-line"></i>Save</button>
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save">
+                                                                    <i class="ri-save-line"></i>Save</button>
                                                             </div>
                                                         </form>
                                                     </div>

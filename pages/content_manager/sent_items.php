@@ -1,7 +1,10 @@
 <?php
 session_start();
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";

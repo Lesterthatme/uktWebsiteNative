@@ -3,7 +3,10 @@ session_start();
 
 include '../../connection/dbconnection.php';
 
-date_default_timezone_set('Asia/Phnom_Penh');
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 
 if (isset($_POST['edit_event'])) {
   $uc_id = $_POST['uc_id'];
@@ -83,9 +86,9 @@ if ($row = mysqli_fetch_assoc($result)) {
 <body class="bg-light">
 
   <!-- include side bar start -->
-  <?php include 'include/alert.php';?>
+  <?php include 'include/alert.php'; ?>
   <?php include 'include/sidebar.php'; ?>
-  <?php include 'confirmation.php';?>
+  <?php include 'confirmation.php'; ?>
   <!-- include side bar end -->
 
   <main class="bg-light">
@@ -120,7 +123,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
               <h5 class="card-title fs-6 mb-2 mb-md-0">University Calendar</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic float-end" data-bs-toggle="modal"
-                data-bs-target="#exampleModal" TOOLTIP: data-bs-toggle="tooltip" data-bs-placement="top" 
+                data-bs-target="#exampleModal" TOOLTIP: data-bs-toggle="tooltip" data-bs-placement="top"
                 title="Click to add a new event">
                 <i class="ri-add-line"></i> Add Event in Calendar </button>
             </div>
@@ -157,8 +160,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <textarea class="form-control border border-2 rounded-2" id="descriptionInput"
                           name="uc_description" rows="5" placeholder="Event Description"></textarea>
                       </div>
-                      <button type="submit" class="btn btn-dynamic btn-md float-end"  data-bs-toggle="tooltip" 
-                      data-bs-placement="top" title="Click to save">
+                      <button type="submit" class="btn btn-dynamic btn-md float-end" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Click to save">
                         <i class="ri-save-fill"></i> Save
                       </button>
                     </form>
@@ -170,7 +173,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
             <!-- container nav -->
 
-           <div class="log_container mt-4">
+            <div class="log_container mt-4">
               <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center mb-md-0">
                   <label class="me-2">Show</label>
@@ -294,16 +297,16 @@ if ($row = mysqli_fetch_assoc($result)) {
                       <div class="mb-3">
                         <label for="editTitleInput" class="form-label fw-semibold text-muted">Event Title:</label>
                         <textarea class="form-control" id="editTitleInput" name="uc_title"
-                          placeholder="Event Title" required ></textarea>
+                          placeholder="Event Title" required></textarea>
                       </div>
                       <div class="mb-3">
                         <label for="editDescriptionInput" class="form-label fw-semibold text-muted">Description:</label>
                         <textarea class="form-control border border-2 rounded-2" id="editDescriptionInput"
                           name="uc_description" rows="5" placeholder="Event Description"></textarea>
                       </div>
-                      <button type="submit" name="edit_event" class="btn btn-dynamic btn-md float-end"  data-bs-toggle="tooltip" 
-                      data-bs-placement="top" title="Click to save">
-                        <i class="ri-save-fill"></i> Save 
+                      <button type="submit" name="edit_event" class="btn btn-dynamic btn-md float-end" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Click to save">
+                        <i class="ri-save-fill"></i> Save
                       </button>
                     </form>
                   </div>
@@ -330,7 +333,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- script for limiting number into 31 start -->
   <script>
-    document.getElementById('dayInput').addEventListener('input', function () {
+    document.getElementById('dayInput').addEventListener('input', function() {
       if (this.value > 31) this.value = 31;
       if (this.value < 1) this.value = 1;
     });
@@ -347,7 +350,7 @@ if ($row = mysqli_fetch_assoc($result)) {
           uc_id: uc_id
         },
         dataType: 'json',
-        success: function (response) {
+        success: function(response) {
           if (response.success) {
             // Populate the modal fields with the fetched data
             $('#editUcId').val(response.data.uc_id);
@@ -359,7 +362,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             alert('Error: Unable to load event details.');
           }
         },
-        error: function () {
+        error: function() {
           alert('An error occurred while fetching event details.');
         },
       });
@@ -368,7 +371,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- START >> JS SCRIPT IN ALERT -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       console.log("Checking for toast message...");
 
       <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
@@ -412,11 +415,20 @@ if ($row = mysqli_fetch_assoc($result)) {
 
       // Set icon based on type
       switch (type) {
-        case "toast-success": icon.className = "ri-checkbox-circle-line toast-icon"; break;
-        case "toast-info": icon.className = "ri-information-line toast-icon"; break;
-        case "toast-warning": icon.className = "ri-alert-line toast-icon"; break;
-        case "toast-error": icon.className = "ri-close-circle-line toast-icon"; break;
-        default: icon.className = "ri-information-line toast-icon"; // Default icon
+        case "toast-success":
+          icon.className = "ri-checkbox-circle-line toast-icon";
+          break;
+        case "toast-info":
+          icon.className = "ri-information-line toast-icon";
+          break;
+        case "toast-warning":
+          icon.className = "ri-alert-line toast-icon";
+          break;
+        case "toast-error":
+          icon.className = "ri-close-circle-line toast-icon";
+          break;
+        default:
+          icon.className = "ri-information-line toast-icon"; // Default icon
       }
 
       // Show toast
@@ -438,18 +450,18 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- START >> JS SCRIPT IN DELETE CONFIRMATION -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      window.openModal = function (event, uc_id) {
+    document.addEventListener("DOMContentLoaded", function() {
+      window.openModal = function(event, uc_id) {
         event.preventDefault();
         document.getElementById("modalUcId").value = uc_id; // Set event ID
         document.getElementById("confirmationModal-calendar").style.display = "flex";
       };
 
-      window.closeModal = function () {
+      window.closeModal = function() {
         document.getElementById("confirmationModal-calendar").style.display = "none";
       };
 
-      window.closeModalOutside = function (event) {
+      window.closeModalOutside = function(event) {
         if (event.target.id === "confirmationModal-calendar") {
           closeModal();
         }

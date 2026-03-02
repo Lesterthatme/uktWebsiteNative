@@ -1,6 +1,10 @@
 <?php
 require '../../connection/dbconnection.php';
 session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+    exit;
+}
 $user_id = $_SESSION['user_id'];
 // Fetch user details
 $query = "SELECT ua.username, ua.email, ua.image, 
@@ -176,7 +180,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <div class="account_profile-card w-100" style="max-width: 1600px;">
                                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
                                         <div class="d-flex align-items-center text-center text-md-start">
-                                            <div class="mx-auto text-center profile-pic-container"data-bs-toggle="tooltip"
+                                            <div class="mx-auto text-center profile-pic-container" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Click to  here to update profile picture">
                                                 <img id="profile-image" src="<?= $user_image; ?>" alt="Profile Picture" onclick="triggerFileInput()">
                                                 <div class="camera-icon" onclick="triggerFileInput()">

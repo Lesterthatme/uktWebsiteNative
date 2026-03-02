@@ -1,7 +1,10 @@
 <?php
-include '../../connection/dbconnection.php';
 session_start();
-
+include '../../connection/dbconnection.php';
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 
 // Updated query to join university_hymn and university_profile tables
 $query = "
@@ -100,7 +103,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                           <input type="hidden" name="hymn_id"
                             value="<?= htmlspecialchars($university_data['hymn_id'], ENT_QUOTES, 'UTF-8') ?>">
 
-                            <div class="col-md-6 d-flex align-items-center mb-3">
+                          <div class="col-md-6 d-flex align-items-center mb-3">
                             <label class="form-label fw-semibold text-muted me-2 mb-0" for="hymn_title">
                               <strong>Title:</strong></label>
                             <input type="text" id="hymn_title" class="form-control" name="hymn_title"
@@ -140,7 +143,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                           </script>
                         </div>
                       </div>
-                        <div class="modal-footer">
+                      <div class="modal-footer">
                         <button type="submit" name="update_hymn" class="btn btn-dynamic" data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           title="Click to save"><i class="ri-save-fill"></i>

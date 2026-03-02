@@ -2,7 +2,10 @@
 session_start();
 // include '../../function/partnership_function.php';
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  exit;
+}
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
@@ -192,8 +195,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <ul class="dropdown-menu">
                           <li>
                             <a href="#editModal<?= $row['scholarship_id'] ?>" class="dropdown-item text-dark" data-bs-toggle="modal" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Click here to edit this scholarship">
-                            <i class="ri-pencil-line"></i> Edit
+                              data-bs-placement="top" title="Click here to edit this scholarship">
+                              <i class="ri-pencil-line"></i> Edit
                             </a>
                           </li>
                           <li>
@@ -244,7 +247,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                               </div>
                               <div class="modal-footer pb-0">
                                 <button type="submit" name="update_scholarship" class="btn btn-dynamic" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save
+                                  data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save
                                 </button>
                               </div>
                             </form>

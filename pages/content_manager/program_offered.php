@@ -1,8 +1,8 @@
 <?php
-include 'include/alert.php';
-session_start();
-include 'confirmation.php';
 include("../../connection/dbconnection.php");
+session_start();
+include 'include/alert.php';
+include 'confirmation.php';
 
 
 ?>
