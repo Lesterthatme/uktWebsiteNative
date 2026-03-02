@@ -1,7 +1,10 @@
 <?php
 include '../../connection/dbconnection.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -36,8 +39,8 @@ if ($row = mysqli_fetch_assoc($result)) {
 <body class="bg-light">
 
   <!-- include side bar start -->
-  <?php include 'include/alert.php';?>
-  <?php include 'confirmation.php';?>
+  <?php include 'include/alert.php'; ?>
+  <?php include 'confirmation.php'; ?>
   <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
 
@@ -52,7 +55,7 @@ if ($row = mysqli_fetch_assoc($result)) {
       <div class="row">
         <div class="card border-0">
           <div class="card-body">
-          <div class="doc-tabs-container mt-3">
+            <div class="doc-tabs-container mt-3">
               <ul class="doc-tabs d-flex list-unstyled">
                 <li class="me-3">
                   <a class="doc-link" href="page_management">Highlights</a>
@@ -91,18 +94,18 @@ if ($row = mysqli_fetch_assoc($result)) {
                       <ul class="custom-dropdown-menu dropdown-menu" aria-labelledby="iconDropdown" id="icon-container"></ul>
                     </div>
                     <form method="POST" action="../../function/faq_function.php">
-                    <div class="modal-body">
-                      <div class="mb-3">
-                        <label for="faq_question" class="form-label fw-semibold text-muted">Question:</label>
-                        <textarea class="form-control border border-2 rounded-2" id="faq_question" name="faq_question"
-                          rows="3" placeholder="Enter Question" required></textarea>
-                      </div>
-                      <div class="mb-3">
-                        <label for="faq_answer" class="form-label fw-semibold text-muted">Answer:</label>
-                        <textarea class="form-control border border-2 rounded-2" id="faq_answer" name="faq_answer"
-                          rows="5" placeholder="Enter Answer" required></textarea>
-                      </div>
-                      <!-- <div class="mb-3">
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label for="faq_question" class="form-label fw-semibold text-muted">Question:</label>
+                          <textarea class="form-control border border-2 rounded-2" id="faq_question" name="faq_question"
+                            rows="3" placeholder="Enter Question" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="faq_answer" class="form-label fw-semibold text-muted">Answer:</label>
+                          <textarea class="form-control border border-2 rounded-2" id="faq_answer" name="faq_answer"
+                            rows="5" placeholder="Enter Answer" required></textarea>
+                        </div>
+                        <!-- <div class="mb-3">
                         <label for="faq_status" class="form-label fw-semibold text-muted">Status:</label>
                         <select class="form-select border border-2 rounded-2" id="faq_status" name="faq_status"
                           required>
@@ -110,16 +113,16 @@ if ($row = mysqli_fetch_assoc($result)) {
                           <option value="Inactive">Inactive</option>
                         </select>
                       </div> -->
-                    </div>
-                    <div class="modal-footer">
-                      <button type="submit" name="add_faq" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip" 
-                      data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
-                        Save</button>
-                    </div>
-                  </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" name="add_faq" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip"
+                          data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
+                          Save</button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
             <!-- Modal to add hightlights end -->
 
@@ -133,7 +136,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               $result = $conn->query($sql);
               // Check if any records exist
               if ($result->num_rows > 0) {
-                ?>
+              ?>
                 <div class="accordion" id="faqAccordion2">
                   <?php
                   while ($row = $result->fetch_assoc()) {
@@ -146,30 +149,30 @@ if ($row = mysqli_fetch_assoc($result)) {
                     $apId = $row['ap_id'];
                     $headingId = "faq-heading-$faqId";
                     $collapseId = "faq-collapse-$faqId";
-                    ?>
+                  ?>
                     <div class="accordion-item">
                       <h3 class="accordion-header" id="<?php echo $headingId; ?>">
                         <div class="d-flex justify-content-between align-items-center">
                           <button class="accordion-button collapsed flex-grow-1 text-start" type="button"
                             data-bs-toggle="collapse" data-bs-target="#<?php echo $collapseId; ?>" aria-expanded="false"
-                            aria-controls="<?php echo $collapseId; ?>" data-bs-toggle="tooltip" 
-                           data-bs-placement="top" title="Click here to see the FAQ details">
+                            aria-controls="<?php echo $collapseId; ?>" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Click here to see the FAQ details">
                             <?php echo htmlspecialchars($faqQuestion); ?>
                           </button>
                           <div class="dropdown three-dots-accord me-3">
-                            <button class="btn p-0 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" 
-                            data-bs-placement="top" title="Click here to see the action">
+                            <button class="btn p-0 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip"
+                              data-bs-placement="top" title="Click here to see the action">
                               <span></span><span></span><span></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                               <li><a class="dropdown-item text-dark" href="#" data-bs-toggle="modal" data-bs-target="#editModal"
-                                  data-faq-id="<?php echo $faqId; ?>" data-bs-toggle="tooltip" 
+                                  data-faq-id="<?php echo $faqId; ?>" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click here to edit this FAQ details"><i class="ri-pencil-line"></i> Edit</a>
-                                </li>
-                                  <li>
+                              </li>
+                              <li>
                                 <a href="javascript:void(0);" class="dropdown-item text-dark text-decoration-none"
-                                  data-id="<?= $faqId ?>" onclick="openModal(event, this.dataset.id);" data-bs-toggle="tooltip" 
-                                  data-bs-placement="top" title="Click here to delete this FAQ"><i class="ri-delete-bin-line"></i> 
+                                  data-id="<?= $faqId ?>" onclick="openModal(event, this.dataset.id);" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Click here to delete this FAQ"><i class="ri-delete-bin-line"></i>
                                   Delete
                                 </a>
                               </li>
@@ -190,11 +193,11 @@ if ($row = mysqli_fetch_assoc($result)) {
                         </div>
                       </div>
                     </div>
-                    <?php
+                  <?php
                   }
                   ?>
                 </div>
-                <?php
+              <?php
               } else {
                 echo "<p>No FAQs available.</p>";
               }
@@ -202,59 +205,59 @@ if ($row = mysqli_fetch_assoc($result)) {
               ?>
             </div>
 
-            </div>
+          </div>
 
-            <!-- FAQ End -->
-            <!-- Edit Modal start-->
-            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title fw-bold text-muted" id="editModalLabel">Edit FAQ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <!-- FAQ End -->
+          <!-- Edit Modal start-->
+          <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title fw-bold text-muted" id="editModalLabel">Edit FAQ</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-0">
+                  <div class="dropdown">
+                    <ul class="custom-dropdown-menu dropdown-menu" aria-labelledby="iconDropdown" id="icon-container">
+                    </ul>
                   </div>
-                  <div class="modal-body pb-0">
-                    <div class="dropdown">
-                      <ul class="custom-dropdown-menu dropdown-menu" aria-labelledby="iconDropdown" id="icon-container">
-                      </ul>
+                  <form method="POST" action="../../function/faq_function.php">
+                    <input type="hidden" id="edit_faq_id" name="faq_id">
+                    <div class="mb-3">
+                      <label for="edit_faq_status" class="form-label fw-semibold text-muted">Status:</label>
+                      <select class="form-select border border-2 rounded-2" id="edit_faq_status" name="faq_status"
+                        required>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
                     </div>
-                    <form method="POST" action="../../function/faq_function.php">
-                      <input type="hidden" id="edit_faq_id" name="faq_id">
-                      <div class="mb-3">
-                        <label for="edit_faq_status" class="form-label fw-semibold text-muted">Status:</label>
-                        <select class="form-select border border-2 rounded-2" id="edit_faq_status" name="faq_status"
-                          required>
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
-                        </select>
-                      </div>
-                      <div class="mb-3">
-                        <label for="edit_faq_question" class="form-label fw-semibold text-muted">Question:</label>
-                        <textarea class="form-control border border-2 rounded-2" id="edit_faq_question"
-                          name="faq_question" rows="3" required></textarea>
-                      </div>
-                      <div class="mb-3">
-                        <label for="edit_faq_answer" class="form-label fw-semibold text-muted">Answer:</label>
-                        <textarea class="form-control border border-2 rounded-2" id="edit_faq_answer" name="faq_answer"
-                          rows="5" required></textarea>
-                      </div>
-                      
-                      <div class="modal-footer">
-                        <button type="submit" name="edit_faq" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip" 
-                         data-bs-placement="top" title="Click to save"><iclass="ri-save-fill"></i> Save</button>
-                      </div>
-                    </form>
-                  </div>
+                    <div class="mb-3">
+                      <label for="edit_faq_question" class="form-label fw-semibold text-muted">Question:</label>
+                      <textarea class="form-control border border-2 rounded-2" id="edit_faq_question"
+                        name="faq_question" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                      <label for="edit_faq_answer" class="form-label fw-semibold text-muted">Answer:</label>
+                      <textarea class="form-control border border-2 rounded-2" id="edit_faq_answer" name="faq_answer"
+                        rows="5" required></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                      <button type="submit" name="edit_faq" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Click to save"><iclass="ri-save-fill"></i> Save</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
-            <!-- Edit Modal end-->
           </div>
+          <!-- Edit Modal end-->
         </div>
       </div>
     </div>
     </div>
-      <?php include 'include/footer.php'; ?>
+    </div>
+    <?php include 'include/footer.php'; ?>
     </div>
     </div>
   </main>
@@ -268,11 +271,11 @@ if ($row = mysqli_fetch_assoc($result)) {
   <script src="../../assets/bootstrap/js/site_settings.js?=v2.1"></script>
   <!-- end js -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const editButtons = document.querySelectorAll('[data-bs-target="#editModal"]');
 
       editButtons.forEach(button => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', function() {
           const faqId = this.getAttribute('data-faq-id');
 
           // Fetch FAQ data via AJAX
@@ -294,7 +297,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- START >> JS SCRIPT IN ALERT -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       console.log("Checking for toast message...");
 
       <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
@@ -338,11 +341,20 @@ if ($row = mysqli_fetch_assoc($result)) {
 
       // Set icon based on type
       switch (type) {
-        case "toast-success": icon.className = "ri-checkbox-circle-line toast-icon"; break;
-        case "toast-info": icon.className = "ri-information-line toast-icon"; break;
-        case "toast-warning": icon.className = "ri-alert-line toast-icon"; break;
-        case "toast-error": icon.className = "ri-close-circle-line toast-icon"; break;
-        default: icon.className = "ri-information-line toast-icon"; // Default icon
+        case "toast-success":
+          icon.className = "ri-checkbox-circle-line toast-icon";
+          break;
+        case "toast-info":
+          icon.className = "ri-information-line toast-icon";
+          break;
+        case "toast-warning":
+          icon.className = "ri-alert-line toast-icon";
+          break;
+        case "toast-error":
+          icon.className = "ri-close-circle-line toast-icon";
+          break;
+        default:
+          icon.className = "ri-information-line toast-icon"; // Default icon
       }
 
       // Show toast
@@ -363,18 +375,18 @@ if ($row = mysqli_fetch_assoc($result)) {
   <!-- END >> JS SCRIPT IN ALERT -->
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      window.openModal = function (event, faq_id) {
+    document.addEventListener("DOMContentLoaded", function() {
+      window.openModal = function(event, faq_id) {
         event.preventDefault();
         document.getElementById("modalFaqId").value = faq_id; // Set FAQ ID
         document.getElementById("confirmationModal-faq").style.display = "flex";
       };
 
-      window.closeModal = function () {
+      window.closeModal = function() {
         document.getElementById("confirmationModal-faq").style.display = "none";
       };
 
-      window.closeModalOutside = function (event) {
+      window.closeModalOutside = function(event) {
         if (event.target.id === "confirmationModal-faq") {
           closeModal();
         }

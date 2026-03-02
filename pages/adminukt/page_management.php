@@ -1,8 +1,10 @@
 <?php
 include '../../connection/dbconnection.php';
+
 session_start();
+
 if (!isset($_SESSION['user_id'])) {
-  header('location:login.php');
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
   exit;
 }
 

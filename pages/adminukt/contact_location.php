@@ -2,7 +2,10 @@
 session_start();
 
 include '../../connection/dbconnection.php';
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 $sql = "SELECT university_street, city_municipality, university_province, university_country, 
                university_postalcode, university_contactnumber, university_emailaddress
         FROM university_profile 
@@ -55,14 +58,14 @@ if ($row = mysqli_fetch_assoc($result)) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($settings['websitetitle_admin']); ?></title>
   <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.6"> 
+  <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=v1.6">
   <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
 </head>
 
 <body class="bg-light">
 
- <!-- include side bar start -->
- <?php include 'include/alert.php'; ?>
+  <!-- include side bar start -->
+  <?php include 'include/alert.php'; ?>
   <?php include 'confirmation.php'; ?>
   <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->

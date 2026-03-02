@@ -3,6 +3,10 @@ include 'include/alert.php';
 session_start();
 include '../../function/partnership_function.php';
 include 'confirmation.php';
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -182,9 +186,9 @@ include 'confirmation.php';
                   </thead>
                   <tbody>
                     <tr>
-                     <td></td>
-                     <td></td>
-                     <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
                       <td>
                         <div class="dropdown">
                           <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -200,7 +204,7 @@ include 'confirmation.php';
                         </div>
                       </td>
                     </tr>
-                  
+
 
 
                     <!-- Repeat for other rows -->
@@ -275,14 +279,14 @@ include 'confirmation.php';
                       <div class="row d-flex justify-content-center">
                         <div class="col-md-8">
                           <div class="row">
-                            
-                              <p><strong>Resource Type:</strong> <span>Journal</span></p>
-                              <p><strong>Title:</strong> <span>Test Book</span></p>
-                              <p><strong>Author:</strong> <span>Ronaldo Payawal</span></p>
-                              <p><strong>Publication Year:</strong> <span>February 25,2025</span></p>
-                              <p><strong>ISBN/ISSN:</strong> <span>1234-5678</span></p>
-                            
-                            
+
+                            <p><strong>Resource Type:</strong> <span>Journal</span></p>
+                            <p><strong>Title:</strong> <span>Test Book</span></p>
+                            <p><strong>Author:</strong> <span>Ronaldo Payawal</span></p>
+                            <p><strong>Publication Year:</strong> <span>February 25,2025</span></p>
+                            <p><strong>ISBN/ISSN:</strong> <span>1234-5678</span></p>
+
+
                           </div>
                         </div>
                       </div>

@@ -2,16 +2,16 @@
 include 'include/alert.php';
 require '../../connection/dbconnection.php';
 session_start();
-
 if (!isset($_SESSION['user_id'])) {
-    header('location:login.php');
-    exit;
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
 }
+
 $user_id = $_SESSION['user_id'];
 
 if (!isset($_SESSION['session_token'])) {
-    header('location:login.php');
-    exit;
+  header('location:login.php');
+  exit;
 }
 ?>
 <!DOCTYPE html>
@@ -131,7 +131,7 @@ if (!isset($_SESSION['session_token'])) {
                           <span></span><span></span><span></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a></li>
+                          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a></li>
                           <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                         </ul>
                       </div>

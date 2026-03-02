@@ -1,7 +1,10 @@
 <?php
 include '../../connection/dbconnection.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -47,7 +50,7 @@ if ($result->num_rows > 0) {
 <body class="bg-light">
 
   <!-- include side bar start -->
-   
+
   <?php include 'include/alert.php'; ?>
   <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
@@ -66,22 +69,22 @@ if ($result->num_rows > 0) {
               <div class="d-flex justify-content-center">
                 <div class="account_profile-card w-100">
                   <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 p-2">
-                      <div class="d-flex flex-column flex-sm-row align-items-center text-center text-sm-start gap-3">
-                        <img src="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" alt="Profile Image"
-                          class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                        <div>
-                          <h4 class="fw-bold mb-1"><?php echo htmlspecialchars($university_name); ?></h4>
-                          <small class="text-muted"><?php echo $website_tagline; ?></small>
-                        </div>
-                      </div>
-                    
-                      <div class="d-flex flex-column flex-sm-row gap-2">
-                        <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
-                          data-bs-target="#updateSettingsModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to update the settings">
-                          <i class="ri-edit-2-line"></i> Update Settings
-                        </button>
+                    <div class="d-flex flex-column flex-sm-row align-items-center text-center text-sm-start gap-3">
+                      <img src="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" alt="Profile Image"
+                        class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                      <div>
+                        <h4 class="fw-bold mb-1"><?php echo htmlspecialchars($university_name); ?></h4>
+                        <small class="text-muted"><?php echo $website_tagline; ?></small>
                       </div>
                     </div>
+
+                    <div class="d-flex flex-column flex-sm-row gap-2">
+                      <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
+                        data-bs-target="#updateSettingsModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to update the settings">
+                        <i class="ri-edit-2-line"></i> Update Settings
+                      </button>
+                    </div>
+                  </div>
 
                   <hr>
                   <div class="row">
@@ -94,7 +97,7 @@ if ($result->num_rows > 0) {
                       <input type="text" class="form-control" value="<?php echo $title_cm; ?>" disabled>
                     </div>
                   </div>
-                 <hr>
+                  <hr>
                   <div class="row mb-5">
                     <div class="col-md-6 col-12">
                       <label class="fw-bold d-block mb-2"><i class="ri-image-line"></i> Website Background Image</label>
@@ -131,7 +134,7 @@ if ($result->num_rows > 0) {
                   <div class="row mb-0">
                     <hr>
                     <div class="col">
-                     <input id="colorInput" type="text" data-coloris>
+                      <input id="colorInput" type="text" data-coloris>
                       <div class="mt-1 d-flex align-items-center">
                         <label class="fw-bold d-inline-flex align-items-center mb-0">
                           <i class="ri-palette-line me-1"></i> Text/Button Color
@@ -154,15 +157,15 @@ if ($result->num_rows > 0) {
                     <!--</div>-->
                   </div>
                   <label class="form-label fw-bold  mt-3">Do you want to backup the database?</label> <br>
-                   <!--<small class="text-muted translate">Click download database.</small>-->
+                  <!--<small class="text-muted translate">Click download database.</small>-->
                   <form action="../../function/backup_db.php" method="POST">
-                          <button type="submit" name="backup" class="btn btn-dynamic btn-sm rounded-2 px-4"
-                            onclick="return confirm('Do you want to download the database now?')" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Click here to download database">
-                            <i class="ri-download-2-line"></i> Download Database
-                          </button>
-                    </form>
-               
+                    <button type="submit" name="backup" class="btn btn-dynamic btn-sm rounded-2 px-4"
+                      onclick="return confirm('Do you want to download the database now?')" data-bs-toggle="tooltip"
+                      data-bs-placement="top" title="Click here to download database">
+                      <i class="ri-download-2-line"></i> Download Database
+                    </button>
+                  </form>
+
                 </div>
               </div>
             </div>

@@ -2,8 +2,10 @@
 session_start();
 
 include '../../connection/dbconnection.php';
-
-date_default_timezone_set('Asia/Phnom_Penh');
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 
 if (isset($_POST['edit_event'])) {
   $uc_id = $_POST['uc_id'];
@@ -266,7 +268,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <!-- container nav -->
 
             <!-- container nav -->
-        
+
 
             <!-- Edit Event Modal -->
             <div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel"

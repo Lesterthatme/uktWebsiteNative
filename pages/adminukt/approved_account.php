@@ -1,7 +1,10 @@
 <?php
 require '../../connection/dbconnection.php';
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    exit;
+}
 // Fetch admission requirements
 $sql = "SELECT * FROM admission_requirement ";
 $result = $conn->query($sql);

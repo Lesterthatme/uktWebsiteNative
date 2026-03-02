@@ -1,7 +1,10 @@
 <?php
 session_start();
 include '../../connection/dbconnection.php';
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    exit;
+}
 // Query to get the university profile data
 $query = "SELECT comlab_description FROM computer_laboratory WHERE up_id = 1";
 $result = mysqli_query($conn, $query);
@@ -117,17 +120,17 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                                                                 <!-- Trash Icon Button -->
                                                                 <form action="../../functio/comlab_function.php" method="POST"
-                                                                style="position: absolute; top: 10px; right: 10px; z-index: 10;">
-                                                                <input type="hidden" name="comlab_image" value="<?php echo htmlspecialchars($image); ?>">
+                                                                    style="position: absolute; top: 10px; right: 10px; z-index: 10;">
+                                                                    <input type="hidden" name="comlab_image" value="<?php echo htmlspecialchars($image); ?>">
 
-                                                                <button type="submit" name="delete_comlab_image"
-                                                                    class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mt-3"
-                                                                    style="width: 40px; height: 40px;"
-                                                                    onclick="return confirm('Are you sure you want to delete this image?');"
-                                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Delete this image">
-                                                                    <i class="ri-delete-bin-line"></i>
-                                                                </button>
-                                                            </form>
+                                                                    <button type="submit" name="delete_comlab_image"
+                                                                        class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mt-3"
+                                                                        style="width: 40px; height: 40px;"
+                                                                        onclick="return confirm('Are you sure you want to delete this image?');"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Delete this image">
+                                                                        <i class="ri-delete-bin-line"></i>
+                                                                    </button>
+                                                                </form>
 
                                                                 <img src="../../assets/uploads/computer laboratory/<?php echo htmlspecialchars($image); ?>"
                                                                     class="d-block w-100 img-fluid rounded border mt-3"

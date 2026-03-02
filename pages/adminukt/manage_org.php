@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,9 +37,9 @@
     <!-- start: Content -->
     <div class="p-4">
       <div class="row">
-         
 
-      <div class="card border-0 pb-3">
+
+        <div class="card border-0 pb-3">
           <div class="card-body">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
             </div>
@@ -45,10 +47,10 @@
             <div class="doc-tabs-container mt-3">
               <ul class="doc-tabs d-flex list-unstyled">
                 <li class="me-3">
-                <a class="doc-link active" href="#" data-page="about_org.php">Background</a>
+                  <a class="doc-link active" href="#" data-page="about_org.php">Background</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="#" >Announcement</a>
+                  <a class="doc-link" href="#">Announcement</a>
                 </li>
                 <li class="me-3">
                   <a class="doc-link" href="">Seminars</a>
@@ -62,7 +64,7 @@
               </ul>
               <hr class="doc-tabs-divider">
             </div>
-            
+
             <div class="content_org">
 
             </div>
@@ -85,72 +87,71 @@
   <script src="../../assets/bootstrap/js/logs.js?v=1.4"></script>
   <script src="../../assets/bootstrap/js/site_settings.js?v=1.1"></script>
   <script>
-        $(document).ready(function () {
-    function loadContent(page) {
+    $(document).ready(function() {
+      function loadContent(page) {
         console.log("Attempting to load:", page);
-        $(".content_org").load(page, function (response, status, xhr) {
-            if (status === "error") {
-                console.error("Error loading page:", xhr.status, xhr.statusText);
-            } else {
-                console.log("Page loaded successfully:", page);
-                console.log(response); // Log the loaded content
-                
-                // After loading, reattach event listeners and re-execute scripts
-                reinitializeScripts();
-            }
-        });
-    }
+        $(".content_org").load(page, function(response, status, xhr) {
+          if (status === "error") {
+            console.error("Error loading page:", xhr.status, xhr.statusText);
+          } else {
+            console.log("Page loaded successfully:", page);
+            console.log(response); // Log the loaded content
 
-    function reinitializeScripts() {
+            // After loading, reattach event listeners and re-execute scripts
+            reinitializeScripts();
+          }
+        });
+      }
+
+      function reinitializeScripts() {
         console.log("Rebinding event listeners and scripts...");
 
         // Reinitialize Bootstrap components (modals, dropdowns, etc.)
         $(".modal").modal();
 
         // Rebind event listeners (example: modal button)
-        $(document).on("click", "[data-bs-toggle='modal']", function () {
-            console.log("Modal triggered:", $(this).data("bs-target"));
+        $(document).on("click", "[data-bs-toggle='modal']", function() {
+          console.log("Modal triggered:", $(this).data("bs-target"));
         });
 
         // Reload external JS files (drag & drop, etc.)
         let scriptPaths = [
-            "../../assets/bootstrap/js/script.js",
-            "../../assets/bootstrap/js/carousel.js",
-            "../../assets/bootstrap/js/drag_and_drop.js?v=2.1",
-            "../../assets/bootstrap/js/activeLink.js?v=1.7",
-            "../../assets/bootstrap/js/logs.js?v=1.4",
-            "../../assets/bootstrap/js/site_settings.js?v=1.0"
+          "../../assets/bootstrap/js/script.js",
+          "../../assets/bootstrap/js/carousel.js",
+          "../../assets/bootstrap/js/drag_and_drop.js?v=2.1",
+          "../../assets/bootstrap/js/activeLink.js?v=1.7",
+          "../../assets/bootstrap/js/logs.js?v=1.4",
+          "../../assets/bootstrap/js/site_settings.js?v=1.0"
         ];
 
         scriptPaths.forEach(path => {
-            let script = document.createElement("script");
-            script.src = path;
-            script.defer = true;
-            document.body.appendChild(script);
-            script.onload = function () {
-                console.log("Script loaded:", path);
-            };
+          let script = document.createElement("script");
+          script.src = path;
+          script.defer = true;
+          document.body.appendChild(script);
+          script.onload = function() {
+            console.log("Script loaded:", path);
+          };
         });
-    }
+      }
 
-    // Load first tab automatically
-    let firstTab = $(".doc-link.active");
-    if (firstTab.length) {
+      // Load first tab automatically
+      let firstTab = $(".doc-link.active");
+      if (firstTab.length) {
         loadContent(firstTab.data("page"));
-    }
+      }
 
-    // Handle tab switching
-    $(document).on("click", ".doc-link", function (e) {
+      // Handle tab switching
+      $(document).on("click", ".doc-link", function(e) {
         e.preventDefault();
         let page = $(this).data("page");
         loadContent(page);
 
         $(".doc-link").removeClass("active");
         $(this).addClass("active");
+      });
     });
-});
-
-    </script>
+  </script>
   <!-- end js -->
 </body>
 

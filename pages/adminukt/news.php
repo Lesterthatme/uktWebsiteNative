@@ -1,7 +1,10 @@
 <?php
 session_start();
 include("../../connection/dbconnection.php");
-
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -57,7 +60,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
               <h5 class="card-title fs-6 mb-2 mb-md-0">Manage News</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
-                data-bs-target="#exampleModal" data-bs-toggle="tooltip" 
+                data-bs-target="#exampleModal" data-bs-toggle="tooltip"
                 data-bs-placement="top" title="Click to add news">
                 <i class="ri-add-line"></i> Add News
               </button>
@@ -118,8 +121,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div> -->
 
                       <div class="modal-footer pb-0">
-                        <button type="submit" name="add_news" class="btn btn-dynamic"  data-bs-toggle="tooltip" 
-                        data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
+                        <button type="submit" name="add_news" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                          data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
                           Save</button>
                       </div>
                     </form>
@@ -168,7 +171,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                           <div class="card-body d-flex flex-column">
                             <div class="dropdown three-dots-accord">
                               <button class="btn p-0 border-0 float-end" type="button" data-bs-toggle="dropdown"
-                              data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to see the action">
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to see the action">
                                 <span></span><span></span><span></span>
                               </button>
                               <ul class="dropdown-menu dropdown-menu-end">
@@ -178,15 +181,15 @@ if ($row = mysqli_fetch_assoc($result)) {
                                     data-title="<?= htmlspecialchars($news_title); ?>"
                                     data-description="<?= htmlspecialchars($row['news_description'], ENT_QUOTES, 'UTF-8'); ?>"
                                     data-image="../../assets/uploads/news/<?= $news_image; ?>"
-                                    data-status="<?= $news_status; ?>" data-date="<?= $row['news_date']; ?>"  data-bs-toggle="tooltip" 
-                                   data-bs-placement="top" title="Click to edit this news">
-                                   <i class="ri-pencil-line"></i> Edit
+                                    data-status="<?= $news_status; ?>" data-date="<?= $row['news_date']; ?>" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Click to edit this news">
+                                    <i class="ri-pencil-line"></i> Edit
                                   </a>
                                 </li>
                                 <li>
                                   <a href="javascript:void(0);" class="dropdown-item text-dark text-decoration-none"
                                     data-id="<?= $row['news_id']; ?>"
-                                    onclick="openDeleteModal(<?= $row['news_id']; ?>, '<?= addslashes($row['news_title']); ?>')"  data-bs-toggle="tooltip" 
+                                    onclick="openDeleteModal(<?= $row['news_id']; ?>, '<?= addslashes($row['news_title']); ?>')" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Click to delete this news">
                                     <i class="ri-delete-bin-line"></i> Delete
                                   </a>
@@ -201,8 +204,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                               <button class="news-btn w-100 read-more-btn" data-bs-toggle="modal"
                                 data-bs-target="#newsModal" data-title="<?= htmlspecialchars($news_title, ENT_QUOTES); ?>"
                                 data-description="<?= htmlspecialchars($row['news_description'], ENT_QUOTES, 'UTF-8'); ?>"
-                                data-image="../../assets/uploads/news/<?= $news_image; ?>"  data-bs-toggle="tooltip" 
-                                data-bs-placement="top"  title="Click to view this news">
+                                data-image="../../assets/uploads/news/<?= $news_image; ?>" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Click to view this news">
                                 Read More <i class="ri-arrow-right-line"></i>
                               </button>
                             </div>
@@ -298,10 +301,10 @@ if ($row = mysqli_fetch_assoc($result)) {
                       <textarea class="form-control" id="edit-description" name="news_description" rows="3"
                         required></textarea>
                     </div>
-                    
+
                     <div class="modal-footer pb-0">
-                      <button type="submit" name="update_news" class="btn btn-dynamic"  data-bs-toggle="tooltip" 
-                      data-bs-placement="top" title="Click to save">
+                      <button type="submit" name="update_news" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Click to save">
                         <i class="ri-save-fill"></i> Save
                       </button>
                     </div>

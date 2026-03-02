@@ -1,13 +1,11 @@
 <?php
 // Ensure the page name is valid, and default to 'about_org' if not provided
+session_start();
+
 $page = isset($_GET['page']) && in_array($_GET['page'], ['about_org', 'list_org', 'event_activities_org', 'rules_org']) ? $_GET['page'] : 'about_org';
 
 include 'include/alert.php';
-session_start();
-if (!isset($_SESSION['session_token'])) {
-  header('location:login.php');
-  exit;
-}
+
 include 'confirmation.php';
 ?>
 <!DOCTYPE html>

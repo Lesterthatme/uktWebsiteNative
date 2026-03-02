@@ -3,6 +3,11 @@
 session_start();
 include '../../connection/dbconnection.php';
 
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
+}
+
 $query = "SELECT university_mission, university_vision, university_goal, university_core FROM university_vmgo";
 $result = mysqli_query($conn, $query);
 
