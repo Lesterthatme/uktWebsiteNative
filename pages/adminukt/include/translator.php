@@ -59,4 +59,15 @@
       });
     }
   });
+  document.addEventListener("DOMContentLoaded", () => {
+    const translateBtn = document.getElementById("translateBtn2");
+    if (translateBtn) {
+      translateBtn.addEventListener("click", () => {
+        currentLang = (currentLang === 'en') ? 'km' : 'en';
+        changeLanguage(currentLang);
+      });
+    }
+  });
+
+
 </script>
