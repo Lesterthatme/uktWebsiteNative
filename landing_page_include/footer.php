@@ -50,7 +50,7 @@ if ($result && $result->num_rows > 0) {
             <!-- University Info -->
             <div class="col-lg-4 col-md-6">
                 <img src="assets/images/officiallogo (1).png" alt="University Logo" class="footer-logo">
-                <h4 class="footer-text">UNIVERSITY OF KRATIE</h4>
+                <h4 class="footer-text"><a href="contactus" class="fs-3 text-decoration-none">UNIVERSITY OF KRATIE</a></h4>
                 <p><strong>Contact Us</strong></p>
                 <p><?php echo $address; ?></p>
                 <p>Phone: <?php echo $contact; ?></p>
@@ -128,3 +128,7 @@ if ($result && $result->num_rows > 0) {
 
         </div>
 </footer>
+
+<script>
+
+</script>
