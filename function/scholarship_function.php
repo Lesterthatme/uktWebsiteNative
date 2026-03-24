@@ -1,119 +1,171 @@
 <?php
-include("../connection/dbconnection.php"); 
+include("../connection/dbconnection.php");
 session_start();
 
 date_default_timezone_set("Asia/Phnom_Penh");
 
 // Adding Scholarship start
-if (isset($_POST["add_scholarship"])) { 
-    $status = "Active";
-    $scholarship_title = $_POST["scholarship_title"];
-    $description = $_POST["description"];
-    $up_id = 1; 
-    $date_added = $_POST["date_added"]; 
+if (isset($_POST["add_scholarship"])) {
+    $conn->begin_transaction();
+    try {
 
-    if (isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
+        $status = "Active";
+        $scholarship_title = $_POST["scholarship_title"];
+        $description = $_POST["description"];
+        $up_id = 1;
+        $date_added = $_POST["date_added"];
 
-        $ap_query = "SELECT ap_id FROM authorized_person WHERE user_id = ?";
-        $stmt_ap = $conn->prepare($ap_query);
-        $stmt_ap->bind_param("i", $user_id);
-        $stmt_ap->execute();
-        $result_ap = $stmt_ap->get_result();
-        
-        if ($result_ap->num_rows > 0) {
-            $row = $result_ap->fetch_assoc();
-            $ap_id = $row["ap_id"];
-        } else {
-            $_SESSION['toastMsg'] = "Error: Authorized person not found.";
+        $imageName = null; // default if no image
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+
+            $fileTmp = $_FILES['image']['tmp_name'];
+            $fileSize = $_FILES['image']['size'];
+            $fileName = $_FILES['image']['name'];
+
+            // Get MIME type
+            $fileType = mime_content_type($fileTmp);
+            // Allowed types
+            $allowedTypes = ['image/jpeg', 'image/png'];
+
+            if (!in_array($fileType, $allowedTypes)) {
+                $_SESSION['toastMsg'] = "Invalid image type!";
+                $_SESSION['toastType'] = "toast-error";
+                header("Location: ../pages/adminukt/scholarship");
+                exit;
+            }
+
+            // Limit size (5MB)
+            if ($fileSize > 5 * 1024 * 1024) {
+                $_SESSION['toastMsg'] = "Image too large! Max 5MB.";
+                $_SESSION['toastType'] = "toast-error";
+                header("Location: ../pages/adminukt/scholarship");
+                exit;
+            }
+
+            // Generate unique name
+            $imageName = uniqid() . "_" . basename($fileName);
+
+            $uploadPath = "../assets/uploads/student/scholarship/" . $imageName;
+
+            move_uploaded_file($fileTmp, $uploadPath);
+        }
+
+        $stmt = $conn->prepare("INSERT INTO university_scholarship (scholarship_title, `description` , date_added, `status`, ap_id, up_id, `image`) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssiis", $scholarship_title, $description, $date_added, $status, $ap_id, $up_id, $imageName);
+        if (!$stmt->execute()) {
+            $conn->rollback();
+            $_SESSION['toastMsg'] = "Error adding scholarship: " . $stmt->error;
             $_SESSION['toastType'] = "toast-error";
-            header("Location: ../pages/adminukt/scholarship");
             exit;
         }
-        $stmt_ap->close();
-    } else {
-        $_SESSION['toastMsg'] = "Error: User not logged in.";
-        $_SESSION['toastType'] = "toast-error";
-        header("Location: ../pages/adminukt/scholarship");
-        exit;
-    }
 
-    $sql = "INSERT INTO university_scholarship (scholarship_title, description, date_added, status, ap_id, up_id) 
-            VALUES (?, ?, ?, ?, ?, ?)";
-    
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssii", $scholarship_title, $description, $date_added, $status, $ap_id, $up_id);
-
-    if ($stmt->execute()) {
         $log_description = "Added a new University Scholarship: " . $scholarship_title;
         $log_date = date("Y-m-d");
         $log_time = date("H:i:s");
 
-        $log_sql = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
+        $log_sql = "INSERT INTO history_log (`description`, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
         $stmt_log = $conn->prepare($log_sql);
         $stmt_log->bind_param("sssi", $log_description, $log_date, $log_time, $user_id);
         $stmt_log->execute();
-        $stmt_log->close();
 
-        $_SESSION['toastMsg'] = "Scholarship added successfully!";
+
+        $conn->commit();
+        $_SESSION['toastMsg'] = "Scholarship updated successfully!";
         $_SESSION['toastType'] = "toast-success";
-    } else {
-        $_SESSION['toastMsg'] = "Error adding scholarship: " . $stmt->error;
+        header("Location: ../pages/adminukt/scholarship");
+        exit;
+    } catch (Exception $e) {
+        $conn->rollback();
+        $_SESSION['toastMsg'] = "Something Went Wrong!";
         $_SESSION['toastType'] = "toast-error";
+        header("Location: ../pages/adminukt/scholarship");
+        exit;
     }
-
-    $stmt->close();
-    $conn->close();
-    header("Location: ../pages/adminukt/scholarship");
-    exit;
 }
 // Adding Scholarship End
 
 // Updating Scholarship start
 if (isset($_POST['update_scholarship'])) {
-    $scholarship_id = $_POST['scholarship_id'];
-    $scholarship_title = mysqli_real_escape_string($conn, $_POST['scholarship_title']);
-    $description = mysqli_real_escape_string($conn, $_POST['description']);
-    $status = mysqli_real_escape_string($conn, $_POST['status']);
-    $date_added = mysqli_real_escape_string($conn, $_POST['date_added']);
+    $conn->begin_transaction();
+    try {
+        $scholarship_id = $_POST['scholarship_id'];
+        $scholarship_title = mysqli_real_escape_string($conn, $_POST['scholarship_title']);
+        $description = mysqli_real_escape_string($conn, $_POST['description']);
+        $status = mysqli_real_escape_string($conn, $_POST['status']);
+        $date_added = mysqli_real_escape_string($conn, $_POST['date_added']);
 
-    if (isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
-    } else {
-        $_SESSION['toastMsg'] = "Error: User not logged in.";
-        $_SESSION['toastType'] = "toast-error";
+        $image_sql = "";
+        if (isset($_FILES['scholarship_image']) && $_FILES['scholarship_image']['error'] == 0) {
+            $allowed_ext = ['jpg', 'jpeg', 'png'];
+            $file_name = $_FILES['scholarship_image']['name'];
+            $file_tmp = $_FILES['scholarship_image']['tmp_name'];
+            $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+            if (in_array($file_ext, $allowed_ext)) {
+                $new_file_name = uniqid('sch_', true) . "." . $file_ext;
+                $upload_dir = "../assets/uploads/student/scholarship/" . $new_file_name;
+
+                if (move_uploaded_file($file_tmp, $upload_dir)) {
+                    // Optional: delete old image
+                    $old_image = mysqli_fetch_assoc(mysqli_query($conn, "SELECT `image` FROM university_scholarship WHERE scholarship_id = '$scholarship_id'"))['image'];
+                    if (!empty($old_image) && file_exists("../assets/uploads/student/scholarship/" . $old_image)) {
+                        unlink("../assets/uploads/student/scholarship/" . $old_image);
+                    }
+
+                    // Prepare SQL part for image update
+                    $image_sql = ", image = '$new_file_name'";
+                    echo $image_sql;
+                } else {
+                    $_SESSION['toastMsg'] = "Failed to upload image.";
+                    $_SESSION['toastType'] = "toast-error";
+                    header("Location: ../pages/adminukt/scholarship");
+                    exit;
+                }
+            } else {
+                $_SESSION['toastMsg'] = "Invalid image type. Allowed: jpg, jpeg, png";
+                $_SESSION['toastType'] = "toast-error";
+                header("Location: ../pages/adminukt/scholarship");
+                exit;
+            }
+        }
+
+        $query = "UPDATE university_scholarship 
+                      SET scholarship_title = '$scholarship_title', 
+                          `description` = '$description', 
+                          `status` = '$status',
+                          date_added = '$date_added'
+                          $image_sql
+                      WHERE scholarship_id = '$scholarship_id'";
+
+        if (mysqli_query($conn, $query)) {
+            $log_description = "Updated University Scholarship: " . $scholarship_title;
+            $log_date = date("Y-m-d");
+            $log_time = date("H:i:s");
+
+            $log_sql = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
+            $stmt_log = $conn->prepare($log_sql);
+            $stmt_log->bind_param("sssi", $log_description, $log_date, $log_time, $user_id);
+            $stmt_log->execute();
+
+            $conn->commit();
+            $_SESSION['toastMsg'] = "Scholarship updated successfully!";
+            $_SESSION['toastType'] = "toast-success";
+            header("Location: ../pages/adminukt/scholarship");
+            exit;
+        } else {
+            $conn->rollback();
+            $_SESSION['toastMsg'] = "Error updating scholarship: " . mysqli_error($conn);
+            $_SESSION['toastType'] = "toast-error";
+            header("Location: ../pages/adminukt/scholarship");
+            exit;
+        }
+    } catch (Exception $e) {
+        $conn->rollback();
         header("Location: ../pages/adminukt/scholarship");
         exit;
     }
-
-    $query = "UPDATE university_scholarship 
-              SET scholarship_title = '$scholarship_title', 
-                  description = '$description', 
-                  status = '$status',
-                  date_added = '$date_added'
-              WHERE scholarship_id = '$scholarship_id'";
-
-    if (mysqli_query($conn, $query)) {
-        $log_description = "Updated University Scholarship: " . $scholarship_title;
-        $log_date = date("Y-m-d");
-        $log_time = date("H:i:s");
-
-        $log_sql = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
-        $stmt_log = $conn->prepare($log_sql);
-        $stmt_log->bind_param("sssi", $log_description, $log_date, $log_time, $user_id);
-        $stmt_log->execute();
-        $stmt_log->close();
-
-        $_SESSION['toastMsg'] = "Scholarship updated successfully!";
-        $_SESSION['toastType'] = "toast-success";
-    } else {
-        $_SESSION['toastMsg'] = "Error updating scholarship: " . mysqli_error($conn);
-        $_SESSION['toastType'] = "toast-error";
-    }
-
-    mysqli_close($conn);
-    header("Location: ../pages/adminukt/scholarship");
-    exit;
 }
 // Updating Scholarship End
 
@@ -127,6 +179,7 @@ if (isset($_GET['scholarship_id'])) {
     if (mysqli_num_rows($check_result) > 0) {
         $row = mysqli_fetch_assoc($check_result); // Store scholarship data
         $scholarship_title = $row['scholarship_title'];
+        $image = $row['image'];
 
         // Get user_id from session
         if (isset($_SESSION["user_id"])) {
@@ -177,6 +230,8 @@ if (isset($_GET['scholarship_id'])) {
 
             $_SESSION['toastMsg'] = "Scholarship deleted and archived successfully.";
             $_SESSION['toastType'] = "toast-success";
+
+            unlink("../assets/uploads/student/scholarship/" . $image);
         } else {
             $_SESSION['toastMsg'] = "Error deleting scholarship.";
             $_SESSION['toastType'] = "toast-error";
@@ -189,5 +244,3 @@ if (isset($_GET['scholarship_id'])) {
     exit;
 }
 // Deleting Scholarship End
-
-?>
