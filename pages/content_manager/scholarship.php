@@ -6,9 +6,6 @@ if (!isset($_SESSION['user_id'])) {
   header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
   exit;
 }
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
 
 // Fetch  scholarship
 $sql = "SELECT * FROM university_scholarship";
@@ -75,7 +72,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                 data-bs-placement="top" title="Click to add a new scholarship"><i class="ri-add-line"></i> Add Scholarship
               </button>
             </div>
-            <p class="card-text text-muted small">Our strong partnerships with institutions and industries empower us to provide meaningful scholarship opportunities, supporting students in achieving academic excellence and driving innovation.</p>
+
+
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-xl">
@@ -85,48 +83,54 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="../../function/content_manager/scholarship_function.php" method="POST">
-                      <div class="mb-3">
-                        <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date:</strong></label>
-                        <input type="date" class="form-control" id="date_added" name="date_added" value="<?php echo date('Y-m-d'); ?>" style="width: 150px;" required>
-                      </div>
-                      <!-- <div class="mb-3">
-                        <label for="status" class="form-label fw-semibold text-muted"><strong>Status:</strong></label>
-                        <select class="form-control" id="status" name="status" style="width: 150px;">
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
-                        </select>
-                      </div> -->
-                      <div class="mb-3">
-                        <label for="scholarship_title" class="form-label fw-semibold text-muted"><strong>Scholarship Title:</strong></label>
-                        <input type="text" class="form-control" id="scholarship_title" name="scholarship_title" placeholder="Enter Scholarship Title" required>
-                      </div>
-                      <div class="mb-3">
-                        <label for="description" class="form-label fw-semibold text-muted"><strong>Description:</strong></label>
-                        <textarea class="form-control" id="summernote" name="description" rows="3" placeholder="Enter description" required></textarea>
-                        <div id="summernote"></div>
-                        <script>
-                          $('#summernote').summernote({
-                            placeholder: 'Please Enter Description',
-                            tabsize: 2,
-                            height: 120,
-                            toolbar: [
-                              ['style', ['style']],
-                              ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-                              ['fontname', ['fontname']],
-                              ['fontsize', ['fontsize']],
-                              ['color', ['color']],
-                              ['para', ['ol', 'ul', 'paragraph', 'height']],
-                              ['table', ['table']],
-                              ['insert', ['link']],
-                              ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
-                            ]
-                          });
-                        </script>
-                      </div>
+                    <form action="../../function/scholarship_function.php" method="POST" enctype="multipart/form-data">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="mb-3 col-12 col-sm-6">
+                            <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date:</strong></label>
+                            <input type="date" class="form-control" id="date_added" name="date_added" value="<?php echo date('Y-m-d'); ?>" required>
+                          </div>
 
-                      <button type="submit" name="add_scholarship" class="btn btn-dynamic float-end" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save</button>
+                          <div class="mb-3 col-12 col-sm-6">
+                            <label for="status" class="form-label fw-semibold text-muted"><strong>Status:</strong></label>
+                            <select class="form-control" id="status" name="status">
+                              <option value="Active">Active</option>
+                              <option value="Inactive">Inactive</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3 col-12">
+                            <label for="scholarship_title" class="form-label fw-semibold text-muted"><strong>Scholarship Title:</strong></label>
+                            <input type="text" class="form-control" id="scholarship_title" name="scholarship_title" placeholder="Enter Scholarship Title" required>
+                          </div>
+
+                          <div class="mb-3 col-12">
+                            <label for="description" class="form-label fw-semibold text-muted">
+                              <strong>Description:</strong>
+                            </label>
+                            <textarea class="form-control" id="summernote" name="description"
+                              rows="3" placeholder="Enter description" required></textarea>
+                          </div>
+
+                          <div class="mb-3 col-12">
+                            <label for="image" class="form-label d-flex align-items-center" title="JPEG or PNG only!!">
+                              <span class="fw-bold">Upload Image</span>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="ms-2" style="cursor:pointer;" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                              </svg>
+                            </label>
+                            <input type="file" class="form-control" name="image" accept="image/*" id="image">
+                          </div>
+
+                          <div class="col-6 text-start">
+                            <button type="submit" name="add_scholarship" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                              data-bs-placement="top" value="content_manager" title="Click to save"><i class="ri-save-line"></i> Save
+                            </button>
+                          </div>
+
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>
@@ -138,9 +142,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="log_container">
 
               <?php
-              include("../../connection/dbconnection.php");
-
-              $query = "SELECT scholarship_id, scholarship_title, date_added, status, description FROM university_scholarship ORDER BY date_added DESC";
+              $query = "SELECT scholarship_id, scholarship_title, date_added, `status`, `description`, `image` FROM university_scholarship ORDER BY date_added DESC";
               $result = mysqli_query($conn, $query);
               ?>
 
@@ -201,7 +203,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                           </li>
                           <li>
                             <a class="dropdown-item text-dark delete-scholarship"
-                              href="../../function/content_manager/scholarship_function.php?scholarship_id=<?= $row['scholarship_id'] ?>"
+                              href="../../function/scholarship_function.php?scholarship_id=<?= $row['scholarship_id'] ?>&loc=content_manager"
                               onclick="return confirm('Are you sure you want to delete this scholarship?')" data-bs-toggle="tooltip"
                               data-bs-placement="top" title="Click here to delete this scholarship">
                               <i class="ri-delete-bin-line"></i> Delete
@@ -212,7 +214,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                     </div>
 
                     <p><strong>Description:</strong> <?= $row['description'] ?></p>
-
+                    <div>
+                      <img src="../../assets/uploads/student/scholarship/<?= $row['image'] ?>" alt="Img" style="max-width:500px;">
+                    </div>
                     <!-- Edit Modal -->
                     <div class="modal fade" id="editModal<?= $row['scholarship_id']; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-xl">
@@ -222,34 +226,52 @@ if ($row = mysqli_fetch_assoc($result)) {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <form method="POST" action="../../function/content_manager/scholarship_function.php">
+
+                            <form method="POST" action="../../function/scholarship_function.php" enctype="multipart/form-data">
                               <input type="hidden" name="scholarship_id" value="<?= $row['scholarship_id']; ?>">
                               <div class="mb-3">
                                 <label for="date_added" class="form-label"><strong>Date</strong></label>
-                                <input type="date" class="form-control" style="width: 150px;" name="date_added"
+                                <input type="date" class="form-control" name="date_added"
                                   value="<?= htmlspecialchars($row['date_added']); ?>" required>
                               </div>
+
                               <div class="mb-3">
                                 <label for="status" class="form-label"><strong>Status</strong></label>
-                                <select class="form-select" name="status" style="width: 150px;" required>
+                                <select class="form-select" name="status" required>
                                   <option value="Active" <?= $row['status'] == 'Active' ? 'selected' : '' ?>>Active</option>
                                   <option value="Inactive" <?= $row['status'] == 'Inactive' ? 'selected' : '' ?>>Inactive</option>
                                 </select>
                               </div>
+
                               <div class="mb-3">
                                 <label for="scholarship_title" class="form-label"><strong>Scholarship Title</strong></label>
                                 <input type="text" class="form-control" name="scholarship_title"
                                   value="<?= htmlspecialchars($row['scholarship_title']); ?>" required>
                               </div>
+
                               <div class="mb-3">
                                 <label for="description" class="form-label"><strong>Description</strong></label>
                                 <textarea class="form-control summernote1" name="description" rows="3" required><?= htmlspecialchars($row['description']); ?></textarea>
                               </div>
+
+                              <!-- Image Upload -->
+                              <div class="mb-3">
+                                <label for="scholarship_image" class="form-label"><strong>Image</strong></label>
+                                <?php if (!empty($row['image'])): ?>
+                                  <div class="mb-2">
+                                    <img src="../../assets/uploads/student/scholarship/<?= htmlspecialchars($row['image']); ?>" alt="Scholarship Image" style="max-width:150px;">
+                                  </div>
+                                <?php endif; ?>
+                                <input type="file" class="form-control" name="scholarship_image" accept="image/*">
+                                <small class="text-muted">Leave blank if you don't want to change the image.</small>
+                              </div>
+
                               <div class="modal-footer pb-0">
-                                <button type="submit" name="update_scholarship" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                                <button type="submit" name="update_scholarship" class="btn btn-dynamic" value="content_manager" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save
                                 </button>
                               </div>
+
                             </form>
                           </div>
                         </div>
@@ -275,21 +297,30 @@ if ($row = mysqli_fetch_assoc($result)) {
   <!-- start js -->
 
   <script>
+    $('#summernote').summernote({
+      placeholder: 'Please Enter Description',
+      tabsize: 2,
+      height: 120,
+      toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'italic', 'underline', 'strikethrough']],
+        ['para', ['ol', 'ul']],
+        ['insert', ['link']],
+        ['view', ['fullscreen', 'codeview']]
+      ]
+    });
+
     $(document).ready(function() {
       $('.summernote1').summernote({
-        placeholder: 'Enter description here...',
+        placeholder: 'Please Enter Description',
         tabsize: 2,
-        height: 150,
+        height: 120,
         toolbar: [
           ['style', ['style']],
-          ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-          ['fontname', ['fontname']],
-          ['fontsize', ['fontsize']],
-          ['color', ['color']],
-          ['para', ['ol', 'ul', 'paragraph', 'height']],
-          ['table', ['table']],
+          ['font', ['bold', 'italic', 'underline', 'strikethrough']],
+          ['para', ['ol', 'ul']],
           ['insert', ['link']],
-          ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
+          ['view', ['fullscreen', 'codeview']]
         ]
       });
     });
