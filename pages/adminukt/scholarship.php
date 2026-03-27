@@ -124,7 +124,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                           <div class="col-6 text-start">
                             <button type="submit" name="add_scholarship" class="btn btn-dynamic" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save
+                              data-bs-placement="top" value="adminukt" title="Click to save"><i class="ri-save-line"></i> Save
                             </button>
                           </div>
 
@@ -150,6 +150,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               <div class="mb-3">
                 <label for="scholarshipSelect" class="form-label fw-bold">Select Scholarship</label>
                 <select class="form-select" id="scholarshipSelect" style="width: 500px;">
+
                   <?php
                   $first = true;
                   while ($row = $result->fetch_assoc()):
@@ -203,7 +204,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                           </li>
                           <li>
                             <a class="dropdown-item text-dark delete-scholarship"
-                              href="../../function/scholarship_function.php?scholarship_id=<?= $row['scholarship_id'] ?>"
+                              href="../../function/scholarship_function.php?scholarship_id=<?= $row['scholarship_id'] ?>&loc=adminukt"
                               onclick="return confirm('Are you sure you want to delete this scholarship?')" data-bs-toggle="tooltip"
                               data-bs-placement="top" title="Click here to delete this scholarship">
                               <i class="ri-delete-bin-line"></i> Delete
@@ -268,9 +269,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                               </div>
 
                               <div class="modal-footer pb-0">
-                                <button type="submit" name="update_scholarship" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                                <but ton type="submit" name="update_scholarship" class="btn btn-dynamic" value="adminukt" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save
-                                </button>
+                                </but>
                               </div>
 
                             </form>
@@ -296,7 +297,6 @@ if ($row = mysqli_fetch_assoc($result)) {
   </main>
 
   <!-- start js -->
-
   <script>
     $('#summernote').summernote({
       placeholder: 'Please Enter Description',

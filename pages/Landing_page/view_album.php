@@ -1,6 +1,5 @@
 <?php
 include("connection/dbconnection.php");
-
 // Get album_id from URL
 if (!isset($_GET['album_id']) || empty($_GET['album_id'])) {
     echo "Invalid album.";
@@ -10,7 +9,7 @@ if (!isset($_GET['album_id']) || empty($_GET['album_id'])) {
 $album_id = intval($_GET['album_id']);
 
 // Fetch album details
-$album_query = "SELECT album_name, date_created FROM university_album WHERE album_id = $album_id";
+$album_query = "SELECT * FROM university_album WHERE album_id = $album_id";
 $album_result = mysqli_query($conn, $album_query);
 $album = mysqli_fetch_assoc($album_result);
 
@@ -22,6 +21,9 @@ if (!$album) {
 // Fetch images under this album
 $image_query = "SELECT image_id, image_name, upload_date FROM university_image WHERE album_id = $album_id";
 $image_result = mysqli_query($conn, $image_query);
+
+
+// create ng join para mag collab yung images and videos 
 
 ?>
 <style>
@@ -35,7 +37,7 @@ $image_result = mysqli_query($conn, $image_query);
         display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center ;
+        text-align: center;
         padding: 20px;
         background-attachment: fixed;
     }
@@ -44,7 +46,7 @@ $image_result = mysqli_query($conn, $image_query);
         max-width: 700px;
     }
 
-   .view-banner-tag {
+    .view-banner-tag {
         background: white;
         color: darkgreen;
         padding: 5px 10px;
@@ -54,66 +56,67 @@ $image_result = mysqli_query($conn, $image_query);
     }
 
     .view_album_banner-updated {
-      
+
         padding-left: 15px;
         margin-top: 15px;
     }
+
     .gallery-breadcrumb-section {
-      background-color: #fff;
-      width: 100%;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      padding: 16px 0;
+        background-color: #fff;
+        width: 100%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 16px 0;
     }
 
     .gallery-breadcrumb-wrapper {
-      padding: 0 15px;
+        padding: 0 15px;
     }
 
     .gallery-custom-breadcrumb {
-      font-size: 14px;
-      color: #6c757d;
-      margin-bottom: 0;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
+        font-size: 14px;
+        color: #6c757d;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
     }
 
     .gallery-breadcrumb-link {
-      color: #6c757d;
-      text-decoration: none;
-      padding: 6px 8px;
-      border-radius: 8px;
-      transition: color 0.2s ease-in-out;
-      font-weight: 500;
+        color: #6c757d;
+        text-decoration: none;
+        padding: 6px 8px;
+        border-radius: 8px;
+        transition: color 0.2s ease-in-out;
+        font-weight: 500;
     }
 
     .gallery-breadcrumb-link:hover {
-      color: #14532d;
+        color: #14532d;
     }
 
     .gallery-breadcrumb-active {
-      color: #6c757d; /* Secondary color */
-      font-weight: 600; /* Semibold */
-      cursor: default;
-      text-decoration: none;
+        color: #6c757d;
+        /* Secondary color */
+        font-weight: 600;
+        /* Semibold */
+        cursor: default;
+        text-decoration: none;
     }
 
     .gallery-separator-icon {
-      font-size: 16px;
-      color: #adb5bd;
+        font-size: 16px;
+        color: #adb5bd;
     }
 
     @media (max-width: 576px) {
-      .gallery-custom-breadcrumb {
-        font-size: 13px;
-        gap: 4px;
-      }
+        .gallery-custom-breadcrumb {
+            font-size: 13px;
+            gap: 4px;
+        }
     }
-    
 </style>
 <?php
-include 'connection/dbconnection.php';
 $sql = "SELECT site_banner FROM site_settings";
 $result = $conn->query($sql);
 
@@ -126,60 +129,95 @@ if ($result && $result->num_rows > 0) {
 <section class="view_album_banner" style="background-image: linear-gradient(to right, rgba(78, 78, 78, 0.64), rgba(0, 70, 0, 0.57)), url('<?php echo $site_banner; ?>');">
     <div class="view-banner-content">
         <span class="view-banner-tag" data-aos="fade-down">Bulletin</span>
-        <h3 class="mt-3 fw-bold view_album-h1" data-aos="fade-up" data-aos-delay="200" style="font-size:3rem"><?=htmlspecialchars($album['album_name']) ?></h3>
+        <h3 class="mt-3 fw-bold view_album-h1" data-aos="fade-up" data-aos-delay="200" style="font-size:3rem"><?= htmlspecialchars($album['album_name']) ?></h3>
         <p class="view_album_banner-updated" data-aos="fade-up" data-aos-delay="400">Know more about our university.</p>
     </div>
 </section>
 
 <div class="container-fluid gallery-breadcrumb-section">
     <div class="container gallery-breadcrumb-wrapper">
-      <nav aria-label="breadcrumb">
-        <div class="gallery-custom-breadcrumb">
-            <a href="gallery" class="gallery-breadcrumb-link">Home</a> 
-            <i class="ri-arrow-right-s-line gallery-separator-icon"></i>
-            <a href="university_gallery" class="gallery-breadcrumb-link">University Gallery</a>
-            <i class="ri-arrow-right-s-line gallery-separator-icon"></i>
-            <span class="gallery-breadcrumb-active"><?=htmlspecialchars($album['album_name']) ?></span>
-        </div>
-      </nav>
+        <nav aria-label="breadcrumb">
+            <div class="gallery-custom-breadcrumb">
+                <a href="gallery" class="gallery-breadcrumb-link">Home</a>
+                <i class="ri-arrow-right-s-line gallery-separator-icon"></i>
+                <a href="university_gallery" class="gallery-breadcrumb-link">University Gallery</a>
+                <i class="ri-arrow-right-s-line gallery-separator-icon"></i>
+                <span class="gallery-breadcrumb-active"><?= htmlspecialchars($album['album_name']) ?></span>
+            </div>
+        </nav>
     </div>
 </div>
 
 <div class="container">
-    <div class="bg-light p-4 my-5 rounded-3">
-        <div class="row mt-3">
-            <div class="d-flex flex-wrap gap-2 justify-content-center">
-                <?php
-                $images = [];
-                if (mysqli_num_rows($image_result) > 0) {
-                    while ($image = mysqli_fetch_assoc($image_result)) {
-                        $image_path = "assets/uploads/university_gallery/" . $image['image_name'];
-                        $image_id = $image['image_id'];
-                        $images[] = $image_path;
-                        ?>
-                        <div style="position: relative; width: 200px; height: 200px;">
-                            <img src="<?php echo $image_path; ?>" class="gallery-image"
-                                data-index="<?php echo count($images) - 1; ?>"
-                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; cursor: pointer;">
-                        </div>
-                        <?php
-                    }
-                } else {
-                    echo "<p class='text-center text-muted'>No images found in this album.</p>";
-                }
-                ?>
-            </div>
+    <div class="bg-light p-4 my-5 rounded-3 ">
+        <div>
+            <p><?= $album['album_description'] ?></p>
         </div>
+        <div class="row g-2 mt-3 justify-content-center">
+            <?php
+            $video_query = "SELECT * FROM university_video WHERE album_id = $album_id";
+            $video_result = mysqli_query($conn, $video_query);
+            $videos = [];
+            if (mysqli_num_rows($video_result) > 0) {
+                while ($video = mysqli_fetch_assoc($video_result)) {
 
+                    // Get YouTube link from DB
+                    $video_url = $video['video_link'];
 
-        <!-- Store image data in JavaScript -->
-        <script>
-            const images = <?php echo json_encode($images); ?>;
-        </script>
+                    // Extract VIDEO ID
+                    parse_str(parse_url($video_url, PHP_URL_QUERY), $params);
+                    $video_id = $params['v'] ?? '';
+
+                    // Create embed link
+                    $embed_url = "https://www.youtube.com/embed/" . $video_id;
+
+                    $videos[] = $embed_url;
+            ?>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="<?php echo $embed_url; ?>"
+                                title="YouTube video"
+                                allowfullscreen
+                                style="border-radius: 10px;">
+                            </iframe>
+                        </div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo "<p class='text-center text-muted'>No videos found.</p>";
+            }
+            ?>
+        </div>
+        <div class="row g-2 mt-3 justify-content-center">
+            <?php
+            $images = [];
+            if (mysqli_num_rows($image_result) > 0) {
+                while ($image = mysqli_fetch_assoc($image_result)) {
+                    $image_path = "assets/uploads/university_gallery/" . $image['image_name'];
+                    $images[] = $image_path;
+            ?>
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                        <img src="<?php echo $image_path; ?>"
+                            class="img-fluid rounded gallery-image"
+                            data-index="<?php echo count($images) - 1; ?>"
+                            style="height: 200px; object-fit: cover; cursor: pointer;">
+                    </div>
+            <?php
+                }
+            } else {
+                echo "<p class='text-center text-muted'>No images found in this album.</p>";
+            }
+            ?>
+        </div>
 
     </div>
 </div>
 
+<!-- Store image data in JavaScript -->
+<script>
+    const images = <?php echo json_encode($images); ?>;
+</script>
 
 <!-- Image Popup Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
@@ -211,157 +249,158 @@ if ($result && $result->num_rows > 0) {
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const modalImage = document.getElementById('modalImage');
-            const modal = new bootstrap.Modal(document.getElementById('imageModal'));
-            const closeModal = document.getElementById('closeModal');
-            let currentIndex = 0;
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalImage = document.getElementById('modalImage');
+        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+        const closeModal = document.getElementById('closeModal');
+        let currentIndex = 0;
 
-            // Show image in modal when clicked
-            document.querySelectorAll('.gallery-image').forEach(image => {
-                image.addEventListener('click', function () {
-                    currentIndex = parseInt(this.getAttribute('data-index'));
-                    modalImage.src = images[currentIndex];
-                    modal.show();
-                });
-            });
-
-            // Next Image
-            document.getElementById('nextImage').addEventListener('click', function () {
-                currentIndex = (currentIndex + 1) % images.length;
+        // Show image in modal when clicked
+        document.querySelectorAll('.gallery-image').forEach(image => {
+            image.addEventListener('click', function() {
+                currentIndex = parseInt(this.getAttribute('data-index'));
                 modalImage.src = images[currentIndex];
-            });
-
-            // Previous Image
-            document.getElementById('prevImage').addEventListener('click', function () {
-                currentIndex = (currentIndex - 1 + images.length) % images.length;
-                modalImage.src = images[currentIndex];
-            });
-
-            // Close Modal (when 'X' is clicked)
-            closeModal.addEventListener('click', function () {
-                modal.hide();
-            });
-
-            // Close modal on outside click
-            document.getElementById('imageModal').addEventListener('click', function (event) {
-                if (event.target === this) {
-                    modal.hide();
-                }
+                modal.show();
             });
         });
-    </script>
 
-    <script>
-        function previewImages() {
-            const previewContainer = document.getElementById('imagePreview');
-            const fileInput = document.getElementById('images');
-            const files = fileInput.files;
-            const maxSize = 25 * 1024 * 1024; // 25MB limit for each image
+        // Next Image
+        document.getElementById('nextImage').addEventListener('click', function() {
+            currentIndex = (currentIndex + 1) % images.length;
+            modalImage.src = images[currentIndex];
+        });
 
-            previewContainer.innerHTML = '';
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
+        // Previous Image
+        document.getElementById('prevImage').addEventListener('click', function() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            modalImage.src = images[currentIndex];
+        });
 
-                if (file.type.startsWith('image/')) {
-                    if (file.size > maxSize) {
-                        swal({
-                            title: "File Too Large!",
-                            text: "Some picture size exceeds 25MB! Please check the image size and upload it again.",
-                            icon: "warning",
-                            button: "OK",
-                        }).then(() => {
-                            location.reload(); // Reloads the page after clicking OK
-                        });
-                        return;
-                    }
+        // Close Modal (when 'X' is clicked)
+        closeModal.addEventListener('click', function() {
+            modal.hide();
+        });
 
-                    const reader = new FileReader();
+        // Close modal on outside click
+        document.getElementById('imageModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                modal.hide();
+            }
+        });
+    });
+</script>
 
-                    const imageWrapper = document.createElement('div');
-                    imageWrapper.classList.add('position-relative', 'm-2', 'd-flex', 'align-items-center', 'justify-content-center');
-                    imageWrapper.style.width = '100px';
-                    imageWrapper.style.height = '100px';
-                    imageWrapper.style.border = '2px solid #ddd';
-                    imageWrapper.style.borderRadius = '8px';
-                    imageWrapper.style.overflow = 'hidden';
+<script>
+    function previewImages() {
+        const previewContainer = document.getElementById('imagePreview');
+        const fileInput = document.getElementById('images');
+        const files = fileInput.files;
+        const maxSize = 25 * 1024 * 1024; // 25MB limit for each image
 
-                    const spinner = document.createElement('div');
-                    spinner.className = 'spinner-border text-secondary';
-                    spinner.setAttribute('role', 'status');
-                    spinner.style.width = '2rem';
-                    spinner.style.height = '2rem';
+        previewContainer.innerHTML = '';
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
 
-                    imageWrapper.appendChild(spinner);
-                    previewContainer.appendChild(imageWrapper);
+            if (file.type.startsWith('image/')) {
+                if (file.size > maxSize) {
+                    swal({
+                        title: "File Too Large!",
+                        text: "Some picture size exceeds 25MB! Please check the image size and upload it again.",
+                        icon: "warning",
+                        button: "OK",
+                    }).then(() => {
+                        location.reload(); // Reloads the page after clicking OK
+                    });
+                    return;
+                }
 
-                    reader.onload = function (e) {
+                const reader = new FileReader();
 
-                        const imgElement = document.createElement('img');
-                        imgElement.src = e.target.result;
-                        imgElement.style.width = '100%';
-                        imgElement.style.height = '100%';
-                        imgElement.style.objectFit = 'cover';
-                        imgElement.style.position = 'absolute';
-                        imgElement.style.top = '0';
-                        imgElement.style.left = '0';
+                const imageWrapper = document.createElement('div');
+                imageWrapper.classList.add('position-relative', 'm-2', 'd-flex', 'align-items-center', 'justify-content-center');
+                imageWrapper.style.width = '100px';
+                imageWrapper.style.height = '100px';
+                imageWrapper.style.border = '2px solid #ddd';
+                imageWrapper.style.borderRadius = '8px';
+                imageWrapper.style.overflow = 'hidden';
 
-                        const removeButton = document.createElement('span');
-                        removeButton.innerHTML = '&times;';
-                        removeButton.classList.add('position-absolute', 'top-0', 'end-0', 'bg-danger', 'text-white', 'rounded-circle', 'px-2', 'py-0', 'fw-bold');
-                        removeButton.style.cursor = 'pointer';
+                const spinner = document.createElement('div');
+                spinner.className = 'spinner-border text-secondary';
+                spinner.setAttribute('role', 'status');
+                spinner.style.width = '2rem';
+                spinner.style.height = '2rem';
 
-                        removeButton.onclick = function () {
-                            imageWrapper.remove();
-                        };
+                imageWrapper.appendChild(spinner);
+                previewContainer.appendChild(imageWrapper);
 
-                        imageWrapper.innerHTML = '';
-                        imageWrapper.appendChild(imgElement);
-                        imageWrapper.appendChild(removeButton);
+                reader.onload = function(e) {
+
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    imgElement.style.width = '100%';
+                    imgElement.style.height = '100%';
+                    imgElement.style.objectFit = 'cover';
+                    imgElement.style.position = 'absolute';
+                    imgElement.style.top = '0';
+                    imgElement.style.left = '0';
+
+                    const removeButton = document.createElement('span');
+                    removeButton.innerHTML = '&times;';
+                    removeButton.classList.add('position-absolute', 'top-0', 'end-0', 'bg-danger', 'text-white', 'rounded-circle', 'px-2', 'py-0', 'fw-bold');
+                    removeButton.style.cursor = 'pointer';
+
+                    removeButton.onclick = function() {
+                        imageWrapper.remove();
                     };
 
-                    reader.readAsDataURL(file);
-                }
+                    imageWrapper.innerHTML = '';
+                    imageWrapper.appendChild(imgElement);
+                    imageWrapper.appendChild(removeButton);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+    function removeFile(index) {
+        const dt = new DataTransfer();
+        const input = document.getElementById('images');
+        const {
+            files
+        } = input;
+
+        for (let i = 0; i < files.length; i++) {
+            if (i !== index) {
+                dt.items.add(files[i]);
             }
         }
 
-        function removeFile(index) {
-            const dt = new DataTransfer();
-            const input = document.getElementById('images');
-            const {
-                files
-            } = input;
-
-            for (let i = 0; i < files.length; i++) {
-                if (i !== index) {
-                    dt.items.add(files[i]);
-                }
-            }
-
-            input.files = dt.files; // Update the input's files
+        input.files = dt.files; // Update the input's files
+    }
+</script>
+<!-- script for deleting image start -->
+<script>
+    function deleteImage(imageId) {
+        if (confirm('Are you sure you want to delete this image?')) {
+            window.location.href = `../../function/album_function.php?delete_image=${imageId}`;
         }
-    </script>
-    <!-- script for deleting image start -->
-    <script>
-        function deleteImage(imageId) {
-            if (confirm('Are you sure you want to delete this image?')) {
-                window.location.href = `../../function/album_function.php?delete_image=${imageId}`;
-            }
-        }
+    }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
         });
+    });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
         });
-    </script>
+    });
+</script>

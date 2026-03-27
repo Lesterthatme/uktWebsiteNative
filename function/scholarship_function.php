@@ -8,6 +8,8 @@ date_default_timezone_set("Asia/Phnom_Penh");
 if (isset($_POST["add_scholarship"])) {
     $conn->begin_transaction();
     try {
+        $allowed_locations = ['adminukt', 'content_manager'];
+        $location = $_POST['add_scholarship'];
 
         $status = "Active";
         $scholarship_title = $_POST["scholarship_title"];
@@ -31,16 +33,26 @@ if (isset($_POST["add_scholarship"])) {
             if (!in_array($fileType, $allowedTypes)) {
                 $_SESSION['toastMsg'] = "Invalid image type!";
                 $_SESSION['toastType'] = "toast-error";
-                header("Location: ../pages/adminukt/scholarship");
-                exit;
+                if (in_array($location, $allowed_locations)) {
+                    header("Location: ../pages/" . $location . "/scholarship");
+                    exit;
+                } else {
+                    echo "Invalid location.";
+                    exit;
+                }
             }
 
             // Limit size (5MB)
             if ($fileSize > 5 * 1024 * 1024) {
                 $_SESSION['toastMsg'] = "Image too large! Max 5MB.";
                 $_SESSION['toastType'] = "toast-error";
-                header("Location: ../pages/adminukt/scholarship");
-                exit;
+                if (in_array($location, $allowed_locations)) {
+                    header("Location: ../pages/" . $location . "/scholarship");
+                    exit;
+                } else {
+                    echo "Invalid location.";
+                    exit;
+                }
             }
 
             // Generate unique name
@@ -58,7 +70,13 @@ if (isset($_POST["add_scholarship"])) {
             $conn->rollback();
             $_SESSION['toastMsg'] = "Error adding scholarship: " . $stmt->error;
             $_SESSION['toastType'] = "toast-error";
-            exit;
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/scholarship");
+                exit;
+            } else {
+                echo "Invalid location.";
+                exit;
+            }
         }
 
         $log_description = "Added a new University Scholarship: " . $scholarship_title;
@@ -74,14 +92,24 @@ if (isset($_POST["add_scholarship"])) {
         $conn->commit();
         $_SESSION['toastMsg'] = "Scholarship updated successfully!";
         $_SESSION['toastType'] = "toast-success";
-        header("Location: ../pages/adminukt/scholarship");
-        exit;
+        if (in_array($location, $allowed_locations)) {
+            header("Location: ../pages/" . $location . "/scholarship");
+            exit;
+        } else {
+            echo "Invalid location.";
+            exit;
+        }
     } catch (Exception $e) {
         $conn->rollback();
         $_SESSION['toastMsg'] = "Something Went Wrong!";
         $_SESSION['toastType'] = "toast-error";
-        header("Location: ../pages/adminukt/scholarship");
-        exit;
+        if (in_array($location, $allowed_locations)) {
+            header("Location: ../pages/" . $location . "/scholarship");
+            exit;
+        } else {
+            echo "Invalid location.";
+            exit;
+        }
     }
 }
 // Adding Scholarship End
@@ -90,6 +118,9 @@ if (isset($_POST["add_scholarship"])) {
 if (isset($_POST['update_scholarship'])) {
     $conn->begin_transaction();
     try {
+        $allowed_locations = ['adminukt', 'content_manager'];
+        $location = $_POST['update_scholarship'];
+
         $scholarship_id = $_POST['scholarship_id'];
         $scholarship_title = mysqli_real_escape_string($conn, $_POST['scholarship_title']);
         $description = mysqli_real_escape_string($conn, $_POST['description']);
@@ -120,14 +151,24 @@ if (isset($_POST['update_scholarship'])) {
                 } else {
                     $_SESSION['toastMsg'] = "Failed to upload image.";
                     $_SESSION['toastType'] = "toast-error";
-                    header("Location: ../pages/adminukt/scholarship");
-                    exit;
+                    if (in_array($location, $allowed_locations)) {
+                        header("Location: ../pages/" . $location . "/scholarship");
+                        exit;
+                    } else {
+                        echo "Invalid location.";
+                        exit;
+                    }
                 }
             } else {
                 $_SESSION['toastMsg'] = "Invalid image type. Allowed: jpg, jpeg, png";
                 $_SESSION['toastType'] = "toast-error";
-                header("Location: ../pages/adminukt/scholarship");
-                exit;
+                if (in_array($location, $allowed_locations)) {
+                    header("Location: ../pages/" . $location . "/scholarship");
+                    exit;
+                } else {
+                    echo "Invalid location.";
+                    exit;
+                }
             }
         }
 
@@ -152,25 +193,42 @@ if (isset($_POST['update_scholarship'])) {
             $conn->commit();
             $_SESSION['toastMsg'] = "Scholarship updated successfully!";
             $_SESSION['toastType'] = "toast-success";
-            header("Location: ../pages/adminukt/scholarship");
-            exit;
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/scholarship");
+                exit;
+            } else {
+                echo "Invalid location.";
+                exit;
+            }
         } else {
             $conn->rollback();
             $_SESSION['toastMsg'] = "Error updating scholarship: " . mysqli_error($conn);
             $_SESSION['toastType'] = "toast-error";
-            header("Location: ../pages/adminukt/scholarship");
-            exit;
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/scholarship");
+                exit;
+            } else {
+                echo "Invalid location.";
+                exit;
+            }
         }
     } catch (Exception $e) {
         $conn->rollback();
-        header("Location: ../pages/adminukt/scholarship");
-        exit;
+        if (in_array($location, $allowed_locations)) {
+            header("Location: ../pages/" . $location . "/scholarship");
+            exit;
+        } else {
+            echo "Invalid location.";
+            exit;
+        }
     }
 }
 // Updating Scholarship End
 
 // Deleting Scholarship start
 if (isset($_GET['scholarship_id'])) {
+    $allowed_locations = ['adminukt', 'content_manager'];
+    $location = $_GET['loc'];
     $scholarship_id = intval($_GET['scholarship_id']);
 
     $check_query = "SELECT * FROM university_scholarship WHERE scholarship_id = $scholarship_id";
@@ -187,8 +245,13 @@ if (isset($_GET['scholarship_id'])) {
         } else {
             $_SESSION['toastMsg'] = "Error: User not logged in.";
             $_SESSION['toastType'] = "toast-error";
-            header("Location: ../pages/adminukt/scholarship");
-            exit;
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/scholarship");
+                exit;
+            } else {
+                echo "Invalid location.";
+                exit;
+            }
         }
 
         // Get ap_id of current user
@@ -240,7 +303,12 @@ if (isset($_GET['scholarship_id'])) {
         $_SESSION['toastMsg'] = "Scholarship not found.";
         $_SESSION['toastType'] = "toast-error";
     }
-    header("Location: ../pages/adminukt/scholarship");
-    exit;
+    if (in_array($location, $allowed_locations)) {
+        header("Location: ../pages/" . $location . "/scholarship");
+        exit;
+    } else {
+        echo "Invalid location.";
+        exit;
+    }
 }
 // Deleting Scholarship End
