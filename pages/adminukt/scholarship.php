@@ -150,6 +150,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               <div class="mb-3">
                 <label for="scholarshipSelect" class="form-label fw-bold">Select Scholarship</label>
                 <select class="form-select" id="scholarshipSelect" style="width: 500px;">
+
                   <?php
                   $first = true;
                   while ($row = $result->fetch_assoc()):
@@ -268,7 +269,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                               </div>
 
                               <div class="modal-footer pb-0">
-                                <but  ton type="submit" name="update_scholarship" class="btn btn-dynamic" value="adminukt" data-bs-toggle="tooltip"
+                                <but ton type="submit" name="update_scholarship" class="btn btn-dynamic" value="adminukt" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save
                                 </but>
                               </div>
@@ -296,7 +297,6 @@ if ($row = mysqli_fetch_assoc($result)) {
   </main>
 
   <!-- start js -->
-
   <script>
     $('#summernote').summernote({
       placeholder: 'Please Enter Description',

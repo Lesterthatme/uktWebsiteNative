@@ -80,6 +80,11 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 title="Click to add a new photo">
                                 <i class="ri-add-line"></i> Add Photo
                             </button>
+
+                            <button class="btn btn-dynamic btn-sm rounded-2 px-4" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Click to add a new video">
+                                <i class="ri-add-line pe-1"></i>Add Video
+                            </button>
                         </div>
                     </div>
                     <small>Created on: <?php echo date("F d, Y", strtotime($album['date_created'])); ?></small>
@@ -92,7 +97,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="../../function/content_manager/album_function.php" method="POST" enctype="multipart/form-data">
+                                    <form action="../../function/album_function.php?loc=content_manager" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="album_id" value="<?php echo isset($_GET['album_id']) ? $_GET['album_id'] : ''; ?>">
 
                                         <div class="mb-3">
@@ -113,9 +118,111 @@ if ($row = mysqli_fetch_assoc($result)) {
                         </div>
                     </div>
                     <!-- modal for adding photo end-->
+                    <!-- modal for adding video start-->
+                    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Add Video</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form action="../../function/album_function.php?loc=content_manager" method="POST">
+
+                                        <div class="mb-3">
+                                            <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date:</strong></label>
+                                            <input type="date" class="form-control" id="date_created" name="date_created" value="<?php echo date('Y-m-d'); ?>" style="width: 150px;" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold text-muted">Add YouTube link</label>
+
+                                            <div id="link-container">
+                                                <div class="input-group mb-2 link-row">
+                                                    <input type="text" class="form-control link-input" name="link[]" placeholder="Paste YouTube link" required>
+                                                    <button type="button" class="btn btn-danger remove-btn" style="display:none;">Remove</button>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" id="add-link-btn" class="btn btn-sm btn-primary" style="display:none;">
+                                                + Add New Link
+                                            </button>
+                                        </div>
+                                        <hr>
+                                        <button type="submit" name="add_video" value="<?= $album_id ?>" class="btn btn-dynamic float-end" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Save"><i class="ri-save-line"></i> Save</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal for adding video end-->
                 </div>
 
                 <div class="row mt-3">
+                    <!-- video view -->
+                    <div class="container gap-2 mb-2">
+                        <div class="row">
+
+
+                            <?php
+                            $videoLink = $conn->prepare("SELECT * FROM university_video WHERE album_id = ?");
+                            $videoLink->bind_param('s', $album_id);
+                            $videoLink->execute();
+                            $result2 = $videoLink->get_result();
+                            while ($row = $result2->fetch_assoc()) {
+                                // Get YouTube link from DB
+                                $video_url = $row['video_link'];
+
+                                // Extract VIDEO ID
+                                parse_str(parse_url($video_url, PHP_URL_QUERY), $params);
+                                $video_id = $params['v'] ?? '';
+
+                                // Create embed link
+                                $embed_url = "https://www.youtube.com/embed/" . $video_id;
+                            ?>
+
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-4 ">
+                                    <div class="ratio ratio-21x9 ">
+                                        <iframe src="<?php echo $embed_url; ?>"
+                                            title="YouTube video"
+                                            allowfullscreen
+                                            style="border-radius: 10px;">
+                                        </iframe>
+                                        <!-- Trash Icon -->
+                                        <button
+                                            class="delete-btn"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="bottom"
+                                            data-bs-title="Delete Image"
+                                            onclick="deleteVideo(<?= $row['video_id'] ?>, <?= $album_id ?>)"
+
+                                            style="
+                                        position: absolute; 
+                                        top: 5px; 
+                                        right: 5px; 
+                                        background-color: rgba(0, 0, 0, 0.6); 
+                                        color: #fff; 
+                                        border: none; 
+                                        border-radius: 50%; 
+                                        width: 30px; 
+                                        height: 30px; 
+                                        display: flex; 
+                                        align-items: center; 
+                                        justify-content: center;
+                                        cursor: pointer;">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <!-- end video view -->
+                    <!-- image view -->
                     <div class="d-flex flex-wrap gap-2">
                         <?php
                         $images = [];
@@ -371,6 +478,122 @@ if ($row = mysqli_fetch_assoc($result)) {
     </script>
 
     <!-- script for deleting image end -->
+    <!-- script for adding new input for youtube link -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const container = document.getElementById("link-container");
+            const addBtn = document.getElementById("add-link-btn");
+
+            // Show "Add New Link" when user types
+            container.addEventListener("input", function(e) {
+                if (e.target.classList.contains("link-input")) {
+                    if (e.target.value.trim() !== "") {
+                        addBtn.style.display = "inline-block";
+                    }
+                }
+            });
+
+            // Add new input field
+            addBtn.addEventListener("click", function() {
+                const newRow = document.createElement("div");
+                newRow.classList.add("input-group", "mb-2", "link-row");
+
+                newRow.innerHTML = `
+            <input type="text" class="form-control link-input" name="link[]" placeholder="Paste YouTube link" required>
+            <button type="button" class="btn btn-danger remove-btn">Remove</button>
+        `;
+
+                container.appendChild(newRow);
+            });
+
+            // Remove input field
+            container.addEventListener("click", function(e) {
+                if (e.target.classList.contains("remove-btn")) {
+                    e.target.parentElement.remove();
+                }
+            });
+        });
+    </script>
+    <!-- end of script for adding new input for youtube link -->
+
+    <!-- START >> JS SCRIPT IN ALERT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("Checking for toast message...");
+
+            <?php if (isset($_SESSION['toastMsg']) && $_SESSION['toastMsg'] != "") { ?>
+                let toastType = "<?php echo $_SESSION['toastType']; ?>";
+                let message = "<?php echo $_SESSION['toastMsg']; ?>";
+
+                // If success, show "Success", else show "Failed"
+                let title = (toastType === "toast-success") ? "Success" : "Failed";
+
+                console.log("Toast Found:", title, message);
+                showToast(toastType, title, message);
+
+                // Unset session variables after displaying the toast
+                <?php unset($_SESSION['toastMsg']);
+                unset($_SESSION['toastType']); ?>
+            <?php } else { ?>
+                console.log("No toast message found.");
+            <?php } ?>
+        });
+
+        function showToast(type, title, message) {
+            let toast = document.getElementById("toastBox");
+            let icon = document.getElementById("toastIcon");
+            let titleElement = document.getElementById("toastTitle");
+            let messageElement = document.getElementById("toastMessage");
+
+            if (!toast) {
+                console.error("Toast box element not found!");
+                return;
+            }
+
+            // Remove previous styles
+            toast.classList.remove("toast-show", "toast-success", "toast-info", "toast-warning", "toast-error");
+
+            // Add new class
+            toast.classList.add(type, "toast-show");
+
+            // Set title and message
+            titleElement.textContent = title;
+            messageElement.textContent = message;
+
+            // Set icon based on type
+            switch (type) {
+                case "toast-success":
+                    icon.className = "ri-checkbox-circle-line toast-icon";
+                    break;
+                case "toast-info":
+                    icon.className = "ri-information-line toast-icon";
+                    break;
+                case "toast-warning":
+                    icon.className = "ri-alert-line toast-icon";
+                    break;
+                case "toast-error":
+                    icon.className = "ri-close-circle-line toast-icon";
+                    break;
+                default:
+                    icon.className = "ri-information-line toast-icon"; // Default icon
+            }
+
+            // Show toast
+            toast.style.display = "flex";
+
+            // Hide after 3 seconds
+            setTimeout(closeToast, 3000);
+        }
+
+        function closeToast() {
+            let toast = document.getElementById("toastBox");
+            toast.classList.remove("toast-show");
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 500);
+        }
+    </script>
+    <!-- END >> JS SCRIPT IN ALERT -->
 </body>
 
 </html>

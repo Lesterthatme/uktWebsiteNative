@@ -1,16 +1,16 @@
 <?php
-include("../connection/dbconnection.php"); 
+include("../connection/dbconnection.php");
 session_start();
 
 date_default_timezone_set("Asia/Phnom_Penh");
 
 // Start adding album 
-if (isset($_POST["add_album"])) { 
+if (isset($_POST["add_album"])) {
     $album_name = $_POST["album_name"];
     $album_description = $_POST["album_description"];
-     $status = 'Active';
-    $up_id = 1; 
-    $date_created = $_POST["date_created"]; 
+    $status = 'Active';
+    $up_id = 1;
+    $date_created = $_POST["date_created"];
 
     if (isset($_SESSION["user_id"])) {
         $user_id = $_SESSION["user_id"];
@@ -25,7 +25,7 @@ if (isset($_POST["add_album"])) {
         $stmt_ap->bind_param("i", $user_id);
         $stmt_ap->execute();
         $result_ap = $stmt_ap->get_result();
-        
+
         if ($result_ap->num_rows > 0) {
             $row = $result_ap->fetch_assoc();
             $ap_id = $row["ap_id"];
@@ -117,7 +117,7 @@ if (isset($_POST['update_album'])) {
     $album_name = mysqli_real_escape_string($conn, $_POST['album_name']);
     $album_description = mysqli_real_escape_string($conn, $_POST['album_description']);
     $status = mysqli_real_escape_string($conn, $_POST['status']);
-    $date_created = mysqli_real_escape_string($conn, $_POST['date_created']); 
+    $date_created = mysqli_real_escape_string($conn, $_POST['date_created']);
 
     if (isset($_SESSION["user_id"])) {
         $user_id = $_SESSION["user_id"];
@@ -145,8 +145,8 @@ if (isset($_POST['update_album'])) {
 
     if (mysqli_query($conn, $query)) {
         $log_description = "Updated Album: " . $album_name;
-        $log_date = date("Y-m-d");  
-        $log_time = date("H:i:s"); 
+        $log_date = date("Y-m-d");
+        $log_time = date("H:i:s");
 
         $log_sql = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
         $stmt_log = $conn->prepare($log_sql);
@@ -232,7 +232,7 @@ if (isset($_GET['album_id'])) {
     $stmt_delete_images = $conn->prepare($delete_images_query);
     $stmt_delete_images->bind_param("i", $album_id);
     $stmt_delete_images->execute();
-    
+
     // Delete the album from the university_album table
     $delete_album_query = "DELETE FROM university_album WHERE album_id = ?";
     $stmt_delete_album = $conn->prepare($delete_album_query);
@@ -271,78 +271,163 @@ if (isset($_GET['album_id'])) {
 // ---------------add photo start------------------------------------
 
 if (isset($_POST['add_photo'])) {
-    $album_id = $_POST['album_id'];
-    $upload_date = $_POST['date_created'];
+    $conn->begin_transaction();
+    try {
+        $allowed_locations = ['adminukt', 'content_manager'];
+        $location = $_GET['loc'];
 
-    if (empty($album_id)) {
-        echo "<script>alert('Album ID is missing. Please try again.'); window.history.back();</script>";
-        exit;
-    }
+        $album_id = $_POST['album_id'];
+        $upload_date = $_POST['date_created'];
 
-    // Retrieve album_name
-    $album_query = "SELECT album_name FROM university_album WHERE album_id = ?";
-    $stmt_album = $conn->prepare($album_query);
-    $stmt_album->bind_param("i", $album_id);
-    $stmt_album->execute();
-    $result_album = $stmt_album->get_result();
-
-    if ($result_album->num_rows > 0) {
-        $album_row = $result_album->fetch_assoc();
-        $album_name = $album_row['album_name'];
-    } else {
-        echo "<script>alert('Album not found.'); window.history.back();</script>";
-        exit;
-    }
-
-    // Check if images are uploaded
-    if (!empty($_FILES['images']['name'][0])) {
-        $image_folder = "../assets/uploads/university_gallery/";
-
-        if (!is_dir($image_folder)) {
-            mkdir($image_folder, 0777, true);
-        }
-
-        foreach ($_FILES['images']['name'] as $key => $image_name) {
-            $tmp_name = $_FILES['images']['tmp_name'][$key];
-            $image_ext = pathinfo($image_name, PATHINFO_EXTENSION);
-            $new_image_name = uniqid('img_', true) . '.' . $image_ext;
-
-            $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
-            if (!in_array(strtolower($image_ext), $allowed_types)) {
-                echo "<script>alert('Invalid file type for $image_name. Only JPG, JPEG, PNG, and GIF are allowed.'); window.history.back();</script>";
+        // Retrieve album_name
+        $album_query = "SELECT album_name FROM university_album WHERE album_id = ?";
+        $stmt_album = $conn->prepare($album_query);
+        $stmt_album->bind_param("i", $album_id);
+        if (!$stmt_album->execute()) {
+            $conn->rollback();
+            $_SESSION['toastMsg'] = "Image not found.";
+            $_SESSION['toastType'] = "toast-error";
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+                exit;
+            } else {
+                echo "Invalid location.";
                 exit;
             }
+        }
+        $result_album = $stmt_album->get_result();
 
-            if (move_uploaded_file($tmp_name, $image_folder . $new_image_name)) {
-                $stmt = $conn->prepare("INSERT INTO university_image (image_name, upload_date, album_id) VALUES (?, ?, ?)");
-                $stmt->bind_param("ssi", $new_image_name, $upload_date, $album_id);
-
-                if ($stmt->execute()) {
-                    // Insert into history log
-                    $description = "Uploaded new photo: '$new_image_name' to album: '$album_name'";
-                    $log_date = date("Y-m-d");
-                    $log_time = date("H:i:s");
-
-                    $log_query = "INSERT INTO history_log (description, log_date, log_time, user_id) 
-                                  VALUES (?, ?, ?, ?)";
-
-                    $stmt_log = $conn->prepare($log_query);
-                    if ($stmt_log) {
-                        $stmt_log->bind_param("sssi", $description, $log_date, $log_time, $_SESSION['user_id']);
-                        $stmt_log->execute();
-                        $stmt_log->close();
-                    }
-
-                    echo "<script>alert('Images uploaded successfully.'); window.location.href='../pages/adminukt/view_album?album_id=$album_id';</script>";
-                } else {
-                    echo "<script>alert('Failed to insert image $image_name.'); window.history.back();</script>";
-                }
+        if ($result_album->num_rows > 0) {
+            $album_row = $result_album->fetch_assoc();
+            $album_name = $album_row['album_name'];
+        } else {
+            $conn->rollback();
+            $_SESSION['toastMsg'] = "Album not found.";
+            $_SESSION['toastType'] = "toast-error";
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+                exit;
             } else {
-                echo "<script>alert('Error uploading $image_name.'); window.history.back();</script>";
+                echo "Invalid location.";
+                exit;
             }
         }
-    } else {
-        echo "<script>alert('Please select at least one image to upload.'); window.history.back();</script>";
+
+        // Check if images are uploaded
+        if (!empty($_FILES['images']['name'][0])) {
+            $image_folder = "../assets/uploads/university_gallery/";
+
+            if (!is_dir($image_folder)) {
+                mkdir($image_folder, 0777, true);
+            }
+
+            foreach ($_FILES['images']['name'] as $key => $image_name) {
+                $tmp_name = $_FILES['images']['tmp_name'][$key];
+                $image_ext = pathinfo($image_name, PATHINFO_EXTENSION);
+                $new_image_name = uniqid('img_', true) . '.' . $image_ext;
+
+                $allowed_types = ['jpg', 'jpeg', 'png'];
+                if (!in_array(strtolower($image_ext), $allowed_types)) {
+                    $conn->rollback();
+                    $_SESSION['toastMsg'] = "Only JPG, JPEG, and PNG are allowed.";
+                    $_SESSION['toastType'] = "toast-error";
+                    if (in_array($location, $allowed_locations)) {
+                        header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+                        exit;
+                    } else {
+                        echo "Invalid location.";
+                        exit;
+                    }
+                }
+
+                if (move_uploaded_file($tmp_name, $image_folder . $new_image_name)) {
+                    $stmt = $conn->prepare("INSERT INTO university_image (image_name, upload_date, album_id) VALUES (?, ?, ?)");
+                    $stmt->bind_param("ssi", $new_image_name, $upload_date, $album_id);
+
+                    if ($stmt->execute()) {
+                        // Insert into history log
+                        $description = "Uploaded new photo: '$new_image_name' to album: '$album_name'";
+                        $log_date = date("Y-m-d");
+                        $log_time = date("H:i:s");
+
+                        $log_query = "INSERT INTO history_log (description, log_date, log_time, user_id) 
+                                  VALUES (?, ?, ?, ?)";
+
+                        $stmt_log = $conn->prepare($log_query);
+
+                        $stmt_log->bind_param("sssi", $description, $log_date, $log_time, $_SESSION['user_id']);
+                        if (!$stmt_log->execute()) {
+                            $conn->rollback();
+                            $_SESSION['toastMsg'] = "Inserting History log Failed.";
+                            $_SESSION['toastType'] = "toast-error";
+                            if (in_array($location, $allowed_locations)) {
+                                header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+                                exit;
+                            } else {
+                                echo "Invalid location.";
+                                exit;
+                            }
+                        }
+                    } else {
+                        $conn->rollback();
+                        $_SESSION['toastMsg'] = "Failed to insert image.";
+                        $_SESSION['toastType'] = "toast-error";
+                        if (in_array($location, $allowed_locations)) {
+                            header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+                            exit;
+                        } else {
+                            echo "Invalid location.";
+                            exit;
+                        }
+                    }
+                } else {
+                    $conn->rollback();
+                    $_SESSION['toastMsg'] = "Error uploading image.";
+                    $_SESSION['toastType'] = "toast-error";
+                    if (in_array($location, $allowed_locations)) {
+                        header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+                        exit;
+                    } else {
+                        echo "Invalid location.";
+                        exit;
+                    }
+                }
+            }
+        } else {
+            $conn->rollback();
+            $_SESSION['toastMsg'] = "Please select atleast one image to upload.";
+            $_SESSION['toastType'] = "toast-error";
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+                exit;
+            } else {
+                echo "Invalid location.";
+                exit;
+            }
+        }  
+
+
+        // $conn->commit();
+        $_SESSION['toastMsg'] = "Picture Added Successfuly.";
+        $_SESSION['toastType'] = "toast-success";
+        if (in_array($location, $allowed_locations)) {
+            header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+            exit;
+        } else {
+            echo "Invalid location.";
+            exit;
+        }
+    } catch (Exception $e) {
+        $conn->rollback();
+        $_SESSION['toastMsg'] = "Video not found.";
+        $_SESSION['toastType'] = "toast-error";
+        if (in_array($location, $allowed_locations)) {
+            header("Location: ../pages/" . $location . "/view_album?album_id=" . $album_id);
+            exit;
+        } else {
+            echo "Invalid location.";
+            exit;
+        }
     }
 }
 
@@ -377,7 +462,7 @@ if (isset($_GET['delete_image'])) {
             exit;
         }
 
-        $user_id = $_SESSION['user_id']; 
+        $user_id = $_SESSION['user_id'];
         $fetch_ap_id_query = "SELECT ap_id FROM authorized_person WHERE user_id = ?";
         $stmt_ap_id = $conn->prepare($fetch_ap_id_query);
         $stmt_ap_id->bind_param("i", $user_id);
@@ -391,7 +476,7 @@ if (isset($_GET['delete_image'])) {
             echo "<script>alert('Authorized person not found.'); window.history.back();</script>";
             exit;
         }
-        $up_id = 1;  
+        $up_id = 1;
 
         $insert_archive_query = "INSERT INTO university_image_archive (image_id, image_name, upload_date, album_id, date_archived, ap_id, up_id) 
                                 VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?)";
@@ -434,4 +519,138 @@ if (isset($_GET['delete_image'])) {
     }
 }
 // Delete Photo End End
-?>
+
+
+// Add video link
+if (isset($_POST['add_video'])) {
+    $conn->begin_transaction();
+    try {
+        $allowed_locations = ['adminukt', 'content_manager'];
+        $location = $_GET['loc'];
+
+        $date_created = $_POST['date_created'];
+        $id = $_POST['add_video'];
+
+        // save the links 
+        $stmt = $conn->prepare("INSERT INTO university_video(video_link, upload_date, album_id) VALUES(?,?,?)");
+
+        foreach ($_POST['link'] as $link) {
+            $stmt->bind_param('sss', $link, $date_created, $id);
+            if (!$stmt->execute()) {
+                $conn->rollback();
+                $_SESSION['toastMsg'] = "Video not found.";
+                $_SESSION['toastType'] = "toast-error";
+                if (in_array($location, $allowed_locations)) {
+                    header("Location: ../pages/" . $location . "/view_album?album_id=" . $id);
+                    exit;
+                } else {
+                    echo "Invalid location.";
+                    exit;
+                }
+            }
+
+            $conn->commit();
+            $_SESSION['toastMsg'] = "Video link added successfuly.";
+            $_SESSION['toastType'] = "toast-success";
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/view_album?album_id=" . $id);
+                exit;
+            } else {
+                echo "Invalid location.";
+                exit;
+            }
+        }
+    } catch (Exception $e) {
+        $conn->rollback();
+        $_SESSION['toastMsg'] = "Video not found.";
+        $_SESSION['toastType'] = "toast-error";
+        if (in_array($location, $allowed_locations)) {
+            header("Location: ../pages/" . $location . "/view_album?album_id=" . $id);
+            exit;
+        } else {
+            echo "Invalid location.";
+            exit;
+        }
+    }
+}
+// <!-- end Add video link -->
+
+// delete video
+if (isset($_GET['delete_video'])) {
+    $conn->begin_transaction();
+    try {
+        $allowed_locations = ['adminukt', 'content_manager'];
+        $location = $_GET['loc'];
+
+        $video_id = intval($_GET['delete_video']);
+        $id = intval($_GET['id']);
+
+        $stmt1 = mysqli_query($conn, "SELECT * FROM university_video WHERE video_id = '$video_id'");
+        if (mysqli_num_rows($stmt1) > 0) {
+            $video = mysqli_fetch_assoc($stmt1);
+            $video_link = $video['video_link'];
+            $album_id = $video['album_id'];
+        }
+
+        //put inside archive
+        $description = "Deleted Video link: '{$video_link}' from album: '$album_id'";
+        $log_date = date("Y-m-d");
+        $log_time = date("H:i:s");
+
+        $log_query = "INSERT INTO history_log (description, log_date, log_time, user_id) 
+                              VALUES (?, ?, ?, ?)";
+        $stmt_log = $conn->prepare($log_query);
+        $stmt_log->bind_param("sssi", $description, $log_date, $log_time, $_SESSION['user_id']);
+        if (!$stmt_log->execute()) {
+            $conn->rollback();
+            $_SESSION['toastMsg'] = "Not able to record in the history log.";
+            $_SESSION['toastType'] = "toast-error";
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/view_album?album_id=" . $id);
+                exit;
+            } else {
+                echo "Invalid location.";
+                exit;
+            }
+        }
+
+        // query to delete the video link
+        $stmt2 = $conn->prepare("DELETE FROM  university_video WHERE video_id = ? ");
+        $stmt2->bind_param('s', $video_id);
+        if (!$stmt2->execute()) {
+            $conn->rollback();
+            $_SESSION['toastMsg'] = "Video not able to delete.";
+            $_SESSION['toastType'] = "toast-error";
+            if (in_array($location, $allowed_locations)) {
+                header("Location: ../pages/" . $location . "/view_album?album_id=" . $id);
+                exit;
+            } else {
+                echo "Invalid location.";
+                exit;
+            }
+        }
+
+        $conn->commit();
+        $_SESSION['toastMsg'] = "Video unlink Successfuly.";
+        $_SESSION['toastType'] = "toast-success";
+        if (in_array($location, $allowed_locations)) {
+            header("Location: ../pages/" . $location . "/view_album?album_id=" . $id);
+            exit;
+        } else {
+            echo "Invalid location.";
+            exit;
+        }
+    } catch (Exception $e) {
+        $conn->rollback();
+        $_SESSION['toastMsg'] = "Video not found.";
+        $_SESSION['toastType'] = "toast-error";
+        if (in_array($location, $allowed_locations)) {
+            header("Location: ../pages/" . $location . "/view_album?album_id=" . $id);
+            exit;
+        } else {
+            echo "Invalid location.";
+            exit;
+        }
+    }
+}
+//end delete video
