@@ -163,8 +163,6 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <!-- video view -->
                     <div class="container gap-2 mb-2">
                         <div class="row">
-
-
                             <?php
                             $videoLink = $conn->prepare("SELECT * FROM university_video WHERE album_id = ?");
                             $videoLink->bind_param('s', $album_id);
@@ -244,7 +242,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                         data-bs-toggle="tooltip"
                                         data-bs-placement="bottom"
                                         data-bs-title="Delete Image"
-                                        onclick="deleteImage(<?php echo $image_id; ?>)"
+                                        onclick="deleteImage(<?php echo $image_id; ?>, <?= $album_id ?>)"
                                         style="
                                         position: absolute; 
                                         top: 5px; 
@@ -456,18 +454,17 @@ if ($row = mysqli_fetch_assoc($result)) {
     </script>
     <!-- script for deleting image start -->
     <script>
-        function deleteImage(imageId) {
+        function deleteImage(imageId, id) {
             if (confirm('Are you sure you want to delete this image?')) {
-                window.location.href = `../../function/content_manager/album_function.php?delete_image=${imageId}`;
+                window.location.href = `../../function/album_function.php?delete_image=${imageId}&loc=content_manager&id=${id}`;
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function(tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
+        function deleteVideo(videoId, id) {
+            if (confirm('Are you sure you want to delete this image?')) {
+                window.location.href = `../../function/album_function.php?delete_video=${videoId}&loc=content_manager&id=${id}`;
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));

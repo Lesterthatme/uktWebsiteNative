@@ -160,13 +160,10 @@ if ($row = mysqli_fetch_assoc($result)) {
                     </div>
                     <!-- modal for adding video end-->
                 </div>
-
                 <div class="row mt-3">
                     <!-- video view -->
                     <div class="container gap-2 mb-2">
                         <div class="row">
-
-
                             <?php
                             $videoLink = $conn->prepare("SELECT * FROM university_video WHERE album_id = ?");
                             $videoLink->bind_param('s', $album_id);
