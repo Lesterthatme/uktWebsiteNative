@@ -404,10 +404,10 @@ if (isset($_POST['add_photo'])) {
                 echo "Invalid location.";
                 exit;
             }
-        }  
+        }
 
 
-        // $conn->commit();
+        $conn->commit();
         $_SESSION['toastMsg'] = "Picture Added Successfuly.";
         $_SESSION['toastType'] = "toast-success";
         if (in_array($location, $allowed_locations)) {
@@ -435,88 +435,130 @@ if (isset($_POST['add_photo'])) {
 
 // Delete Photo Start
 if (isset($_GET['delete_image'])) {
-    $image_id = intval($_GET['delete_image']);
-    $query = "SELECT image_name, album_id, upload_date FROM university_image WHERE image_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $image_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $allowed_locations = ['adminukt', 'content_manager'];
+    $location = $_GET['loc'] ?? '';
+    $id = $_GET['id'] ?? '';
 
-    if ($result->num_rows > 0) {
-        $image = $result->fetch_assoc();
-        $image_name = $image['image_name'];
-        $image_path = "../../assets/uploads/university_gallery/" . $image_name;
-        $album_id = $image['album_id'];
-        $upload_date = $image['upload_date'];
-        $album_query = "SELECT album_name FROM university_album WHERE album_id = ?";
-        $stmt_album = $conn->prepare($album_query);
-        $stmt_album->bind_param("i", $album_id);
-        $stmt_album->execute();
-        $result_album = $stmt_album->get_result();
-
-        if ($result_album->num_rows > 0) {
-            $album_row = $result_album->fetch_assoc();
-            $album_name = $album_row['album_name'];
+    function redirectToLocation($location, $id)
+    {
+        if (in_array($location, ['adminukt', 'content_manager'])) {
+            header("Location: ../pages/$location/view_album?album_id=$id");
+            exit;
         } else {
-            echo "<script>alert('Album not found.'); window.history.back();</script>";
+            echo "Invalid location.";
             exit;
         }
+    }
 
-        $user_id = $_SESSION['user_id'];
-        $fetch_ap_id_query = "SELECT ap_id FROM authorized_person WHERE user_id = ?";
-        $stmt_ap_id = $conn->prepare($fetch_ap_id_query);
-        $stmt_ap_id->bind_param("i", $user_id);
-        $stmt_ap_id->execute();
-        $result_ap_id = $stmt_ap_id->get_result();
+    $conn->begin_transaction();
+    try {
+        $image_id = intval($_GET['delete_image']);
 
-        if ($result_ap_id->num_rows > 0) {
+        $stmt = $conn->prepare("SELECT image_name, album_id, upload_date FROM university_image WHERE image_id = ?");
+        $stmt->bind_param("i", $image_id);
+        if (!$stmt->execute()) {
+            $conn->rollback();
+            $_SESSION['toastMsg'] = "Image not found in the database.";
+            $_SESSION['toastType'] = "toast-error";
+            redirectToLocation($location, $id);
+        }
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $image = $result->fetch_assoc();
+
+            $image_name = $image['image_name'];
+            $album_id = $image['album_id'];
+            $upload_date = $image['upload_date'];
+
+            $image_path = "../../assets/uploads/university_gallery/" . $image_name;
+
+            $album_query = "SELECT album_name FROM university_album WHERE album_id = ?";
+            $stmt_album = $conn->prepare($album_query);
+            $stmt_album->bind_param("i", $album_id);
+
+            if (!$stmt_album->execute()) {
+                $conn->rollback();
+                $_SESSION['toastMsg'] = "Album not found in the database.";
+                $_SESSION['toastType'] = "toast-error";
+                redirectToLocation($location, $id);
+            }
+
+            $result_album = $stmt_album->get_result();
+            $album_row = $result_album->fetch_assoc();
+
+            $album_name = $album_row['album_name'];
+            $user_id = $_SESSION['user_id'];
+
+            $fetch_ap_id_query = "SELECT ap_id FROM authorized_person WHERE user_id = ?";
+            $stmt_ap_id = $conn->prepare($fetch_ap_id_query);
+            $stmt_ap_id->bind_param("i", $user_id);
+            if (!$stmt_ap_id->execute()) {
+                $conn->rollback();
+                $_SESSION['toastMsg'] = "You are not authorize person to do this action.";
+                $_SESSION['toastType'] = "toast-error";
+                redirectToLocation($location, $id);
+            }
+
+            $result_ap_id = $stmt_ap_id->get_result();
             $ap_row = $result_ap_id->fetch_assoc();
             $ap_id = $ap_row['ap_id'];
-        } else {
-            echo "<script>alert('Authorized person not found.'); window.history.back();</script>";
-            exit;
-        }
-        $up_id = 1;
+            $up_id = 1;
+            $date_created = date('Y-m-d H:i:s');
 
-        $insert_archive_query = "INSERT INTO university_image_archive (image_id, image_name, upload_date, album_id, date_archived, ap_id, up_id) 
-                                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?)";
-        $stmt_insert_archive = $conn->prepare($insert_archive_query);
+            $insert_archive_query = "INSERT INTO university_image_archive (image_id, image_name, upload_date, album_id, date_archived, ap_id, up_id) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt_insert_archive = $conn->prepare($insert_archive_query);
 
-        $stmt_insert_archive->bind_param("isssii", $image_id, $image_name, $upload_date, $album_id, $ap_id, $up_id);
+            $stmt_insert_archive->bind_param("issssii", $image_id, $image_name, $upload_date, $album_id, $date_created, $ap_id, $up_id);
 
-        if ($stmt_insert_archive->execute()) {
+            if (!$stmt_insert_archive->execute()) {
+                $conn->rollback();
+                $_SESSION['toastMsg'] = " Failed to archive the image.";
+                $_SESSION['toastType'] = "toast-error";
+                redirectToLocation($location, $id);
+            }
+
             $delete_query = "DELETE FROM university_image WHERE image_id = ?";
             $stmt_delete = $conn->prepare($delete_query);
             $stmt_delete->bind_param("i", $image_id);
 
-            if ($stmt_delete->execute()) {
-                if (file_exists($image_path)) {
-                    unlink($image_path);
-                }
-
-                $description = "Deleted photo: '{$image_name}' from album: '$album_name'";
-                $log_date = date("Y-m-d");
-                $log_time = date("H:i:s");
-
-                $log_query = "INSERT INTO history_log (description, log_date, log_time, user_id) 
-                              VALUES (?, ?, ?, ?)";
-                $stmt_log = $conn->prepare($log_query);
-                if ($stmt_log) {
-                    $stmt_log->bind_param("sssi", $description, $log_date, $log_time, $_SESSION['user_id']);
-                    $stmt_log->execute();
-                    $stmt_log->close();
-                }
-
-                echo "<script>alert('Image deleted and archived successfully.'); window.history.back();</script>";
-            } else {
-                echo "<script>alert('Failed to delete the image.'); window.history.back();</script>";
+            if (!$stmt_delete->execute()) {
+                $conn->rollback();
+                $_SESSION['toastMsg'] = " Failed to delete the image.";
+                $_SESSION['toastType'] = "toast-error";
+                redirectToLocation($location, $id);
             }
-        } else {
-            echo "<script>alert('Failed to archive the image.'); window.history.back();</script>";
+
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+
+            $description = "Deleted photo: '{$image_name}' from album: '$album_name'";
+            $log_date = date("Y-m-d");
+            $log_time = date("H:i:s");
+
+            $log_query = "INSERT INTO history_log (`description`, log_date, log_time, user_id) 
+                                  VALUES (?, ?, ?, ?)";
+            $stmt_log = $conn->prepare($log_query);
+            $stmt_log->bind_param("sssi", $description, $log_date, $log_time, $_SESSION['user_id']);
+            if (! $stmt_log->execute()) {
+                $conn->rollback();
+                $_SESSION['toastMsg'] = " Failed to put in the history log.";
+                $_SESSION['toastType'] = "toast-error";
+                redirectToLocation($location, $id);
+            }
         }
-    } else {
-        echo "<script>alert('Image not found.'); window.history.back();</script>";
+
+        $conn->commit();
+        $_SESSION['toastMsg'] = "Image deleted and archived successfully.";
+        $_SESSION['toastType'] = "toast-success";
+    } catch (Exception $e) {
+        $conn->rollback();
+        $_SESSION['toastMsg'] = "Image not found.";
+        $_SESSION['toastType'] = "toast-error";
     }
+
+    redirectToLocation($location, $id);
 }
 // Delete Photo End End
 
