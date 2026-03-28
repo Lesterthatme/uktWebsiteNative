@@ -135,10 +135,17 @@ if ($row = mysqli_fetch_assoc($result)) {
                     $thumbnail_result = mysqli_query($conn, $thumbnail_query);
                     $thumbnail_row = mysqli_fetch_assoc($thumbnail_result);
 
-                    $image_count_query = "SELECT COUNT(*) AS image_count FROM university_image WHERE album_id = $album_id";
-                    $image_count_result = mysqli_query($conn, $image_count_query);
-                    $image_count_row = mysqli_fetch_assoc($image_count_result);
-                    $image_count = $image_count_row['image_count'];
+                    // $image_count_query = "SELECT COUNT(*) AS image_count FROM university_image WHERE album_id = $album_id";
+                    // $image_count_result = mysqli_query($conn, $image_count_query);
+                    // $image_count_row = mysqli_fetch_assoc($image_count_result);
+                    // $image_count = $image_count_row['image_count'];
+
+                    $stmt = mysqli_query($conn, "SELECT 
+                      (SELECT COUNT(*) FROM university_image AS xx WHERE xx.album_id = 8) +
+                      (SELECT COUNT(*) FROM university_video AS yy WHERE yy.album_id = 8) AS total_media;
+                    ");
+                    $row1 = mysqli_fetch_assoc($stmt);
+                    $total_media = $row1['total_media'];
 
                     $thumbnail_path = ($thumbnail_row)
                       ? "../../assets/uploads/university_gallery/" . $thumbnail_row['image_name']
@@ -184,7 +191,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </p>
                       <p class="text-muted mb-0" style="font-size: 13px;">
                         <?php
-                        echo ($image_count == 0) ? "No image" : (($image_count == 1) ? "1 Item" : "$image_count Items");
+                        echo ($total_media == 0) ? "No image" : (($total_media == 1) ? "1 Item" : " $total_media Items");
                         ?>
                       </p>
                     </div>
