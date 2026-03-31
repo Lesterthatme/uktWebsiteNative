@@ -41,29 +41,21 @@ include 'connection/dbconnection.php';
                 ?>
                         <div class="col-12 mb-3">
                             <div class="card shadow-sm border-0">
-
                                 <div class="card-body">
-
                                     <!-- Header -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <h2 class="mb-0 fw-bold"><?= $row['scholarship_title'] ?></h2>
                                         <small class="text-muted"><?= date("F d, Y", strtotime($row['date_added'])) ?></small>
                                     </div>
-
-
                                     <!-- Content -->
                                     <p class="post-text mb-2 caption">
                                         <?= $row['description'] ?>
-
                                     </p>
-
-
                                     <!-- See More Button -->
                                     <button class="btn btn-link p-0 see-more-btn">See more</button>
-
                                 </div>
-
                                 <!-- Image -->
+                                <!--  -->
                                 <img src="<?php echo !empty($row['image'])
                                                 ? '/ukt/assets/uploads/student/scholarship/' . $row['image']
                                                 : 'default.png'; ?>"
