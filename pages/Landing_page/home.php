@@ -69,7 +69,7 @@ if ($result && $result->num_rows > 0) {
     $lastSpace = strrpos($trimmedText, ' ');
     $rectorText = substr($trimmedText, 0, $lastSpace) . '...';
   }
-  ?>
+?>
   <div class="president-card">
     <div class="image-container !text-center" data-aos="zoom-out" data-aos-duration="1500">
       <img src="assets/uploads/rector_image/<?= htmlspecialchars($card['image']) ?>" alt="University President">
@@ -77,12 +77,12 @@ if ($result && $result->num_rows > 0) {
     <div class="info" data-aos="zoom-out" data-aos-duration="1500">
       <h3 class="fw-bold"><?= htmlspecialchars($card['first_name']) ?> <?= htmlspecialchars($card['last_name']) ?></h3>
       <h4>Rector</h4>
-        
+
       <p class="text-justify"><?= htmlspecialchars($rectorText) ?></p>
       <a href="rector" class="btn">Read More</a>
     </div>
   </div>
-  <?php
+<?php
 } else {
   echo "<p class='text-center text-danger'>No rector details available.</p>";
 }
@@ -150,31 +150,31 @@ $result = $conn->query($sql);
 
   <div class="announcement-container">
     <?php
-          if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-            //   $announcement_id = $row['announcement_id'];
-              $announcement_image = !empty($row['announcement_image']) ? $row['announcement_image'] : 'default.jpg';
-              $announcement_title = htmlspecialchars($row['announcement_title']);
-              $announcement_description = nl2br(htmlspecialchars($row['announcement_description']));
-               $announcement_slug = slugify($row['announcement_title']);
-              ?>
-              <div class="announcement-card">
-                <img src="assets/uploads/announcement/<?php echo $announcement_image; ?>" alt="Announcement Image" />
-                <div class="announcement-content">
-                  <h3 class="announcement-title"><?php echo $announcement_title; ?></h3>
-                  <p class="announcement-desc"><?php echo $announcement_description; ?></p>
-                  <a href="announcement_view?announcement_slug=<?php echo $announcement_slug; ?>" class="news-btn">
-                    Read More <i class="ri-arrow-right-line"></i>
-                  </a>
+    if (mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+        //   $announcement_id = $row['announcement_id'];
+        $announcement_image = !empty($row['announcement_image']) ? $row['announcement_image'] : 'default.jpg';
+        $announcement_title = htmlspecialchars($row['announcement_title']);
+        $announcement_description = nl2br(htmlspecialchars($row['announcement_description']));
+        $announcement_slug = slugify($row['announcement_title']);
+    ?>
+        <div class="announcement-card">
+          <img src="assets/uploads/announcement/<?php echo $announcement_image; ?>" alt="Announcement Image" />
+          <div class="announcement-content">
+            <h3 class="announcement-title"><?php echo $announcement_title; ?></h3>
+            <p class="announcement-desc"><?php echo $announcement_description; ?></p>
+            <a href="announcement_view?announcement_slug=<?php echo $announcement_slug; ?>" class="news-btn">
+              Read More <i class="ri-arrow-right-line"></i>
+            </a>
 
-                </div>
-              </div>
-              <?php
-            }
-          } else {
-            echo "<p class='text-muted'>No announcements available.</p>";
-          }
-          ?>
+          </div>
+        </div>
+    <?php
+      }
+    } else {
+      echo "<p class='text-muted'>No announcements available.</p>";
+    }
+    ?>
   </div>
 
 
@@ -207,30 +207,30 @@ $result = $conn->query($query);
   </p>
 
   <div class="news-container">
-   <?php
-          if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-              $news_image = !empty($row['news_image']) ? $row['news_image'] : 'default.jpg';
-              $news_title = htmlspecialchars($row['news_title']);
-              $news_description = nl2br(htmlspecialchars($row['news_description']));
-              $news_slug = slugify($row['news_title']);
-          ?>
-              <div class="news-card">
-                <img src="assets/uploads/news/<?php echo $news_image; ?>" alt="News Image" />
-                <div class="news-content">
-                  <h3 class="news-title"><?php echo $news_title; ?></h3>
-                  <p class="news-desc"><?php echo $news_description; ?></p>
-                  <a href="news_view?news_slug=<?php echo $news_slug; ?>" class="news-btn">
-                    Read More <i class="ri-arrow-right-line"></i>
-                  </a>
-                </div>
-              </div>
-          <?php
-            }
-          } else {
-            echo "<p class='text-muted'>No news articles available.</p>";
-          }
-          ?>
+    <?php
+    if (mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+        $news_image = !empty($row['news_image']) ? $row['news_image'] : 'default.jpg';
+        $news_title = htmlspecialchars($row['news_title']);
+        $news_description = nl2br(htmlspecialchars($row['news_description']));
+        $news_slug = slugify($row['news_title']);
+    ?>
+        <div class="news-card">
+          <img src="assets/uploads/news/<?php echo $news_image; ?>" alt="News Image" />
+          <div class="news-content">
+            <h3 class="news-title"><?php echo $news_title; ?></h3>
+            <p class="news-desc"><?php echo $news_description; ?></p>
+            <a href="news_view?news_slug=<?php echo $news_slug; ?>" class="news-btn">
+              Read More <i class="ri-arrow-right-line"></i>
+            </a>
+          </div>
+        </div>
+    <?php
+      }
+    } else {
+      echo "<p class='text-muted'>No news articles available.</p>";
+    }
+    ?>
   </div>
 
 
@@ -275,11 +275,11 @@ $result = $conn->query($sql);
         </div>
       <?php endwhile; ?>
     </div>
-     <div class="view-all-container">
-    <a href="university_calendar" class="view-all-btn">
-      VIEW UNIVERSITY CALENDAR <i class="ri-arrow-right-line"></i>
-    </a>
-  </div>
+    <div class="view-all-container">
+      <a href="university_calendar" class="view-all-btn">
+        VIEW UNIVERSITY CALENDAR <i class="ri-arrow-right-line"></i>
+      </a>
+    </div>
   </div>
 </div>
 <?php $conn->close(); ?>
@@ -292,7 +292,10 @@ include 'connection/dbconnection.php';
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-$query = "SELECT * FROM university_album WHERE status = 'Active' LIMIT 3";
+$query = "SELECT * FROM university_album 
+WHERE status = 'Active' 
+ORDER BY album_id DESC 
+LIMIT 3; ";
 $result = $conn->query($query);
 ?>
 <section class="gallery my-5 py-5">
@@ -357,7 +360,7 @@ $result = $conn->query($sql);
   <?php
   $faqIndex = 1;
   while ($faq = $result->fetch_assoc()):
-    ?>
+  ?>
     <div class="accordion" id="faqAccordion<?= $faqIndex ?>">
       <div class="accordion-item">
         <h3 class="accordion-header" id="faq<?= $faqIndex ?>-heading">
@@ -377,7 +380,7 @@ $result = $conn->query($sql);
         </div>
       </div>
     </div>
-    <?php
+  <?php
     $faqIndex++;
   endwhile;
   ?>

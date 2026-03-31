@@ -1,74 +1,100 @@
 <?php
-include("../connection/dbconnection.php"); 
+include("../connection/dbconnection.php");
 session_start();
 
-date_default_timezone_set("Asia/Phnom_Penh");
-
 // Start adding requirement
-if (isset($_POST["add_requirement"])) { 
-    $status = 'Active';
-    $requirement_title = $_POST["requirement_title"];
-    $description = $_POST["description"];
-    $up_id = 1; 
-    $date_added = $_POST["date_added"]; 
+if (isset($_POST["add_requirement"])) {
+    $allowed_locations = ['adminukt', 'content_manager'];
+    $location = $_GET['loc'] ?? '';
 
-    if (isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
-
-        // Fetch authorized person ID from user_account table
-        $ap_query = "SELECT ap_id FROM authorized_person WHERE user_id = ?";
-        $stmt_ap = $conn->prepare($ap_query);
-        $stmt_ap->bind_param("i", $user_id);
-        $stmt_ap->execute();
-        $result_ap = $stmt_ap->get_result();
-        
-        if ($result_ap->num_rows > 0) {
-            $row = $result_ap->fetch_assoc();
-            $ap_id = $row["ap_id"];
+    // $_SESSION['toastMsg'] = "You are not authorize person to do this action.";
+    // $_SESSION['toastType'] = "toast-error";
+    // redirectToLocation($location, $id);
+    function redirectToLocation($location)
+    {
+        if (in_array($location, ['adminukt', 'content_manager'])) {
+            header("Location: ../pages/$location/admission_requirements");
+            exit;
         } else {
-            $_SESSION['toastMsg'] = "Error: Authorized person not found.";
-            $_SESSION['toastType'] = "toast-error";
-            header("Location: ../pages/adminukt/admission_requirements");
+            echo "Invalid location.";
             exit;
         }
-        $stmt_ap->close();
-    } else {
-        $_SESSION['toastMsg'] = "Error: User not logged in.";
-        $_SESSION['toastType'] = "toast-error";
-        header("Location: ../pages/adminukt/admission_requirements");
-        exit;
     }
 
-    // Insert into admission_requirement table
-    $sql = "INSERT INTO admission_requirement (requirement_title, description, date_added, status, ap_id, up_id) 
-            VALUES (?, ?, ?, ?, ?, ?)";
-    
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssii", $requirement_title, $description, $date_added, $status, $ap_id, $up_id);
-
-    if ($stmt->execute()) {
-        // Insert log into history_log table
-        $log_description = "Added a new admission requirement: " . $requirement_title;
-        $log_date = date("Y-m-d");
-        $log_time = date("H:i:s");
-
-        $log_sql = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
-        $stmt_log = $conn->prepare($log_sql);
-        $stmt_log->bind_param("sssi", $log_description, $log_date, $log_time, $user_id);
-        $stmt_log->execute();
-        $stmt_log->close();
-
-        $_SESSION['toastMsg'] = "Requirement added successfully!";
+    $conn->begin_transaction();
+    try {
+        echo "pumasok";
+        $_SESSION['toastMsg'] = "Added.";
         $_SESSION['toastType'] = "toast-success";
-    } else {
-        $_SESSION['toastMsg'] = "Error adding requirement.";
+    } catch (Exception $e) {
+        $conn->rollback();
+        $_SESSION['toastMsg'] = "Image not found.";
         $_SESSION['toastType'] = "toast-error";
     }
 
-    $stmt->close();
-    $conn->close();
-    header("Location: ../pages/adminukt/admission_requirements");
-    exit();
+    redirectToLocation($location);
+    // $status = 'Active';
+    // $requirement_title = $_POST["requirement_title"];
+    // $description = $_POST["description"];
+    // $up_id = 1; 
+    // $date_added = $_POST["date_added"]; 
+
+    // if (isset($_SESSION["user_id"])) {
+    //     $user_id = $_SESSION["user_id"];
+
+    //     // Fetch authorized person ID from user_account table
+    //     $ap_query = "SELECT ap_id FROM authorized_person WHERE user_id = ?";
+    //     $stmt_ap = $conn->prepare($ap_query);
+    //     $stmt_ap->bind_param("i", $user_id);
+    //     $stmt_ap->execute();
+    //     $result_ap = $stmt_ap->get_result();
+
+    //     if ($result_ap->num_rows > 0) {
+    //         $row = $result_ap->fetch_assoc();
+    //         $ap_id = $row["ap_id"];
+    //     } else {
+    //         $_SESSION['toastMsg'] = "Error: Authorized person not found.";
+    //         $_SESSION['toastType'] = "toast-error";
+    //         header("Location: ../pages/adminukt/admission_requirements");
+    //         exit;
+    //     }
+    //     $stmt_ap->close();
+    // } else {
+    //     $_SESSION['toastMsg'] = "Error: User not logged in.";
+    //     $_SESSION['toastType'] = "toast-error";
+    //     header("Location: ../pages/adminukt/admission_requirements");
+    //     exit;
+    // }
+
+    // // Insert into admission_requirement table
+    // $sql = "INSERT INTO admission_requirement (requirement_title, description, date_added, status, ap_id, up_id) 
+    //         VALUES (?, ?, ?, ?, ?, ?)";
+
+    // $stmt = $conn->prepare($sql);
+    // $stmt->bind_param("ssssii", $requirement_title, $description, $date_added, $status, $ap_id, $up_id);
+
+    // if ($stmt->execute()) {
+    //     // Insert log into history_log table
+    //     $log_description = "Added a new admission requirement: " . $requirement_title;
+    //     $log_date = date("Y-m-d");
+    //     $log_time = date("H:i:s");
+
+    //     $log_sql = "INSERT INTO history_log (description, log_date, log_time, user_id) VALUES (?, ?, ?, ?)";
+    //     $stmt_log = $conn->prepare($log_sql);
+    //     $stmt_log->bind_param("sssi", $log_description, $log_date, $log_time, $user_id);
+    //     $stmt_log->execute();
+    //     $stmt_log->close();
+
+    //     $_SESSION['toastMsg'] = "Requirement added successfully!";
+    //     $_SESSION['toastType'] = "toast-success";
+    // } else {
+    //     $_SESSION['toastMsg'] = "Error adding requirement.";
+    //     $_SESSION['toastType'] = "toast-error";
+    // }
+
+
+    // header("Location: ../pages/adminukt/admission_requirements");
+    // exit();
 }
 // End adding requirement
 
@@ -199,5 +225,3 @@ if (isset($_GET['requirement_id'])) {
     exit();
 }
 // End deleting requirement
-
-?>

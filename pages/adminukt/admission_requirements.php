@@ -77,6 +77,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               </button>
             </div>
             <p class="card-text text-muted small">Learn about our collaborations with institutions and industries that strengthen research, education and innovation.</p>
+
             <!-- Modal FOR ADDING START-->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-xl">
@@ -86,47 +87,57 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="../../function/admission_requirementfunction.php" method="POST">
-                      <div class="mb-3">
-                        <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date:</strong></label>
-                        <input type="date" class="form-control" id="date_added" name="date_added" value="<?php echo date('Y-m-d'); ?>" style="width: 150px;" required>
-                      </div>
-                      <!-- <div class="mb-3">
-                        <label for="status" class="form-label fw-semibold text-muted"><strong>Status:</strong></label>
-                        <select class="form-control" id="status" name="status" style="width: 150px;">
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
-                        </select>
-                      </div> -->
-                      <div class="mb-3">
-                        <label for="requirement_title" class="form-label fw-semibold text-muted"><strong>Requirements Title:</strong></label>
-                        <input type="text" class="form-control" id="requirement_title" name="requirement_title" placeholder="Enter Requirements Title" required>
-                      </div>
-                      <div class="mb-3">
-                        <label for="description" class="form-label fw-semibold text-muted"><strong>Description:</strong></label>
-                        <textarea class="form-control" id="summernote" name="description" rows="3" placeholder="Enter description" required></textarea>
-                        <div id="summernote"></div>
-                        <script>
-                          $('#summernote').summernote({
-                            placeholder: 'Please Enter Description',
-                            tabsize: 2,
-                            height: 120,
-                            toolbar: [
-                              ['style', ['style']],
-                              ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-                              ['fontname', ['fontname']],
-                              ['fontsize', ['fontsize']],
-                              ['color', ['color']],
-                              ['para', ['ol', 'ul', 'paragraph', 'height']],
-                              ['insert', ['link']],
-                              ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
-                            ]
-                          });
-                        </script>
+
+                    <form action="../../function/admission_requirementfunction.php?loc=adminukt" method="POST" enctype="multipart/form-data">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="mb-3 col-12 col-sm-6">
+                            <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date:</strong></label>
+                            <input type="date" class="form-control" id="date_added" name="date_added" value="<?php echo date('Y-m-d'); ?>" required>
+                          </div>
+
+                          <div class="mb-3 col-12 col-sm-6">
+                            <label for="status" class="form-label fw-semibold text-muted"><strong>Status:</strong></label>
+                            <select class="form-control" id="status" name="status">
+                              <option value="Active">Active</option>
+                              <option value="Inactive">Inactive</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3 col-12">
+                            <label for="scholarship_title" class="form-label fw-semibold text-muted"><strong>Requirements Title:</strong></label>
+                            <input type="text" class="form-control" id="scholarship_title" name="scholarship_title" placeholder="Enter Requirements Title" required>
+                          </div>
+
+                          <div class="mb-3 col-12">
+                            <label for="description" class="form-label fw-semibold text-muted">
+                              <strong>Description:</strong>
+                            </label>
+                            <textarea class="form-control" id="summernote" name="description"
+                              rows="3" placeholder="Enter description" required></textarea>
+                          </div>
+
+                          <div class="mb-3 col-12">
+                            <label for="image" class="form-label d-flex align-items-center" title="JPEG or PNG only!!">
+                              <span class="fw-bold">Upload Image</span>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="ms-2" style="cursor:pointer;" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                              </svg>
+                            </label>
+                            <input type="file" class="form-control" name="image" accept="image/*" id="image">
+                          </div>
+
+                          <div class="col-6 text-start">
+                            <button type="submit" name="add_requirement" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                              data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save
+                            </button>
+                          </div>
+
+                        </div>
+
                       </div>
 
-                      <button type="submit" name="add_requirement" class="btn btn-dynamic float-end"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save </button>
                     </form>
                   </div>
                 </div>
@@ -162,7 +173,6 @@ if ($row = mysqli_fetch_assoc($result)) {
               </div>
 
               <?php
-              include("../../connection/dbconnection.php");
 
               // Fetch admission requirements
               $query = "SELECT requirement_id, requirement_title, date_added, status, description FROM admission_requirement ORDER BY date_added DESC";
@@ -331,6 +341,22 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- start js -->
   <script>
+    $('#summernote').summernote({
+      placeholder: 'Please Enter Description',
+      tabsize: 2,
+      height: 120,
+      toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+        ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ol', 'ul', 'paragraph', 'height']],
+        ['insert', ['link']],
+        ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
+      ]
+    });
+
     $(document).ready(function() {
       $('.summernote1').summernote({
         placeholder: 'Enter description here...',
