@@ -106,7 +106,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                           <div class="mb-3 col-12">
                             <label for="scholarship_title" class="form-label fw-semibold text-muted"><strong>Requirements Title:</strong></label>
-                            <input type="text" class="form-control" id="scholarship_title" name="scholarship_title" placeholder="Enter Requirements Title" required>
+                            <input type="text" class="form-control" id="requirement_title" name="requirement_title" placeholder="Enter Requirements Title" required>
                           </div>
 
                           <div class="mb-3 col-12">
