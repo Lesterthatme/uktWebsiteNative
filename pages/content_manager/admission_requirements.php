@@ -76,6 +76,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               </button>
             </div>
             <p class="card-text text-muted small">Learn about our collaborations with institutions and industries that strengthen research, education and innovation.</p>
+
             <!-- Modal FOR ADDING START-->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-xl">
@@ -85,43 +86,41 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="../../function/content_manager/admission_requirementfunction.php" method="POST">
+
+                    <form action="../../function/admission_requirementfunction.php?loc=content_manager" method="POST" enctype="multipart/form-data">
                       <div class="mb-3">
                         <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date:</strong></label>
                         <input type="date" class="form-control" id="date_added" name="date_added" value="<?php echo date('Y-m-d'); ?>" style="width: 150px;" required>
                       </div>
-                      <!-- <div class="mb-3">
+
+                      <div class="mb-3">
                         <label for="status" class="form-label fw-semibold text-muted"><strong>Status:</strong></label>
                         <select class="form-control" id="status" name="status" style="width: 150px;">
                           <option value="Active">Active</option>
                           <option value="Inactive">Inactive</option>
                         </select>
-                      </div> -->
+                      </div>
+
                       <div class="mb-3">
                         <label for="requirement_title" class="form-label fw-semibold text-muted"><strong>Requirements Title:</strong></label>
                         <input type="text" class="form-control" id="requirement_title" name="requirement_title" placeholder="Enter Requirements Title" required>
                       </div>
+
                       <div class="mb-3">
                         <label for="description" class="form-label fw-semibold text-muted"><strong>Description:</strong></label>
                         <textarea class="form-control" id="summernote" name="description" rows="3" placeholder="Enter description" required></textarea>
                         <div id="summernote"></div>
-                        <script>
-                          $('#summernote').summernote({
-                            placeholder: 'Please Enter Description',
-                            tabsize: 2,
-                            height: 120,
-                            toolbar: [
-                              ['style', ['style']],
-                              ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-                              ['fontname', ['fontname']],
-                              ['fontsize', ['fontsize']],
-                              ['color', ['color']],
-                              ['para', ['ol', 'ul', 'paragraph', 'height']],
-                              ['insert', ['link']],
-                              ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
-                            ]
-                          });
-                        </script>
+                      </div>
+
+                      <div class="mb-3 col-12">
+                        <label for="image" class="form-label d-flex align-items-center" title="JPEG or PNG only!!">
+                          <span class="fw-bold">Upload Image</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="ms-2" style="cursor:pointer;" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                          </svg>
+                        </label>
+                        <input type="file" class="form-control" name="image" accept="image/*" id="image">
                       </div>
 
                       <button type="submit" name="add_requirement" class="btn btn-dynamic float-end"
@@ -161,10 +160,9 @@ if ($row = mysqli_fetch_assoc($result)) {
               </div>
 
               <?php
-              include("../../connection/dbconnection.php");
 
               // Fetch admission requirements
-              $query = "SELECT requirement_id, requirement_title, date_added, status, description FROM admission_requirement ORDER BY date_added DESC";
+              $query = "SELECT * FROM admission_requirement GROUP BY requirement_id DESC";
               $result = mysqli_query($conn, $query);
               ?>
 
@@ -172,6 +170,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                 <table class="table table-hover" id="activityTable">
                   <thead>
                     <tr>
+                      <th class="text-center">ID</th>
                       <th class="text-center">Date</th>
                       <th class="text-center">Requirement Title</th>
                       <th class="text-center">Status</th>
@@ -182,6 +181,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <?php if ($result->num_rows > 0): ?>
                       <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
+                          <td class="text-center"><?= $row['requirement_id'] ?> </td>
                           <td class="text-center"><?= date('F d, Y', strtotime($row['date_added'])) ?></td>
                           <td class="text-center"><?= $row['requirement_title'] ?></td>
                           <td class="text-center">
@@ -220,7 +220,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 </li>
                                 <li>
                                   <a class="dropdown-item text-dark delete-requirement"
-                                    href="../../function/content_manager/admission_requirementfunction.php?requirement_id=<?= $row['requirement_id'] ?>"
+                                    href="../../function/admission_requirementfunction.php?requirement_id=<?= $row['requirement_id'] ?>&loc=content_manager"
                                     onclick="return confirm('Are you sure you want to delete this requirement?')" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Click delete this admission requirements">
                                     <i class="ri-delete-bin-line"></i> Delete
@@ -240,8 +240,10 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                <form method="POST" action="../../function/content_manager/admission_requirementfunction.php">
+
+                                <form method="POST" action="../../function/admission_requirementfunction.php?loc=content_manager" enctype="multipart/form-data">
                                   <input type="hidden" name="requirement_id" value="<?php echo $row['requirement_id']; ?>">
+
                                   <div class="mb-3">
                                     <label for="date_added" class="form-label"><strong>Date</strong></label>
                                     <input type="date" class="form-control" style="width: 150px;"
@@ -249,6 +251,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                       value="<?php echo htmlspecialchars($row['date_added']); ?>"
                                       required>
                                   </div>
+
                                   <div class="mb-3">
                                     <label for="status" class="form-label"><strong>Status</strong></label>
                                     <select class="form-select" name="status" style="width: 150px;" required>
@@ -256,6 +259,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                       <option value="Inactive" <?php if ($row['status'] == 'Inactive') echo 'selected'; ?>>Inactive</option>
                                     </select>
                                   </div>
+
                                   <div class="mb-3">
                                     <label for="requirement_title" class="form-label"><strong>Requirement Title</strong></label>
                                     <input type="text" class="form-control"
@@ -272,9 +276,22 @@ if ($row = mysqli_fetch_assoc($result)) {
                                       required><?php echo htmlspecialchars($row['description']); ?></textarea>
                                   </div>
 
+                                  <!-- Image Upload -->
+                                  <div class="mb-3">
+                                    <label for="requirement_image" class="form-label"><strong>Image</strong></label>
+                                    <?php if (!empty($row['image'])): ?>
+                                      <div class="mb-2">
+                                        <img src="../../assets/uploads/student/requirements/<?= htmlspecialchars($row['image']); ?>" alt="Requirement Image" style="max-width:150px;">
+                                      </div>
+                                    <?php endif; ?>
+                                    <input type="file" class="form-control" name="requirement_image" accept="image/*">
+                                    <small class="text-muted">Leave blank if you don't want to change the image.</small>
+                                  </div>
+
                                   <div class="modal-footer pb-0">
-                                    <button type="submit" name="update_requirement" class="btn btn-dynamic"
-                                      data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i>Save</button>
+                                    <button type="submit" class="btn btn-dynamic" name="update_requirement"
+                                      data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i>Save
+                                    </button>
                                   </div>
                                 </form>
                               </div>
@@ -294,12 +311,13 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                <form>
-                                  <p><strong>Requirement Title:</strong> <?= $row['requirement_title'] ?></p>
-                                  <p><strong>Date Added:</strong> <?= date('F d, Y', strtotime($row['date_added'])) ?></p>
-                                  <p><strong>Description:</strong> <?= $row['description'] ?></p>
+                                <p><strong>Image:</strong></p>
+                                <img src="../../assets/uploads/student/requirements/<?= $row['image'] ?>" alt="Requirement_image" height="300px">
+                                <p><strong>Requirement Title:</strong> <?= $row['requirement_title'] ?></p>
+                                <p><strong>Date Added:</strong> <?= date('F d, Y', strtotime($row['date_added'])) ?></p>
+                                <p><strong>Description:</strong> <?= $row['description'] ?></p>
 
-                                </form>
+
                               </div>
                             </div>
                           </div>
@@ -330,6 +348,23 @@ if ($row = mysqli_fetch_assoc($result)) {
 
   <!-- start js -->
   <script>
+    $('#summernote').summernote({
+      placeholder: 'Please Enter Description',
+      tabsize: 2,
+      height: 120,
+      toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+        ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ol', 'ul', 'paragraph', 'height']],
+        ['insert', ['link']],
+        ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
+      ]
+    });
+
+
     $(document).ready(function() {
       $('.summernote1').summernote({
         placeholder: 'Enter description here...',
