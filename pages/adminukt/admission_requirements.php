@@ -175,7 +175,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               <?php
 
               // Fetch admission requirements
-              $query = "SELECT requirement_id, requirement_title, date_added, status, description FROM admission_requirement ORDER BY date_added DESC";
+              $query = "SELECT * FROM admission_requirement GROUP BY requirement_id DESC";
               $result = mysqli_query($conn, $query);
               ?>
 
@@ -183,6 +183,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                 <table class="table table-hover" id="activityTable">
                   <thead>
                     <tr>
+                      <th class="text-center">ID</th>
                       <th class="text-center">Date</th>
                       <th class="text-center">Requirement Title</th>
                       <th class="text-center">Status</th>
@@ -193,6 +194,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <?php if ($result->num_rows > 0): ?>
                       <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
+                          <td class="text-center"><?= $row['requirement_id'] ?> </td>
                           <td class="text-center"><?= date('F d, Y', strtotime($row['date_added'])) ?></td>
                           <td class="text-center"><?= $row['requirement_title'] ?></td>
                           <td class="text-center">
@@ -214,8 +216,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                               </button>
                               <ul class="dropdown-menu">
                                 <li>
-                                  <a class="dropdown-item text-dark view-requirement" href="#"
-                                    data-bs-toggle="modal"
+                                  <a class="dropdown-item text-dark view-requirement" href="#" data-bs-toggle="modal"
                                     data-bs-target="#viewModal<?= $row['requirement_id'] ?>" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Click to view details">
                                     <i class="ri-eye-line"></i> View
@@ -231,7 +232,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 </li>
                                 <li>
                                   <a class="dropdown-item text-dark delete-requirement"
-                                    href="../../function/admission_requirementfunction.php?requirement_id=<?= $row['requirement_id'] ?>"
+                                    href="../../function/admission_requirementfunction.php?requirement_id=<?= $row['requirement_id'] ?>&loc=adminukt"
                                     onclick="return confirm('Are you sure you want to delete this requirement?')" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Click delete this admission requirements">
                                     <i class="ri-delete-bin-line"></i> Delete
@@ -243,6 +244,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         </tr>
 
                         <!-- EDIT ADMISSION START-->
+                        <!-- <div class="modal" style="display: block;"> -->
                         <div class="modal fade" id="editModal<?php echo $row['requirement_id']; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-xl">
                             <div class="modal-content">
@@ -251,8 +253,10 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                <form method="POST" action="../../function/admission_requirementfunction.php">
+
+                                <form method="POST" action="../../function/admission_requirementfunction.php?loc=adminukt" enctype="multipart/form-data">
                                   <input type="hidden" name="requirement_id" value="<?php echo $row['requirement_id']; ?>">
+
                                   <div class="mb-3">
                                     <label for="date_added" class="form-label"><strong>Date</strong></label>
                                     <input type="date" class="form-control" style="width: 150px;"
@@ -260,6 +264,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                       value="<?php echo htmlspecialchars($row['date_added']); ?>"
                                       required>
                                   </div>
+
                                   <div class="mb-3">
                                     <label for="status" class="form-label"><strong>Status</strong></label>
                                     <select class="form-select" name="status" style="width: 150px;" required>
@@ -267,6 +272,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                       <option value="Inactive" <?php if ($row['status'] == 'Inactive') echo 'selected'; ?>>Inactive</option>
                                     </select>
                                   </div>
+
                                   <div class="mb-3">
                                     <label for="requirement_title" class="form-label"><strong>Requirement Title</strong></label>
                                     <input type="text" class="form-control"
@@ -283,9 +289,22 @@ if ($row = mysqli_fetch_assoc($result)) {
                                       required><?php echo htmlspecialchars($row['description']); ?></textarea>
                                   </div>
 
+                                  <!-- Image Upload -->
+                                  <div class="mb-3">
+                                    <label for="requirement_image" class="form-label"><strong>Image</strong></label>
+                                    <?php if (!empty($row['image'])): ?>
+                                      <div class="mb-2">
+                                        <img src="../../assets/uploads/student/requirements/<?= htmlspecialchars($row['image']); ?>" alt="Requirement Image" style="max-width:150px;">
+                                      </div>
+                                    <?php endif; ?>
+                                    <input type="file" class="form-control" name="requirement_image" accept="image/*">
+                                    <small class="text-muted">Leave blank if you don't want to change the image.</small>
+                                  </div>
+
                                   <div class="modal-footer pb-0">
-                                    <button type="submit" name="update_requirement" class="btn btn-dynamic"
-                                      data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i>Save</button>
+                                    <button type="submit" class="btn btn-dynamic" name="update_requirement"
+                                      data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i>Save
+                                    </button>
                                   </div>
                                 </form>
                               </div>
@@ -305,12 +324,11 @@ if ($row = mysqli_fetch_assoc($result)) {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                <form>
-                                  <p><strong>Requirement Title:</strong> <?= $row['requirement_title'] ?></p>
-                                  <p><strong>Date Added:</strong> <?= date('F d, Y', strtotime($row['date_added'])) ?></p>
-                                  <p><strong>Description:</strong> <?= $row['description'] ?></p>
-
-                                </form>
+                                <p><strong>Image:</strong></p>
+                                <img src="../../assets/uploads/student/requirements/<?= $row['image'] ?>" alt="Requirement_image" height="300px">
+                                <p><strong>Requirement Title:</strong> <?= $row['requirement_title'] ?></p>
+                                <p><strong>Date Added:</strong> <?= date('F d, Y', strtotime($row['date_added'])) ?></p>
+                                <p><strong>Description:</strong> <?= $row['description'] ?></p>
                               </div>
                             </div>
                           </div>

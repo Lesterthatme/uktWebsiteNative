@@ -27,17 +27,17 @@ $result = mysqli_query($conn, $query);
                                 <div class="card-body">
                                     <!-- Header -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h2 class="mb-0 fw-bold"><?= $row['scholarship_title'] ?></h2>
+                                        <h2 class="mb-0 fw-bold"><?= $row['requirement_title'] ?></h2>
 
                                         <div class="d-flex align-items-center gap-2">
                                             <small class="text-muted">
                                                 <?= date("F d, Y", strtotime($row['date_added'])) ?>
                                             </small>
-
+                                            <!-- data-link="http://http://localhost/ukt/admission_requirements.phh?id=<?= $row['requirement_id'] ?>"> -->
                                             <!-- Copy Button -->
                                             <button
                                                 class="btn btn-secondary btn-sm copy-btn"
-                                                data-link="#">
+                                                data-link="http://localhost/ukt/admission_requirements">
                                                 Copy
                                             </button>
                                         </div>
@@ -52,10 +52,10 @@ $result = mysqli_query($conn, $query);
                                 <!-- Image -->
                                 <!--  -->
                                 <img src="<?php echo !empty($row['image'])
-                                                ? '/ukt/assets/uploads/student/scholarship/' . $row['image']
+                                                ? '/ukt/assets/uploads/student/requirements/' . $row['image']
                                                 : 'default.png'; ?>"
                                     class="img-fluid rounded-bottom"
-                                    alt="img">
+                                    alt="img" style="max-height: 500px; max-width: 500px;">
 
                             </div>
                         </div>
