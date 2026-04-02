@@ -33,11 +33,11 @@ $result = mysqli_query($conn, $query);
                                             <small class="text-muted">
                                                 <?= date("F d, Y", strtotime($row['date_added'])) ?>
                                             </small>
-                                            <!-- data-link="http://http://localhost/ukt/admission_requirements.phh?id=<?= $row['requirement_id'] ?>"> -->
+                                            
                                             <!-- Copy Button -->
                                             <button
                                                 class="btn btn-secondary btn-sm copy-btn"
-                                                data-link="http://localhost/ukt/admission_requirements">
+                                                data-link="http://localhost/ukt/admission_requirement?id=<?= $row['requirement_id'] ?>">
                                                 Copy
                                             </button>
                                         </div>
