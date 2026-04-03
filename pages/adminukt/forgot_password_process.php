@@ -1,5 +1,5 @@
 <?php
-include '/connection/dbconnection.php';
+include '../../connection/dbconnection.php';
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -61,7 +61,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             //itatago koto 
 
             //Server settings
-            include $_SERVER['DOCUMENT_ROOT'] . '/includes/smtp.php';
+            include '../../includes/smtp.php';
 
             //Recipients
             $mail->setFrom('your_email@gmail.com', 'University of Kratie');
@@ -72,14 +72,11 @@ if ($row = mysqli_fetch_assoc($result)) {
             // Content
             $mail->isHTML(true);
             $mail->Subject = 'UKT Password Reset';
-            $mail->Body    = 'To reset your password click <a href="localhost/pages/adminukt/change_password?forgot_password_code=' . $forgot_password_code . '">here </a>. </br>Reset your password in a day.';
-
+            $mail->Body    = 'To reset your password click <a href="localhost/ukt/pages/adminukt/change_password?forgot_password_code=' . $forgot_password_code . '">here </a>. </br>Reset your password in a day.';
 
             $verifyQuery = $conn->query("SELECT * FROM user_account WHERE email = '$email'");
-
             if ($verifyQuery->num_rows) {
                 $codeQuery = $conn->query("UPDATE user_account SET forgot_password_code = '$forgot_password_code' WHERE email = '$email'");
-
                 if ($mail->send()) {
                     include 'email_success.php';
                 }

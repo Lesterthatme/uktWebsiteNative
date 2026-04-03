@@ -1,15 +1,14 @@
 <?php
+include '../../connection/dbconnection.php';
 require 'change_password_process.php';
-include '/connection/dbconnection.php';
 
 // display university logo and university name start
-$query = "SELECT university_name, university_image FROM university_profile LIMIT 1";
+$query = "SELECT university_name, university_logo FROM university_profile LIMIT 1";
 $result = $conn->query($query);
-
 if ($result->num_rows > 0) {
     $university = $result->fetch_assoc();
     $university_name = $university['university_name'];
-    $university_image = $university['university_image'];
+    $university_image = $university['university_logo'];
 } else {
     // Default values in case no university is found
     $university_name = "University Name";
