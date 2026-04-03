@@ -251,7 +251,9 @@ include 'connection/dbconnection.php';
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-$sql = "SELECT uc_day, UPPER(DATE_FORMAT(STR_TO_DATE(uc_month, '%Y-%m-%d'), '%M')) AS uc_month, uc_title, uc_description FROM university_calendar LIMIT 5";
+$sql = "SELECT uc_day, uc_month, uc_title, uc_description 
+FROM university_calendar 
+ORDER BY uc_month ASC, uc_day ASC;";
 
 
 
@@ -267,7 +269,7 @@ $result = $conn->query($sql);
       <?php while ($university_calendar = $result->fetch_assoc()): ?>
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 text-center">
           <div class="calendar-card">
-            <div class="calendar-month"><?= htmlspecialchars($university_calendar['uc_month']) ?></div>
+            <div class="calendar-month"><?= date("F", strtotime($university_calendar['uc_month'])) ?></div>
             <div class="calendar-day"><?= htmlspecialchars($university_calendar['uc_day']) ?></div>
           </div>
           <div class="calendar-label"><?= htmlspecialchars($university_calendar['uc_title']) ?></div>
