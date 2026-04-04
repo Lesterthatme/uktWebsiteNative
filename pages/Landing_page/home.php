@@ -244,37 +244,43 @@ $result = $conn->query($query);
 <!-- END >> DISPLAY NEWS -->
 
 <!-- START >> DISPLAY UNIVERSITY CALENDAR -->
-<!-- START >> DISPLAY UNIVERSITY CALENDAR -->
 <?php
 include 'connection/dbconnection.php';
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-$sql = "SELECT uc_day, uc_month, uc_title, uc_description 
-FROM university_calendar 
-ORDER BY uc_month ASC, uc_day ASC;";
-
-
-
-$result = $conn->query($sql);
+include 'include/calendar.php';
 ?>
-
 <div class="calendar-container my-3" data-aos="fade-up" data-aos-delay="500">
   <h2>University Calendar</h2>
   <p>Keep track of important university events, academic schedules, and activities with our calendar.</p>
 
   <div class="container">
     <div class="row justify-content-center g-4">
-      <?php while ($university_calendar = $result->fetch_assoc()): ?>
+      <?php
+      foreach ($result as $university_calendar) {
+      ?>
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 text-center">
           <div class="calendar-card">
-            <div class="calendar-month"><?= date("F", strtotime($university_calendar['uc_month'])) ?></div>
+            <?php
+            $today = $today = date('Y-m-d');
+
+            if ($university_calendar['full_date'] == $today) {
+            ?>
+              <div class="calendar-month active"><?= date("F", strtotime($university_calendar["uc_month"])) ?></div>
+            <?php
+            } else {
+            ?>
+              <div class="calendar-month"><?= date("F", strtotime($university_calendar["uc_month"])) ?></div>
+            <?php
+            }
+            ?>
+
             <div class="calendar-day"><?= htmlspecialchars($university_calendar['uc_day']) ?></div>
           </div>
           <div class="calendar-label"><?= htmlspecialchars($university_calendar['uc_title']) ?></div>
           <!--<p class="calendar_event_desc text-center"><?= htmlspecialchars($university_calendar['uc_description']) ?></p>-->
         </div>
-      <?php endwhile; ?>
+      <?php
+      }
+      ?>
     </div>
     <div class="view-all-container">
       <a href="university_calendar" class="view-all-btn">
@@ -283,8 +289,6 @@ $result = $conn->query($sql);
     </div>
   </div>
 </div>
-<?php $conn->close(); ?>
-
 <!-- END >> DISPLAY UNIVERSITY CALENDAR -->
 
 <!-- START >> DISPLAY UNIVERSITY ALBUM -->
@@ -327,6 +331,7 @@ $result = $conn->query($query);
               <img src="<?php echo $thumbnail_path; ?>" alt="<?php echo htmlspecialchars($row['album_name']); ?>">
               <div class="gallery-overlay">
                 <h3><?php echo htmlspecialchars($row['album_name']); ?></h3>
+                <span><?= date("F j, Y", strtotime($row['date_created'])) ?></span>
                 <span><?php echo htmlspecialchars($row['album_description']); ?></span>
               </div>
             </div>

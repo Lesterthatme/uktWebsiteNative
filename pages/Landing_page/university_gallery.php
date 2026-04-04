@@ -6,7 +6,7 @@
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
   }
-  $query = "SELECT * FROM university_album WHERE status = 'Active'";
+  $query = "SELECT * FROM university_album WHERE status = 'Active' ORDER BY album_id DESC";
   $result = $conn->query($query);
   ?>
   <div class="container">
@@ -32,6 +32,7 @@
 
               <div class="gallery-overlay">
                 <h3><?php echo htmlspecialchars($row['album_name']); ?></h3>
+                <span><?= date("F j, Y", strtotime($row['date_created'])) ?></span>
                 <span><?php echo htmlspecialchars($row['album_description']); ?></span>
               </div>
             </div>

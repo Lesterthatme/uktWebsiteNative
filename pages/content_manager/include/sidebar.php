@@ -75,6 +75,12 @@ if ($result->num_rows > 0) {
             </a>
         </li>
         <li class="sidebar-menu-item">
+            <a href="university_video">
+                <i class="ri-gallery-view-2 sidebar-menu-item-icon"></i>
+                University Video
+            </a>
+        </li>
+        <li class="sidebar-menu-item">
             <a href="news">
                 <i class="ri-news-fill sidebar-menu-item-icon"></i>
                 News
@@ -152,10 +158,10 @@ if ($result->num_rows > 0) {
                         Scholarship
                     </a>
                 </li>
-                 <li class="sidebar-dropdown-menu-item">
-                   <a href="computer_laboratory">
-                       Computer laboratory
-                   </a>
+                <li class="sidebar-dropdown-menu-item">
+                    <a href="computer_laboratory">
+                        Computer laboratory
+                    </a>
                 </li>
                 <!--<li class="sidebar-dropdown-menu-item">-->
                 <!--    <a href="#">-->

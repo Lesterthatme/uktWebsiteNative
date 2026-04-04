@@ -15,8 +15,9 @@ date_default_timezone_set("Asia/Phnom_Penh");
 
 // Enable MySQLi error reporting for debugging
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-if (isset($_POST['send_reply'])) { 
-   
+
+if (isset($_POST['send_reply'])) {
+
     $message_id = intval($_POST['message_id']);
     $ap_id = intval($_POST['ap_id']);
     $reply_message = trim($_POST['reply_message']);
@@ -81,15 +82,9 @@ if (isset($_POST['send_reply'])) {
             // Send email
             $mail = new PHPMailer(true);
             try {
-                $mail->isSMTP();
-                $mail->Host       = 'smtp.gmail.com';
-                $mail->SMTPAuth   = true;
-                $mail->Username   = 'uktkratie@gmail.com';
-                $mail->Password   = 'fgww ccwv zcjb rdzx';
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port       = 587;
+                include '../includes/smtp.php';
 
-                $mail->setFrom('uktkratie@gmail.com', 'UKT Support');
+                $mail->setFrom('your_email@gmail.com', 'UKT Support');
                 $mail->addAddress($sender_email);
                 $mail->Subject = "Response from UKT Support Team";
                 $mail->isHTML(true);
@@ -130,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message_ids = $_POST['message_ids'];
 
         if (is_array($message_ids)) {
-            $ids = implode(",", array_map('intval', $message_ids)); 
+            $ids = implode(",", array_map('intval', $message_ids));
 
             if (!isset($_SESSION['user_id'])) {
                 echo "Error: Session expired. Please log in again.";
@@ -152,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $ap_id = $auth_row['ap_id'];
-            $up_id = 1; 
+            $up_id = 1;
 
             $messages = [];
             $fetchQuery = "SELECT * FROM university_message WHERE message_id IN ($ids)";
@@ -209,4 +204,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "Invalid request.";
 }
 // delete message end
-?>
