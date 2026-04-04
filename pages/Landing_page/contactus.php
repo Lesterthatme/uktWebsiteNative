@@ -2,8 +2,7 @@
 <?php include 'breadcrumbs.php'; ?>
 <?php
 include 'connection/dbconnection.php';
-$sql = "SELECT university_street, city_municipality, university_province, university_country, 
-               university_postalcode, university_contactnumber, university_emailaddress
+$sql = "SELECT *
         FROM university_profile 
         WHERE up_id = 1";
 
@@ -29,26 +28,49 @@ if ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Insert message logic
-date_default_timezone_set('Asia/Phnom_Penh');
 if (isset($_POST['send_message'])) {
+
+  // Get input and escape
   $sender_fname = mysqli_real_escape_string($conn, $_POST['sender_fname']);
   $sender_mname = mysqli_real_escape_string($conn, $_POST['sender_mname']);
   $sender_lname = mysqli_real_escape_string($conn, $_POST['sender_lname']);
   $sender_email = mysqli_real_escape_string($conn, $_POST['email']);
   $message_subject = mysqli_real_escape_string($conn, $_POST['message_subject']);
   $message_body = mysqli_real_escape_string($conn, $_POST['message_body']);
-  $date_sent = date('Y-m-d H:i:s'); 
-  $up_id = 1; 
 
-  $insert_query = "INSERT INTO university_message 
-      (message_subject, message_body, sender_email, sender_fname, sender_mname, sender_lname, date_sent, status, up_id) 
-      VALUES 
-      ('$message_subject', '$message_body', '$sender_email', '$sender_fname', '$sender_mname', '$sender_lname', '$date_sent', 'unread', '$up_id')";
+  $date_sent = date('Y-m-d H:i:s');
+  $up_id = 1;
 
-  if (mysqli_query($conn, $insert_query)) {
-      echo "<script>alert('Message sent successfully! Please check your inbox or spam folder for a reply from UKT support');</script>";
+  // Check for debug attempt (contains 'try', case-insensitive)
+  $all_inputs = [$sender_fname, $sender_mname, $sender_lname, $sender_email, $message_subject, $message_body];
+  $debug_found = false;
+
+  $banned_words = ['try', 'test', 'debug', 'hack']; 
+
+  foreach ($all_inputs as $input) {
+    foreach ($banned_words as $word) {
+      if (stripos($input, $word) !== false) {
+        $debug_found = true;
+        break 2; // break both loops immediately
+      }
+    }
+  }
+
+  if ($debug_found) {
+    // Stop processing
+    echo "<script>alert('Debug attempt detected. Message not sent.');</script>";
   } else {
+    // Proceed with insertion
+    $insert_query = "INSERT INTO university_message 
+            (message_subject, message_body, sender_email, sender_fname, sender_mname, sender_lname, date_sent, status, up_id) 
+            VALUES 
+            ('$message_subject', '$message_body', '$sender_email', '$sender_fname', '$sender_mname', '$sender_lname', '$date_sent', 'unread', '$up_id')";
+
+    if (mysqli_query($conn, $insert_query)) {
+      echo "<script>alert('Message sent successfully! Please check your inbox or spam folder for a reply from UKT support');</script>";
+    } else {
       echo "<script>alert('Error sending message: " . mysqli_error($conn) . "');</script>";
+    }
   }
 }
 
@@ -70,42 +92,42 @@ mysqli_close($conn);
             </iframe>
           </div>
         <?php endif; ?>
-         <div class="row contact-info mt-4">
-     <div class="row justify-content-center mt-4">
-  <div class="col-md-4 info-box text-center">
-    <div class="contact-card">
-      <i class="ri-map-pin-line"></i>
-    </div>
-    <p><strong>Address:</strong> <?php echo $address; ?></p>
-  </div>
+        <div class="row contact-info mt-4">
+          <div class="row justify-content-center mt-4">
+            <div class="col-md-4 info-box text-center">
+              <div class="contact-card">
+                <i class="ri-map-pin-line"></i>
+              </div>
+              <p><strong>Address:</strong> <?php echo $address; ?></p>
+            </div>
 
-  <div class="col-md-4 info-box text-center">
-    <div class="contact-card">
-      <i class="ri-phone-line"></i>
-    </div>
-    <p><strong>Phone:</strong> <?php echo $contact; ?></p>
-  </div>
+            <div class="col-md-4 info-box text-center">
+              <div class="contact-card">
+                <i class="ri-phone-line"></i>
+              </div>
+              <p><strong>Phone:</strong> <?php echo $contact; ?></p>
+            </div>
 
-  <div class="col-md-4 info-box text-center">
-    <div class="contact-card">
-      <i class="ri-mail-line"></i>
-    </div>
-    <p><strong>Email:</strong> <?php echo $email; ?></p>
-  </div>
-</div>
+            <div class="col-md-4 info-box text-center">
+              <div class="contact-card">
+                <i class="ri-mail-line"></i>
+              </div>
+              <p><strong>Email:</strong> <?php echo $email; ?></p>
+            </div>
+          </div>
 
-    </div>
+        </div>
       </div>
 
       <!-- Contact Form -->
       <div class="col-lg-6 d-flex flex-column justify-content-center h-100">
-      <form action="" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
-         <div class="row gy-4">
+        <form action="" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+          <div class="row gy-4">
             <div class="col-md-6">
               <input type="text" name="sender_fname" class="form-control" placeholder="Your First Name" required>
             </div>
             <div class="col-md-6">
-              <input type="text" name="sender_mname" class="form-control" placeholder="Your Middle Name" >
+              <input type="text" name="sender_mname" class="form-control" placeholder="Your Middle Name">
             </div>
             <div class="col-md-6">
               <input type="text" name="sender_lname" class="form-control" placeholder="Your Last Name" required>
