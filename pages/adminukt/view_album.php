@@ -169,6 +169,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                             $videoLink->bind_param('s', $album_id);
                             $videoLink->execute();
                             $result2 = $videoLink->get_result();
+                            
                             while ($row = $result2->fetch_assoc()) {
                                 // Get YouTube link from DB
                                 $video_url = $row['video_link'];

@@ -1,6 +1,4 @@
 <!-- START >> DISPLAY PAGE POSTER -->
-
-
 <?php
 include 'connection/dbconnection.php';
 if ($conn->connect_error) {
@@ -8,6 +6,7 @@ if ($conn->connect_error) {
 }
 $query = "SELECT poster_image FROM page_poster ORDER BY poster_date DESC";
 $result = $conn->query($query);
+
 ?>
 <section class="splide poster-carousel mb-5" id="poster-carousel" aria-label="Page Poster Carousel">
   <div class="splide__track">

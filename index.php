@@ -1,6 +1,6 @@
 <?php
 include 'connection/dbconnection.php';
-
+session_start();
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 $pagePath = "pages/Landing_page/$page.php";
 if (!preg_match('/^[a-zA-Z0-9_-]+$/', $page)) {
@@ -9,6 +9,9 @@ if (!preg_match('/^[a-zA-Z0-9_-]+$/', $page)) {
   $pagePath = "pages/Landing_page/under_construction.php";
 }
 
+if (!isset($_SESSION['seen_once'])) {
+  $_SESSION['seen_once'] = 0;
+}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -49,10 +52,69 @@ if ($row = mysqli_fetch_assoc($result)) {
   <!-- 2026 dev added -->
   <link rel="stylesheet" href="assets/css/additional.css">
   <!-- /2026 dev added -->
+  <!-- <style>
+    /* Force the banner to hide regardless of what the script does */
+    .goog-te-banner-frame.skiptranslate {
+      display: none !important;
+    }
 
+    body {
+      top: 0px !important;
+    }
+
+    /* Hide the 'suggest translation' tooltip when hovering over text */
+    #goog-gt-tt {
+      display: none !important;
+      visibility: hidden !important;
+    }
+  </style> -->
+
+  <style>
+
+  </style>
 </head>
 
+
 <body class="index-page">
+  <!-- Fixed YouTube Video Modal -->
+  <?php
+  if ($_SESSION['seen_once'] != 1) {
+  ?>
+    <div class="modal fade" id="landingVideoModal" tabindex="-1" aria-labelledby="landingVideoLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+          <div class="modal-body p-0 position-relative">
+            <?php
+            $stmt = mysqli_query($conn, "SELECT * FROM university_video WHERE is_pinned = 1 ");
+            if ($stmt->num_rows > 0) {
+              $row = mysqli_fetch_assoc($stmt);
+
+              parse_str(parse_url($row['video_link'], PHP_URL_QUERY), $params);
+              $video_id = $params['v'] ?? '';
+              $embed_url = "https://www.youtube.com/embed/$video_id?autoplay=1&mute=0";
+
+              $_SESSION['seen_once'] = 1;
+            ?>
+
+              <iframe id="landingVideo" width="100%" height="450"
+                src="<?= $embed_url ?>"
+                title="Landing Page Video" frameborder="0"
+                allow="autoplay; encrypted-media" allowfullscreen>
+              </iframe>
+              <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+            <?php
+            } else {
+              $_SESSION['seen_once'] = 0;
+            }
+            ?>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  <?php
+  }
+  ?>
 
   <!-- include navbar -->
   <?php include 'landing_page_include/navbar.php'; ?>
@@ -125,8 +187,29 @@ if ($row = mysqli_fetch_assoc($result)) {
       }).mount();
     });
   </script>
+  <!-- for the video pop up -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const modalEl = document.getElementById('landingVideoModal');
+      const iframe = document.getElementById('landingVideo');
+      const originalSrc = iframe.src; // save original URL
 
+      // Initialize and show modal on page load
+      const landingModal = new bootstrap.Modal(modalEl);
+      landingModal.show();
 
+      // Stop video when modal closes
+      modalEl.addEventListener('hidden.bs.modal', () => {
+        iframe.src = ""; // remove src to fully stop the video
+      });
+
+      // Optional: restore video src if modal is opened again
+      modalEl.addEventListener('shown.bs.modal', () => {
+        iframe.src = originalSrc; // set src back to autoplay again
+      });
+    });
+  </script>
+  <!--End of the video pop up -->
 </body>
 
 </html>

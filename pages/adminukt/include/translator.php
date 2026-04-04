@@ -1,4 +1,6 @@
 <!-- Google Translate Element (Hidden) -->
+
+
 <div id="google_translate_element" style="display: none;"></div>
 
 <script type="text/javascript">
@@ -34,7 +36,7 @@
         '.goog-te-balloon-frame',
         '.goog-text-highlight'
       ];
-      
+
       elementsToHide.forEach(selector => {
         const el = document.querySelector(selector);
         if (el) el.style.display = 'none';
@@ -46,7 +48,7 @@
         feedbackBox.style.display = 'none';
       }
 
-      document.body.style.top = '0px'; 
+      document.body.style.top = '0px';
     }, 1000);
   }
 
@@ -68,6 +70,4 @@
       });
     }
   });
-
-
 </script>
