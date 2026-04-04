@@ -184,8 +184,6 @@ if ($result && $result->num_rows > 0) {
                     </div>
             <?php
                 }
-            } else {
-                echo "<p class='text-center text-muted'>No videos found.</p>";
             }
             ?>
         </div>

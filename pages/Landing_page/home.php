@@ -244,7 +244,6 @@ $result = $conn->query($query);
 <!-- END >> DISPLAY NEWS -->
 
 <!-- START >> DISPLAY UNIVERSITY CALENDAR -->
-<!-- START >> DISPLAY UNIVERSITY CALENDAR -->
 <?php
 include 'connection/dbconnection.php';
 include 'include/calendar.php';
@@ -290,8 +289,6 @@ include 'include/calendar.php';
     </div>
   </div>
 </div>
-
-
 <!-- END >> DISPLAY UNIVERSITY CALENDAR -->
 
 <!-- START >> DISPLAY UNIVERSITY ALBUM -->
@@ -334,6 +331,7 @@ $result = $conn->query($query);
               <img src="<?php echo $thumbnail_path; ?>" alt="<?php echo htmlspecialchars($row['album_name']); ?>">
               <div class="gallery-overlay">
                 <h3><?php echo htmlspecialchars($row['album_name']); ?></h3>
+                <span><?= date("F j, Y", strtotime($row['date_created'])) ?></span>
                 <span><?php echo htmlspecialchars($row['album_description']); ?></span>
               </div>
             </div>
