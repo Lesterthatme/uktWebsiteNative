@@ -1,9 +1,8 @@
-
 <?php include 'banner.php'; ?>
 <?php include 'breadcrumbs.php'; ?>
 <?php
 // RUN THE QUERY AGAIN for the table
-$sql = "SELECT uc_day, UPPER(DATE_FORMAT(STR_TO_DATE(uc_month, '%Y-%m-%d'), '%M')) AS uc_month, uc_title, uc_description FROM university_calendar";
+$sql = "SELECT uc_day, uc_month, uc_title, uc_description FROM university_calendar ORDER BY uc_month ASC, uc_day ASC;";
 $result = $conn->query($sql);
 ?>
 <!-- Main container -->
@@ -46,12 +45,13 @@ $result = $conn->query($sql);
               <tbody>
                 <?php while ($university_calendar = $result->fetch_assoc()): ?>
                   <tr>
-                    <td><?= htmlspecialchars($university_calendar['uc_month']) ?></td>
+
+                    <td><?= date("F", strtotime($university_calendar['uc_month'])); ?></td>
                     <td><?= htmlspecialchars($university_calendar['uc_day']) ?></td>
                     <td><?= htmlspecialchars($university_calendar['uc_title']) ?></td>
                     <td>
-                      <?= empty($university_calendar['uc_description']) 
-                        ? '<span class="text-muted fst-italic">No description provided</span>' 
+                      <?= empty($university_calendar['uc_description'])
+                        ? '<span class="text-muted fst-italic">No description provided</span>'
                         : htmlspecialchars($university_calendar['uc_description']) ?>
                     </td>
                   </tr>

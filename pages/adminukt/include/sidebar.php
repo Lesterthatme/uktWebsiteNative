@@ -19,8 +19,8 @@ if ($result->num_rows > 0) {
 
 
 <div class="sidebar position-fixed top-0 start-0 bottom-0 bg-white">
-<div class="d-flex align-items-center p-2">
-        <img src="../../assets/uploads/university_image/<?php echo htmlspecialchars($university_logo); ?>" 
+    <div class="d-flex align-items-center p-2">
+        <img src="../../assets/uploads/university_image/<?php echo htmlspecialchars($university_logo); ?>"
             alt="University Logo" class="sidebar-logo-img me-3" style="height: 50px; width: 50px;">
         <div class="d-flex flex-column">
             <a href="" class="sidebar-logo fw-bold fs-sm text-decoration-none text-color-default d-block mb-0">
@@ -73,6 +73,12 @@ if ($result->num_rows > 0) {
             <a href="university_album">
                 <i class="ri-gallery-view-2 sidebar-menu-item-icon"></i>
                 University Gallery
+            </a>
+        </li>
+        <li class="sidebar-menu-item">
+            <a href="university_video">
+                <i class="ri-gallery-view-2 sidebar-menu-item-icon"></i>
+                University Video
             </a>
         </li>
         <li class="sidebar-menu-item">
@@ -164,9 +170,9 @@ if ($result->num_rows > 0) {
                     </a>
                 </li> -->
                 <li class="sidebar-dropdown-menu-item">
-                   <a href="computer_laboratory">
-                       Computer laboratory
-                   </a>
+                    <a href="computer_laboratory">
+                        Computer laboratory
+                    </a>
                 </li>
                 <!--<li class="sidebar-dropdown-menu-item">-->
                 <!--    <a href="student_org">-->
@@ -216,7 +222,7 @@ if ($result->num_rows > 0) {
             <!--        Head of Departments and Head of Office-->
             <!--    </a>-->
             <!--</li>-->
-            
+
     </li>
     </ul>
     </li>

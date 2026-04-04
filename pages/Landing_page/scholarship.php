@@ -34,7 +34,8 @@ include 'connection/dbconnection.php';
         <div class="col-lg-8 mt-5 ">
             <div class="row">
                 <?php
-                $query = "SELECT * FROM university_scholarship ORDER BY date_added DESC";
+                $id = $_GET['id'] ?? '';
+                $query = "SELECT * FROM university_scholarship WHERE scholarship_id = $id  ORDER BY date_added DESC LIMIT 1";
                 $result = mysqli_query($conn, $query);
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -45,19 +46,7 @@ include 'connection/dbconnection.php';
                                     <!-- Header -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <h2 class="mb-0 fw-bold"><?= $row['scholarship_title'] ?></h2>
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <small class="text-muted">
-                                                <?= date("F d, Y", strtotime($row['date_added'])) ?>
-                                            </small>
-
-                                            <!-- Copy Button -->
-                                            <button
-                                                class="btn btn-secondary btn-sm copy-btn"
-                                                data-link="http://localhost/ukt/scholarship?id=<?= $row['scholarship_id'] ?>">
-                                                Copy
-                                            </button>
-                                        </div>
+                                        <small class="text-muted"><?= date("F d, Y", strtotime($row['date_added'])) ?></small>
                                     </div>
                                     <!-- Content -->
                                     <p class="post-text mb-2 caption">
@@ -92,20 +81,3 @@ include 'connection/dbconnection.php';
     </div>
 </div>
 <script src="/ukt/assets/js/scholarship.js" defer></script>
-
-
-<script>
-    document.querySelectorAll('.copy-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const link = this.getAttribute('data-link');
-
-            navigator.clipboard.writeText(link).then(() => {
-                this.innerText = "Copied!";
-
-                setTimeout(() => {
-                    this.innerText = "Copy";
-                }, 2000);
-            });
-        });
-    });
-</script>

@@ -177,7 +177,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="forgot_password_process" method="post">
+                    <form action="forgot_password_process" method="POST">
                         <div class="row mb-3 justify-content-md-center">
                             <div class="col-12">
                                 <label for="username" class="form-label mx-auto">

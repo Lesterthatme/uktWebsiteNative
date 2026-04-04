@@ -105,7 +105,9 @@ if ($result->num_rows > 0) {
         </li>
         <li class="dropdown">
           <button id="translateBtn2" class="btn btn-warning" title="Make it Khmer">
-            <span class="notranslate"> Khmer</span>
+            <span class="notranslate">
+              <img src="/ukt/assets/uploads/logo/flagCambodia.png" alt="" class="img-fluid" style="max-width: 40px;">
+            </span>
           </button>
           <?php include 'pages/adminukt/include/translator.php'; ?>
         </li>

@@ -1,12 +1,8 @@
 <?php
-
+include '../../connection/dbconnection.php';
 if (isset($_GET['forgot_password_code'])) {
-    $forgot_password_code = $_GET['forgot_password_code'];
 
- $conn = new mysqli('localhost', 'u123573546_uktadmin', 'UKT2.0_db', 'u123573546_uktnew_db');
-    if ($conn->connect_error) {
-        die('Could not connect to the database: ' . $conn->connect_error);
-    }
+    $forgot_password_code = $_GET['forgot_password_code'];
 
     $verifyQuery = $conn->query("SELECT * FROM user_account WHERE forgot_password_code = '$forgot_password_code' AND password_last_updated >= NOW() - INTERVAL 1 DAY");
 
@@ -27,10 +23,7 @@ if (isset($_GET['forgot_password_code'])) {
             echo 'Error: ' . $conn->error;
         }
     }
-
-    $conn->close();
 } else {
     header("Location: login.php");
     exit();
 }
-?>

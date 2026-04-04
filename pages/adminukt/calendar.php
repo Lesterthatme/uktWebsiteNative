@@ -210,9 +210,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                     include '../../connection/dbconnection.php';
 
                     // Fetch events from the university_calendar table
-                    $query = "SELECT uc_id, uc_title, uc_month, uc_day, uc_description 
-                FROM university_calendar 
-                ORDER BY uc_month ASC";
+                    $query = "SELECT * 
+FROM university_calendar 
+ORDER BY uc_month ASC, uc_day ASC";
                     $result = mysqli_query($conn, $query);
 
                     if ($result && mysqli_num_rows($result) > 0) {

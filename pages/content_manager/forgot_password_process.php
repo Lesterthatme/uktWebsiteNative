@@ -60,13 +60,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
         try {
             //Server settings
-            $mail->isSMTP();                                            // Send using SMTP
-            $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-            $mail->Username   = 'uktkratie@gmail.com';                     // SMTP username
-            $mail->Password   = 'fgww ccwv zcjb rdzx';                               // SMTP password
-            $mail->SMTPSecure = 'tls';       // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-            $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+            include '../../includes/smtp.php';
 
             //Recipients
             $mail->setFrom('your_email@gmail.com', 'University of Kratie');
@@ -77,9 +71,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             // Content
             $mail->isHTML(true);
             $mail->Subject = 'UKT Password Reset';
-            $mail->Body    = 'To reset your password click <a href="https://sinhssci-games.com/ukt2.0/pages/adminukt/change_password.php?forgot_password_code=' . $forgot_password_code . '">here </a>. </br>Reset your password in a day.';
-
-
+            $mail->Body    = 'To reset your password click <a href="localhost/ukt/pages/adminukt/change_password?forgot_password_code=' . $forgot_password_code . '">here </a>. </br>Reset your password in a day.';
 
             if ($conn->connect_error) {
                 echo '<p class="text-danger">Could not connect to the database.</p>';
