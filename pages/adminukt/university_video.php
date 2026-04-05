@@ -193,8 +193,8 @@ if ($row = mysqli_fetch_assoc($result)) {
     <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/bootstrap/js/jquery-3.7.1.js"></script>
     <script src="../../assets/bootstrap/js/script.js"></script>
-    <!-- <script src="../../assets/bootstrap/js/carousel2itemslide.js?=v1.7"></script> -->
-    <!-- <script src="../../assets/bootstrap/js/drag_and_drop.js?=v1.0"></script> -->
+    <script src="../../assets/bootstrap/js/carousel2itemslide.js?=v1.7"></script>
+    <script src="../../assets/bootstrap/js/drag_and_drop.js?=v1.0"></script>
     <script src="../../assets/bootstrap/js/activeLink.js?=v1.2"></script>
 
     <script>

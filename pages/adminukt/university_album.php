@@ -356,8 +356,6 @@ if ($row = mysqli_fetch_assoc($result)) {
       input.files = dt.files;
     }
   </script>
-
-
 </body>
 
 </html>

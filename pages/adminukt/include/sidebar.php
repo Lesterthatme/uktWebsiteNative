@@ -69,7 +69,7 @@ if ($result->num_rows > 0) {
                 Announcement
             </a>
         </li>
-        <li class="sidebar-menu-item">
+        <li class="sidebar-menu-item ">
             <a href="university_album">
                 <i class="ri-gallery-view-2 sidebar-menu-item-icon"></i>
                 University Gallery

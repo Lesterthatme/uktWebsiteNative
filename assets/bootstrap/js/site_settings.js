@@ -27,7 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const currentPage = window.location.pathname.split("/").pop();
   document.querySelectorAll(".sidebar-menu-item a").forEach((link) => {
-    if (link.getAttribute("href") === currentPage) {
+    const href = link.getAttribute("href");
+
+    if (currentPage.includes(href)) {
       link.parentElement.classList.add("active");
     }
   });
@@ -66,7 +68,7 @@ function updateButtonColor(color) {
   document.documentElement.style.setProperty("--button-color", color);
   document.documentElement.style.setProperty(
     "--button-hover-color",
-    hoverColor
+    hoverColor,
   );
 
   const colorIndicator = document.getElementById("colorIndicator");
@@ -92,26 +94,26 @@ function applyStoredColors() {
     localStorage.getItem("profilePicBorderColor") || "#198754";
   let boxShadowColor = `${savedColor}4D`;
 
-//   document.documentElement.style.setProperty(
-//     "--calendar-border-color",
-//     savedColor
-//   );
-//   document.documentElement.style.setProperty(
-//     "--calendar-box-shadow",
-//     `0 8px 16px ${boxShadowColor}`
-//   );
-//   document.documentElement.style.setProperty(
-//     "--calendar-text-color",
-//     savedColor
-//   );
-//   document.documentElement.style.setProperty(
-//     "--calendar-hr-border",
-//     savedColor
-//   );
+  //   document.documentElement.style.setProperty(
+  //     "--calendar-border-color",
+  //     savedColor
+  //   );
+  //   document.documentElement.style.setProperty(
+  //     "--calendar-box-shadow",
+  //     `0 8px 16px ${boxShadowColor}`
+  //   );
+  //   document.documentElement.style.setProperty(
+  //     "--calendar-text-color",
+  //     savedColor
+  //   );
+  //   document.documentElement.style.setProperty(
+  //     "--calendar-hr-border",
+  //     savedColor
+  //   );
   document.documentElement.style.setProperty("--button-color", savedColor);
   document.documentElement.style.setProperty(
     "--button-hover-color",
-    savedHoverColor
+    savedHoverColor,
   );
 
   const colorIndicator = document.getElementById("colorIndicator");
@@ -352,7 +354,7 @@ function applyStoredColors() {
   });
   document.styleSheets[0].insertRule(
     `.categories-widget ul a::after { background-color: ${savedColor} !important; }`,
-    document.styleSheets[0].cssRules.length
+    document.styleSheets[0].cssRules.length,
   );
 
   function hexToRgba(hex, opacity) {
@@ -493,7 +495,7 @@ color: ${savedColor} !important;
      width: 50px; 
      margin-top: 5px;
   }`,
-    document.styleSheets[0].cssRules.length
+    document.styleSheets[0].cssRules.length,
   );
 
   document.querySelectorAll(".view-all-btn").forEach((el) => {
@@ -638,7 +640,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.documentElement.style.setProperty("--active-link-color", color);
       document.documentElement.style.setProperty(
         "--active-link-underline",
-        underlineColor
+        underlineColor,
       );
 
       localStorage.setItem("activeLinkColor", color);
@@ -652,11 +654,11 @@ document.addEventListener("DOMContentLoaded", function () {
   if (savedColor && savedUnderline) {
     document.documentElement.style.setProperty(
       "--active-link-color",
-      savedColor
+      savedColor,
     );
     document.documentElement.style.setProperty(
       "--active-link-underline",
-      savedUnderline
+      savedUnderline,
     );
   }
 
