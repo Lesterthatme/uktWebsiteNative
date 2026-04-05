@@ -2,12 +2,12 @@
 
 require '../../connection/dbconnection.php';
 session_start();
+
 if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
   exit;
 }
-
-$page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2025';
+$page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2026';
 
 
 // Fetch all site settings start
@@ -32,7 +32,7 @@ if ($row = mysqli_fetch_assoc($result)) {
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="../../assets/uploads/site settings/favicon/<?php echo htmlspecialchars($settings['fav_icon']); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>
+  <title><?php echo htmlspecialchars($settings['websitetitle_admin']); ?></title>
   <!-- start css  -->
   <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="../../assets/bootstrap/css/style.css?=V1.0">
@@ -58,6 +58,9 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="doc-tabs-container">
               <ul class="doc-tabs d-flex list-unstyled">
                 <li class="me-3">
+                  <a class="doc-link <?= ($page == 'developers/2026') ? 'active' : '' ?>" href="?page=2026">2026</a>
+                </li>
+                <li class="me-3">
                   <a class="doc-link <?= ($page == 'developers/2025') ? 'active' : '' ?>" href="?page=2025">2025</a>
                 </li>
                 <li class="me-3">
@@ -67,7 +70,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               <hr class="doc-tabs-divider">
             </div>
             <?php
-            $page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2025';
+            $page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2026';
             ?>
             <h5 class="fw-semibold text-muted">Developers</h5>
             <p class="card-text text-muted small">Information Technology Students from Bulacan Agricultural State College.</p>

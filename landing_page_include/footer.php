@@ -52,9 +52,21 @@ if ($result && $result->num_rows > 0) {
                 <img src="assets/images/officiallogo (1).png" alt="University Logo" class="footer-logo">
                 <h4 class="footer-text"><a href="contactus" class="fs-3 text-decoration-none">UNIVERSITY OF KRATIE</a></h4>
                 <p><strong>Contact Us</strong></p>
-                <p><?php echo $address; ?></p>
-                <p>Phone: <?php echo $contact; ?></p>
-                <p>Email: <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a></p>
+                <p class="mb-1"><?php echo $address; ?></p>
+                <p class="mb-1">Email: <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a></p>
+                <div class="row">
+                    <div class="col-2">
+                        <p>Phone: </p>
+                    </div>
+                    <div class="col-10 text-start">
+                        <p> <?php echo nl2br($contact) ?></p>
+                    </div>
+                </div>
+
+
+
+
+
             </div>
 
 
@@ -119,11 +131,8 @@ if ($result && $result->num_rows > 0) {
         </div>
         <div class="footer-bottom mt-4">
             <p class="mb-1">Copyright &copy;2025. All Rights Reserved </p>
-            <p class="mb-0">Developed by <a href="developers" class="fw-bold text-decoration-none">SCI-GAMES Dev</a></p>
-            <button id="translateBtn" class="btn btn-sm text-light">
-                <span class="notranslate">English </span> | <span class="notranslate"> Khmer</span>
-            </button>
-            <?php include 'pages/adminukt/include/translator.php'; ?>
+            <p class="mb-0">Developed by <a href="developers" class="fw-bold text-decoration-none">BASC IT Interns</a></p>
+
 
 
         </div>

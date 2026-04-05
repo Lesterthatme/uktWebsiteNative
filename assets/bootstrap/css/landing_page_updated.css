@@ -1375,21 +1375,37 @@ announcement card start */
   font-size: 14px;
   margin: 5px 0;
 }
-.Developer_card .socials {
+.socials {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin: 15px 0;
 }
-.Developer_card .socials a {
+ .socials a {
   text-decoration: none;
   font-size: 24px;
   color: #198754;
   transition: color 0.3s ease;
 }
-.Developer_card .socials a:hover {
-  color: #145c38;
+.socials a:hover {
+  color: #ccff00;
 }
+.socialss {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+ .socialss a {
+  text-decoration: none;
+  font-size: 24px;
+  color: #ff6a00;
+  transition: color 0.3s ease;
+}
+.socialss a:hover {
+  color: #ffd500;
+}
+
 .dev-title{
   font-family: "Poppins", serif;
 }

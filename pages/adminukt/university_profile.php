@@ -222,8 +222,11 @@ if ($row = mysqli_fetch_assoc($result)) {
                       <div class="row mb-3">
                         <div class="col-md-6">
                           <label class="form-label fw-semibold text-muted">Telephone No.</label>
-                          <input type="text" class="form-control" name="university_contactnumber"
-                            value="<?php echo isset($row['university_contactnumber']) ? htmlspecialchars($row['university_contactnumber']) : ''; ?>">
+                          <!-- <input type="text" readonly value="<?php echo isset($row['university_contactnumber']) ? htmlspecialchars($row['university_contactnumber']) : ''; ?>">
+                          <input type="text" class="form-control" name=""
+                            value=""> -->
+
+                          <textarea name="university_contactnumber" id="" placeholder="<?php echo isset($row['university_contactnumber']) ? htmlspecialchars($row['university_contactnumber']) : ''; ?>"></textarea>
                         </div>
                         <div class="col-md-6">
                           <label class="form-label fw-semibold text-muted">Email Address</label>
