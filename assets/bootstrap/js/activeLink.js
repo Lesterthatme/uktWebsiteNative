@@ -324,141 +324,44 @@ document.addEventListener("DOMContentLoaded", function () {
     .toLowerCase()
     .replace(".php", "");
 
-  const targetPages = [
-    "page_management",
-    "university_album",
-    "university_video",
-    "message",
-    "sent_items",
-    "view_album",
-    "view_message",
-    "announcement",
-    "news",
-    "job_opportunities",
-    "page_poster",
-    "logs",
-    "archive",
-    "archive_message",
-    "site_settings",
-    "library_gallery",
-    "library_staff",
-  ];
+  const pageMap = {
+    view_album: "university_album",
+    archive_message: "archive",
+    sent_items: "message",
+    archive_partnership: "archive",
+    archive_calendar: "archive",
+    archive_faq: "archive",
+    archive_announcement: "archive",
+    archive_album: "archive",
+    archive_news: "archive",
+    archive_poster: "archive",
+    archive_admissionrequirements: "archive",
+    archive_scholarship: "archive",
+    job_vacancy: "job_opportunities",
+  };
 
-  const menuItems = document.querySelectorAll(".sidebar-menu-item a");
+  // Normalize current page
+  if (pageMap[currentPage]) {
+    currentPage = pageMap[currentPage];
+  }
+
+  const menuItems = document.querySelectorAll(".sidebar-menu-item");
+
+  menuItems.forEach((item) => item.classList.remove("active"));
 
   menuItems.forEach((item) => {
-    const menuHref = item
+    const link = item.querySelector("a");
+    if (!link) return;
+
+    const menuHref = link
       .getAttribute("href")
       .split("/")
       .pop()
       .toLowerCase()
       .replace(".php", "");
 
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "view_album" && menuHref === "university_album")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_message" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "sent_items" && menuHref === "message")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_partnership" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_calendar" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_faq" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_announcement" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_album" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_news" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_poster" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_admissionrequirements" &&
-          menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "archive_scholarship" && menuHref === "archive")
-      ) {
-        item.parentElement.classList.add("active");
-      }
-    }
-    if (targetPages.includes(menuHref)) {
-      if (
-        menuHref === currentPage ||
-        (currentPage === "job_vacancy" && menuHref === "job_opportunities")
-      ) {
-        item.parentElement.classList.add("active");
-      }
+    if (menuHref === currentPage) {
+      item.classList.add("active");
     }
   });
 });

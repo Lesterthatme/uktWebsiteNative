@@ -45,6 +45,67 @@ if ($result->num_rows > 0) {
   <link rel="stylesheet" href="../../assets/RemixIcon/fonts/remixicon.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css" />
   <!--<link rel="stylesheet" href="translator/translator_style.css">-->
+
+  <style>
+    /* Container (replaces d-flex, flex-column, flex-sm-row, gap-2) */
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Responsive like flex-sm-row */
+    @media (min-width: 576px) {
+      .btn-container {
+        flex-direction: row;
+      }
+    }
+
+    /* replaces d-flex justify-content-center */
+    .center-flex {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* optional spacing (replaces mt-2) */
+    .mt-2 {
+      margin-top: 8px;
+    }
+
+    /* Button base (replaces btn, btn-sm, px-4, rounded-2) */
+    .custom-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 6px 16px;
+      font-size: 14px;
+
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+
+      background-color: #198754;
+      color: #fff;
+
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    /* Hover */
+    .custom-btn:hover {
+      background-color: #157347;
+    }
+
+    /* Click effect */
+    .custom-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Icon spacing */
+    .custom-btn i {
+      margin-right: 6px;
+    }
+  </style>
 </head>
 
 <body class="bg-light">
@@ -78,9 +139,13 @@ if ($result->num_rows > 0) {
                       </div>
                     </div>
 
-                    <div class="d-flex flex-column flex-sm-row gap-2">
-                      <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
-                        data-bs-target="#updateSettingsModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to update the settings">
+                    <div class="btn-container">
+                      <button type="button"
+                        class="custom-btn btn-dynamic"
+                        data-bs-toggle="modal"
+                        data-bs-target="#updateSettingsModal"
+                        title="Click here to update the settings">
+
                         <i class="ri-edit-2-line"></i> Update Settings
                       </button>
                     </div>
@@ -159,9 +224,12 @@ if ($result->num_rows > 0) {
                   <label class="form-label fw-bold  mt-3">Do you want to backup the database?</label> <br>
                   <!--<small class="text-muted translate">Click download database.</small>-->
                   <form action="../../function/backup_db.php" method="POST">
-                    <button type="submit" name="backup" class="btn btn-dynamic btn-sm rounded-2 px-4"
-                      onclick="return confirm('Do you want to download the database now?')" data-bs-toggle="tooltip"
-                      data-bs-placement="top" title="Click here to download database">
+                    <button type="submit"
+                      name="backup"
+                      class="custom-btn btn-dynamic"
+                      onclick="return confirm('Do you want to download the database now?')"
+                      title="Click here to download database">
+
                       <i class="ri-download-2-line"></i> Download Database
                     </button>
                   </form>
@@ -198,9 +266,13 @@ if ($result->num_rows > 0) {
                         alt="Favicon Preview" style="max-width: 150px; max-height: 150px; object-fit: cover; border-radius: 8px; display: block; margin: 10px auto 0;">
 
                       <!-- Centered Button -->
-                      <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-dynamic mt-2" onclick="document.getElementById('favicon').click()" data-bs-toggle="tooltip"
-                          data-bs-placement="top" title="Click here to update favicon">
+
+                      <div class="center-flex">
+                        <button type="button"
+                          class="custom-btn btn-dynamic mt-2"
+                          onclick="document.getElementById('favicon').click()"
+                          title="Click here to update favicon">
+
                           <i class="ri-loop-left-line"></i> Update Favicon
                         </button>
                       </div>
@@ -239,10 +311,19 @@ if ($result->num_rows > 0) {
                         alt="Website Background Preview" style="max-width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; display: block; margin: 10px auto 0;">
 
                       <!-- Centered Button -->
-                      <div class="d-flex justify-content-center">
+                      <!-- <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-dynamic mt-2" onclick="document.getElementById('website_background').click()" data-bs-toggle="tooltip"
                           data-bs-placement="top" title="Click here to update website background image">
                           <i class="ri-loop-left-line"></i> Update Website Background
+                        </button>
+                      </div> -->
+                      <div class="center-flex">
+                        <button type="button"
+                          class="custom-btn btn-dynamic mt-2"
+                          onclick="document.getElementById('website_background').click()"
+                          title="Click here to update Website Background">
+
+                          <i class="ri-loop-left-line"></i> Update Favicon
                         </button>
                       </div>
 
@@ -258,10 +339,19 @@ if ($result->num_rows > 0) {
                         alt="Website Footer Background Preview" style="max-width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; display: block; margin: 10px auto 0;">
 
                       <!-- Centered Button -->
-                      <div class="d-flex justify-content-center">
+                      <!-- <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-dynamic mt-2" onclick="document.getElementById('website_footerbg').click()"
                           data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to update footer background">
                           <i class="ri-loop-left-line"></i> Update Footer Background
+                        </button>
+                      </div> -->
+                      <div class="center-flex">
+                        <button type="button"
+                          class="custom-btn btn-dynamic mt-2"
+                          onclick="document.getElementById('website_footerbg').click()"
+                          title="Click here to update Website Footer">
+
+                          <i class="ri-loop-left-line"></i> Update Favicon
                         </button>
                       </div>
 
@@ -281,10 +371,19 @@ if ($result->num_rows > 0) {
                         alt="Website Banner Preview" style="max-width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; display: block; margin: 10px auto 0;">
 
                       <!-- Centered Button -->
-                      <div class="d-flex justify-content-center">
+                      <!-- <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-dynamic mt-2" onclick="document.getElementById('site_banner').click()" data-bs-toggle="tooltip"
                           data-bs-placement="top" title="Click here to update website banner image">
                           <i class="ri-loop-left-line"></i> Update Website Banner
+                        </button>
+                      </div> -->
+                      <div class="center-flex">
+                        <button type="button"
+                          class="custom-btn btn-dynamic mt-2"
+                          onclick="document.getElementById('site_banner').click()"
+                          title="Click here to update Site Banner">
+
+                          <i class="ri-loop-left-line"></i> Update Favicon
                         </button>
                       </div>
 
@@ -301,10 +400,19 @@ if ($result->num_rows > 0) {
                         alt="Home page background Preview" style="max-width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; display: block; margin: 10px auto 0;">
 
                       <!-- Centered Button -->
-                      <div class="d-flex justify-content-center">
+                      <!-- <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-dynamic mt-2" onclick="document.getElementById('homepage_bg').click()" data-bs-toggle="tooltip"
                           data-bs-placement="top" title="Click here to update homepage background image">
                           <i class="ri-loop-left-line"></i> Update Home Page Background
+                        </button>
+                      </div> -->
+                      <div class="center-flex">
+                        <button type="button"
+                          class="custom-btn btn-dynamic mt-2"
+                          onclick="document.getElementById('homepage_bg').click()"
+                          title="Click here to update Homepage Banner">
+
+                          <i class="ri-loop-left-line"></i> Update Favicon
                         </button>
                       </div>
 
@@ -320,7 +428,10 @@ if ($result->num_rows > 0) {
               </div>
 
               <div class="modal-footer">
-                <button type="submit" class="btn btn-dynamic" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save changes">
+                <button type="submit"
+                  class="custom-btn btn-dynamic"
+                  title="Click to save changes">
+
                   <i class="ri-save-fill"></i> Save Changes
                 </button>
               </div>
@@ -339,40 +450,19 @@ if ($result->num_rows > 0) {
   <script src="../../assets/bootstrap/js/jquery-3.7.1.js"></script>
   <script src="../../assets/bootstrap/js/script.js"></script>
   <script src="../../assets/bootstrap/js/activeLink.js?=v2.0"></script>
-  <script src="../../assets/bootstrap/js/site_settings.js?v=1.8"></script>
+  <!-- <script src="../../assets/bootstrap/js/site_settings.js?v=1.8"></script> -->
   <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
 
   <!--<script src="translator.js"></script>-->
-  <!-- Include the translator script START -->
-  <script>
-    const toggle = document.getElementById('languageToggle');
-    const langLabel = document.getElementById('langLabel');
 
-    // Load saved language
-    window.addEventListener('load', () => {
-      const savedLang = localStorage.getItem('selectedLanguage') || 'en';
-      const isKhmer = savedLang === 'km';
-      toggle.checked = isKhmer;
-      langLabel.textContent = isKhmer ? 'KM' : 'EN';
-      translatePage(savedLang);
-    });
-
-    // On toggle change
-    toggle.addEventListener('change', function() {
-      const newLang = this.checked ? 'km' : 'en';
-      localStorage.setItem('selectedLanguage', newLang);
-      langLabel.textContent = this.checked ? 'KM' : 'EN';
-      translatePage(newLang);
-    });
-  </script>
   <!-- Include the translator script END-->
 
   <script>
     // Define images array
     const images = {
       website_background: "../../assets/uploads/site settings/website background/<?php echo htmlspecialchars($settings['website_background']); ?>",
-      website_footerbg: "../../assets/uploads/site settings/website footer/<?php echo htmlspecialchars($settings['website_footerbg']); ?>"
-      website_banner: "../../assets/uploads/site settings/website banner/<?php echo htmlspecialchars($settings['site_banner']); ?>"
+      website_footerbg: "../../assets/uploads/site settings/website footer/<?php echo htmlspecialchars($settings['website_footerbg']); ?>",
+      website_banner: "../../assets/uploads/site settings/website banner/<?php echo htmlspecialchars($settings['site_banner']); ?>",
       homepage_bg: "../../assets/uploads/site settings/home page background/<?php echo htmlspecialchars($settings['homepage_bg']); ?>"
     };
 

@@ -7,13 +7,17 @@ if (isset($_POST["login_button"])) {
     $conn->begin_transaction();
     try {
         $login_value = $_POST["email"];
+
         $password = $_POST["password"];
 
+        echo $login_value;
+
+        echo $password;
         $stmt = $conn->prepare("SELECT * FROM user_account WHERE (email = ? OR username = ?) AND `password` = ?");
         $stmt->bind_param("sss", $login_value, $login_value, $password);
 
         if (!$stmt->execute()) {
-            header("Location: /ukt/pages/adminukt/login.php?message=Account not found.");
+            header("Location: ../../../pages/adminukt/login.php?message=Account not found.");
             exit;
         }
 
@@ -78,6 +82,9 @@ if (isset($_POST["login_button"])) {
 
             $conn->commit();
             header("Location: /ukt/pages/adminukt/page_management.php");
+            exit;
+        } else {
+            header("Location: ../../../pages/adminukt/login.php?message=Password Not Matched.");
             exit;
         }
     } catch (Exception $e) {

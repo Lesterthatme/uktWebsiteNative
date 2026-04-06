@@ -35,7 +35,11 @@ if (isset($_POST["login_button"])) {
 
         $stmt = $conn->prepare("SELECT * FROM user_account WHERE (email = ? OR username = ?) AND password = ?");
         $stmt->bind_param("sss", $login_value, $login_value, $password);
-        $stmt->execute();
+        if (!$stmt->execute()) {
+            $conn->rollback();
+            header('Location: /ukt/pages/content_manager/login.php?mess="Something Went Wrong to DB."');
+            exit;
+        }
         $result = $stmt->get_result();
 
         if ($result && $result->num_rows > 0) {
@@ -69,7 +73,7 @@ if (isset($_POST["login_button"])) {
             $update->bind_param("si", $session_token, $user['user_id']);
             if (! $update->execute()) {
                 $conn->rollback();
-                header('Location: ukt/pages/content_manager/login.php');
+                header('Location: /ukt/pages/content_manager/login.php');
                 exit;
             }
 
@@ -88,7 +92,7 @@ if (isset($_POST["login_button"])) {
             $log_stmt->bind_param("sssi", $description, $log_date, $log_time, $user_id);
             if (! $log_stmt->execute()) {
                 $conn->rollback();
-                header('Location: ukt/pages/content_manager/login.php');
+                header('Location: /ukt/pages/content_manager/login.php');
                 exit;
             }
 
@@ -100,7 +104,10 @@ if (isset($_POST["login_button"])) {
             }
 
             $conn->commit();
-            header('Location: ../../../pages/content_manager/page_management.php?success=true');
+            header('Location: /ukt/pages/content_manager/page_management.php?success=true');
+            exit;
+        } else {
+            header('Location: /ukt/pages/content_manager/login.php?mess="Password Not Matched."');
             exit;
         }
     } catch (Exception $e) {

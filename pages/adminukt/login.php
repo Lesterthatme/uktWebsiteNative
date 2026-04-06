@@ -9,10 +9,6 @@ session_start();
 //     exit();
 // }
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'actions/adminDestroyer.php');
-    exit;
-}
 
 // temp commented
 // Auto-login with remember_me cookie
@@ -79,29 +75,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <title><?php echo htmlspecialchars($settings['websitetitle_admin']); ?></title>
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/loginform.css?v=1.3">
-    <script type="text/javascript">
-        function noBack() {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Oops...',
-                text: 'Please logout your account first.',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                setTimeout(function() {
-                    window.history.forward();
-                }, 100);
-            });
-        }
 
-        window.onpageshow = function(event) {
-            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-                noBack();
-            }
-        };
-
-        window.history.forward();
-    </script>
     <style>
         body {
             background: url('../../assets/uploads/site settings/website background/<?php echo $website_background; ?>') no-repeat center center/cover;

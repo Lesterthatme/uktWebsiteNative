@@ -26,7 +26,7 @@ if ($result->num_rows > 0) {
 // display university logo end
 
 
-$message = '';
+$message = $_GET['mess'] ?? '';
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -55,7 +55,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     <title><?php echo htmlspecialchars($settings['websitetitle_cm']); ?></title>
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/loginform.css?v=1.4">
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         function noBack() {
             Swal.fire({
                 icon: 'warning',
@@ -78,7 +78,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
         // Block browser back button
         window.history.forward();
-    </script>
+    </script> -->
     <style>
         body {
             background: url('../../assets/uploads/site settings/website background/<?php echo $website_background; ?>') no-repeat center center/cover;
