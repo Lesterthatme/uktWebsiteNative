@@ -11,6 +11,25 @@ $query = "SELECT requirement_id, requirement_title, date_added, status, descript
 
 $result = mysqli_query($conn, $query);
 ?>
+<style>
+    .post-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* EXACTLY 2 LINES */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .post-text.expanded {
+        -webkit-line-clamp: unset;
+    }
+
+    .see-more-btn {
+        display: none;
+
+    }
+</style>
 <div class="container">
     <div class="row">
         <!-- Main content column -->
@@ -33,7 +52,7 @@ $result = mysqli_query($conn, $query);
                                             <small class="text-muted">
                                                 <?= date("F d, Y", strtotime($row['date_added'])) ?>
                                             </small>
-                                            
+
                                             <!-- Copy Button -->
                                             <button
                                                 class="btn btn-secondary btn-sm copy-btn"
@@ -43,9 +62,9 @@ $result = mysqli_query($conn, $query);
                                         </div>
                                     </div>
                                     <!-- Content -->
-                                    <p class="post-text mb-2 caption">
+                                    <div class="post-text mb-2 caption">
                                         <?= $row['description'] ?>
-                                    </p>
+                                    </div>
                                     <!-- See More Button -->
                                     <button class="btn btn-link p-0 see-more-btn">See more</button>
                                 </div>
@@ -98,7 +117,7 @@ $result = mysqli_query($conn, $query);
         </div>
     </div>
 </div>
-
+<script src="/ukt/assets/js/scholarship.js" defer></script>
 <script>
     document.querySelectorAll('.copy-btn').forEach(button => {
         button.addEventListener('click', function() {

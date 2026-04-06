@@ -11,15 +11,16 @@ include 'connection/dbconnection.php';
 ?>
 <style>
     .post-text {
-        max-height: 80px;
-        /* limit height */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* EXACTLY 2 LINES */
+        -webkit-box-orient: vertical;
         overflow: hidden;
-        transition: max-height 0.3s ease;
+        transition: all 0.3s ease;
     }
 
     .post-text.expanded {
-        max-height: 1000px;
-
+        -webkit-line-clamp: unset;
     }
 
     .see-more-btn {
@@ -60,9 +61,9 @@ include 'connection/dbconnection.php';
                                         </div>
                                     </div>
                                     <!-- Content -->
-                                    <p class="post-text mb-2 caption">
+                                    <div class="post-text mb-2 caption">
                                         <?= $row['description'] ?>
-                                    </p>
+                                    </div>
                                     <!-- See More Button -->
                                     <button class="btn btn-link p-0 see-more-btn">See more</button>
                                 </div>

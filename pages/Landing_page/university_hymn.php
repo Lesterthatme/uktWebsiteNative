@@ -36,7 +36,7 @@ $university_logo = $university_data['university_logo'];
                 <div class="col justify-content-center text-center p-4 my-3">
                     <h4 class="fw-bold mt-4"><?php echo htmlspecialchars($hymn_title); ?></h4>
                     <small><?php echo htmlspecialchars($hymn_author); ?></small>
-                    <p class="lead mt-3"><?php echo $hymn_lyrics; ?></p> 
+                    <p class="lead mt-3"><?php echo $hymn_lyrics; ?></p>
                 </div>
             </div>
         </div>

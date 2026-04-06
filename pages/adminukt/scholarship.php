@@ -269,9 +269,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                               </div>
 
                               <div class="modal-footer pb-0">
-                                <but ton type="submit" name="update_scholarship" class="btn btn-dynamic" value="adminukt" data-bs-toggle="tooltip"
+                                <button type="submit" name="update_scholarship" class="btn btn-dynamic" value="adminukt" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click to save"><i class="ri-save-line"></i> Save
-                                </but>
+                                </button>
                               </div>
 
                             </form>

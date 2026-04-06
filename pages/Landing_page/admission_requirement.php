@@ -6,7 +6,6 @@
 include 'connection/dbconnection.php';
 // echo $_GET['id'];
 // echo "eto yung nagetttttttt";
-echo "dine alang ng see more kasi specific nato na post.";
 $id = $_GET['id'] ?? '';
 
 $query = "SELECT *

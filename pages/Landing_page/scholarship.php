@@ -48,12 +48,7 @@ include 'connection/dbconnection.php';
                                         <h2 class="mb-0 fw-bold"><?= $row['scholarship_title'] ?></h2>
                                         <small class="text-muted"><?= date("F d, Y", strtotime($row['date_added'])) ?></small>
                                     </div>
-                                    <!-- Content -->
-                                    <p class="post-text mb-2 caption">
-                                        <?= $row['description'] ?>
-                                    </p>
-                                    <!-- See More Button -->
-                                    <button class="btn btn-link p-0 see-more-btn">See more</button>
+
                                 </div>
                                 <!-- Image -->
                                 <!--  -->
@@ -62,6 +57,11 @@ include 'connection/dbconnection.php';
                                                 : 'default.png'; ?>"
                                     class="img-fluid rounded-bottom"
                                     alt="img">
+
+                                <!-- Content -->
+                                <p class="post-text mb-2 caption">
+                                    <?= $row['description'] ?>
+                                </p>
 
                             </div>
                         </div>
