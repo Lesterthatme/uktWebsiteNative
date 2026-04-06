@@ -9,6 +9,11 @@ session_start();
 //     exit();
 // }
 
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . 'actions/adminDestroyer.php');
+    exit;
+}
+
 // temp commented
 // Auto-login with remember_me cookie
 if (isset($_COOKIE['remember_me'])) {

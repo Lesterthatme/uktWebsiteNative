@@ -1,7 +1,8 @@
 <?php
 include 'connection/dbconnection.php';
 
-function slugify($text) {
+function slugify($text)
+{
   $text = preg_replace('~[^\pL\d]+~u', '-', $text);
   $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
   $text = preg_replace('~[^-\w]+~', '', $text);
@@ -45,6 +46,10 @@ if (isset($_GET['news_slug'])) {
           <div class="news-image">
             <img src="assets/uploads/news/<?php echo htmlspecialchars($news['news_image']); ?>" alt="News Image" class="img-fluid rounded">
           </div>
+          <small class="text-secondary-emphasis">
+            Date Posted:
+            <?= date('F j, Y', strtotime($row['news_date'])) ?>
+          </small>
           <!--<h6 class="mt-4 fw-bold text-center"><?php echo htmlspecialchars($news['news_title']); ?></h6>-->
           <p class="mt-3 fs-6 text-justify">
             <?php echo nl2br(htmlspecialchars($news['news_description'])); ?>

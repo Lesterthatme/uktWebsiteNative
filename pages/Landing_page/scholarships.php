@@ -45,7 +45,7 @@ include 'connection/dbconnection.php';
                                 <div class="card-body">
                                     <!-- Header -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h2 class="mb-0 fw-bold"><?= $row['scholarship_title'] ?></h2>
+                                        <h2 class="mb-0 fw-bold w-75"><?= $row['scholarship_title'] ?></h2>
 
                                         <div class="d-flex align-items-center gap-2">
                                             <small class="text-muted">

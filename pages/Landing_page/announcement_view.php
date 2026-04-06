@@ -39,6 +39,10 @@ if (isset($_GET['announcement_slug'])) {
             <!-- Display the announcement image -->
             <img src="assets/uploads/announcement/<?php echo htmlspecialchars($announcement['announcement_image']); ?>" alt="Announcement Image" class="img-fluid rounded">
           </div>
+          <small class="text-secondary-emphasis">
+            Date Posted: 
+            <?= date('F j, Y', strtotime($announcement['announcement_date'])) ?>
+          </small>
           <p class="mt-3 fs-6">
             <!-- Display the announcement description -->
             <?php echo nl2br(htmlspecialchars($announcement['announcement_description'])); ?>
