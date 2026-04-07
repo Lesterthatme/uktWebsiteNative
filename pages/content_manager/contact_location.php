@@ -1,6 +1,10 @@
 <?php
-include 'include/session.php';
-
+include '../../connection/dbconnection.php';
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . 'actions/contentManagerDestroyer.php');
+  exit;
+}
 $sql = "SELECT university_street, city_municipality, university_province, university_country, 
                university_postalcode, university_contactnumber, university_emailaddress
         FROM university_profile 
