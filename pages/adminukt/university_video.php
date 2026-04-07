@@ -79,7 +79,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                 <div class="card border-0 pb-3">
                     <div class="card-body">
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
-                            <h5 class="card-title fs-6 mb-2 mb-md-0">University Video</h5>
+                            <h5 class="card-title fs-6 mb-2 mb-md-0">វីដេអូសាកលវិទ្យាល័យ</h5>
                             <button type="button" class="btn btn-sm btn-danger rounded-2 px-4"
                                 title="Click to remove highlight" id="removeHighlightBtn">
 
@@ -95,11 +95,11 @@ if ($row = mysqli_fetch_assoc($result)) {
                                         d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
 
-                                Remove Highlight
+                                លុប​ការ​បន្លិច
                             </button>
                             <!-- later create a GET link -->
                         </div>
-                        <p class="card-text text-muted small">Videos from database.</p>
+                        <p class="card-text text-muted small">វីដេអូពីមូលដ្ឋានទិន្នន័យ។</p>
                     </div>
                     <div class="container-fluid card-body">
                         <div class="row g-4">
@@ -132,9 +132,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                 d="M15.75 10.5V6.75A2.25 2.25 0 0013.5 4.5h-6A2.25 2.25 0 005.25 6.75v10.5A2.25 2.25 0 007.5 19.5h6a2.25 2.25 0 002.25-2.25V13.5l3.75 3v-9l-3.75 3z" />
                                         </svg>
 
-                                        <h6 class="fw-semibold">No Videos Available</h6>
+                                        <h6 class="fw-semibold">គ្មានវីដេអូទេ</h6>
                                         <p class="text-muted small mb-0">
-                                            There are currently no videos in the database.
+                                            បច្ចុប្បន្នមិនមានវីដេអូនៅក្នុងមូលដ្ឋានទិន្នន័យទេ។
                                         </p>
 
                                     </div>
@@ -165,7 +165,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                                     <div class="text-center mt-2">
                                         <button class="btn btn-sm btn-outline-primary highlight-btn" data-id="<?= $video['id'] ?>">
-                                            Highlight
+                                            ចំណុច​លេចធ្លោ
                                         </button>
                                     </div>
 

@@ -52,48 +52,48 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="doc-tabs-container mt-3">
               <ul class="doc-tabs d-flex list-unstyled">
                 <li class="me-3">
-                  <a class="doc-link" href="page_management">Highlights</a>
+                  <a class="doc-link" href="page_management">ចំណុចសំខាន់ៗ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link active" href="partnership">Partnership</a>
+                  <a class="doc-link active" href="partnership">ភាពជាដៃគូ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="calendar">University Calendar</a>
+                  <a class="doc-link" href="calendar">ប្រតិទិនសាកលវិទ្យាល័យ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="FaQ">FAQ</a>
+                  <a class="doc-link" href="FaQ">សំណួរដែលសួរញឹកញាប់</a>
                 </li>
               </ul>
               <hr class="doc-tabs-divider">
             </div>
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-              <h5 class="card-title fs-6 mb-2 mb-md-0">Partnership</h5>
+              <h5 class="card-title fs-6 mb-2 mb-md-0">ភាពជាដៃគូ</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
                 data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="top"
                 title="Click to add new partnership">
-                <i class="ri-add-line"></i> Add Partnership
+                <i class="ri-add-line"></i> បន្ថែមភាពជាដៃគូ
               </button>
             </div>
 
-            <p class="card-text text-muted small">Learn about our collaborations with institutions and industries that strengthen research, education and innovation.</p>
+            <p class="card-text text-muted small">ស្វែងយល់អំពីកិច្ចសហការរបស់យើងជាមួយស្ថាប័ន និងឧស្សាហកម្មដែលពង្រឹងការស្រាវជ្រាវ ការអប់រំ និងនវានុវត្តន៍។</p>
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Add University Partnership
+                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">បន្ថែមភាពជាដៃគូសាកលវិទ្យាល័យ
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <form action="partnership.php" method="POST" enctype="multipart/form-data">
                       <div class="mb-3">
-                        <label class="form-label fw-semibold text-muted">Upload your File:</label>
+                        <label class="form-label fw-semibold text-muted">ផ្ទុកឡើងឯកសាររបស់អ្នក៖</label>
                         <div class="upload-area" id="uploadArea">
                           <img src="https://cdn-icons-png.flaticon.com/512/126/126477.png" alt="Upload Icon">
-                          <p class="mb-0">Drag & Drop <br><span class="text-success">or browse</span></p>
-                          <small class="text-muted">Supports: JPEG, JPG, PNG</small>
+                          <p class="mb-0">អូស និង ទម្លាក់ <br><span class="text-success">ឬរកមើល</span></p>
+                          <small class="text-muted">គាំទ្រ៖ JPEG, JPG, PNG</small>
                           <input type="file" id="fileInput" name="up_image" class="d-none"
                             accept="image/jpeg, image/jpg, image/png">
                         </div>
@@ -104,21 +104,20 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div>
 
                       <div class="mb-3">
-                        <label for="message" class="form-label fw-semibold text-muted">University Partnership
-                          Name:</label>
+                        <label for="message" class="form-label fw-semibold text-muted">ឈ្មោះភាពជាដៃគូសាកលវិទ្យាល័យ៖</label>
                         <input type="text" class="form-control" name="up_name"
-                          placeholder="Enter University Partnership Name">
+                          placeholder="បញ្ចូលឈ្មោះភាពជាដៃគូសាកលវិទ្យាល័យ">
                       </div>
                       <div class="mb-3">
-                        <label for="message" class="form-label fw-semibold text-muted">Website Link:</label>
-                        <input type="text" class="form-control" name="up_link" placeholder="Enter Website Link">
+                        <label for="message" class="form-label fw-semibold text-muted">តំណភ្ជាប់គេហទំព័រ៖</label>
+                        <input type="text" class="form-control" name="up_link" placeholder="បញ្ចូលតំណភ្ជាប់គេហទំព័រ">
                       </div>
                   </div>
                   <div class="modal-footer">
 
                     <button type="submit" name="add_partnership" class="btn btn-dynamic" data-bs-toggle="tooltip"
                       data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
-                      Save</button>
+                      រក្សាទុក</button>
                   </div>
                   </form>
                 </div>
@@ -164,16 +163,16 @@ if ($row = mysqli_fetch_assoc($result)) {
                                   data-link="<?= htmlspecialchars($row['up_link']) ?>"
                                   data-status="<?= htmlspecialchars($row['up_status']) ?>"
                                   data-image="<?= htmlspecialchars($row['up_image']) ?>" data-bs-toggle="tooltip"
-                                  data-bs-placement="top" title="Click here to edit this partnership details">
-                                  <i class="ri-pencil-line"></i> Edit
+                                  data-bs-placement="top" title="ចុចទីនេះដើម្បីកែសម្រួលព័ត៌មានលម្អិតអំពីភាពជាដៃគូនេះ">
+                                  <i class="ri-pencil-line"></i> កែសម្រួល
                                 </a>
                               </li>
 
                               <li>
                                 <a class="dropdown-item text-dark text-decoration-none" href="javascript:void(0);"
                                   data-id="<?= $row['up_id'] ?>" onclick="return openModal(event, this.dataset.id);" data-bs-toggle="tooltip"
-                                  data-bs-placement="top" title="Click here to delete this partnership">
-                                  <i class="ri-delete-bin-line"></i> Delete
+                                  data-bs-placement="top" title="ចុចទីនេះដើម្បីលុបភាពជាដៃគូនេះ">
+                                  <i class="ri-delete-bin-line"></i> លុប
                                 </a>
                               </li>
                               <!-- DELETE BUTTON -->
@@ -199,7 +198,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                       <?php endwhile; ?>
                     <?php else: ?>
-                      <p class="text-center">No university partnerships found.</p>
+                      <p class="text-center">រកមិនឃើញភាពជាដៃគូសាកលវិទ្យាល័យទេ។</p>
                     <?php endif; ?>
                   </div>
                 </div>
@@ -242,11 +241,11 @@ if ($row = mysqli_fetch_assoc($result)) {
                       <input type="hidden" name="up_id" value="<?php echo $up_id; ?>">
 
                       <div class="mb-3">
-                        <label class="form-label fw-semibold text-muted">Upload your File:</label>
+                        <label class="form-label fw-semibold text-muted">ផ្ទុកឡើងឯកសាររបស់អ្នក៖</label>
                         <div class="upload-area" id="editUploadArea">
                           <img src="https://cdn-icons-png.flaticon.com/512/126/126477.png" alt="Upload Icon">
-                          <p class="mb-0">Drag & Drop <br><span class="text-success">or browse</span></p>
-                          <small class="text-muted">Supports: JPEG, JPG, PNG</small>
+                          <p class="mb-0">អូស និង ទម្លាក់ <br><span class="text-success">ឬរកមើល</span></p>
+                          <small class="text-muted">គាំទ្រ៖ JPEG, JPG, PNG</small>
                           <input name="up_image" value="<?php echo $up_image; ?>" type="file" id="editFileInput"
                             class="d-none" accept="image/jpeg, image/jpg, image/png">
                         </div>
@@ -258,22 +257,21 @@ if ($row = mysqli_fetch_assoc($result)) {
                       </div>
 
                       <div class="mb-3">
-                        <label for="message" class="form-label fw-semibold text-muted">University Partnership
-                          Name:</label>
+                        <label for="message" class="form-label fw-semibold text-muted">ឈ្មោះភាពជាដៃគូសាកលវិទ្យាល័យ៖</label>
                         <input name="up_name" value="<?php echo $up_name; ?>" type="text" class="form-control"
-                          placeholder="Enter University Partnership Name">
+                          placeholder="បញ្ចូលឈ្មោះភាពជាដៃគូសាកលវិទ្យាល័យ">
                       </div>
                       <div class="mb-3">
-                        <label for="message" class="form-label fw-semibold text-muted">Website Link:</label>
+                        <label for="message" class="form-label fw-semibold text-muted">តំណភ្ជាប់គេហទំព័រ៖</label>
                         <input type="text" class="form-control" name="up_link" value="<?php echo $up_link; ?>"
-                          placeholder="Enter Website Link">
+                          placeholder="បញ្ចូលតំណភ្ជាប់គេហទំព័រ">
                       </div>
 
                       <div class="mb-3">
-                        <label for="form-select" class="form-label fw-semibold text-muted">Status:</label>
+                        <label for="form-select" class="form-label fw-semibold text-muted">ស្ថានភាព៖</label>
                         <select class="form-select border border-2 rounded-2" name="up_status" required>
-                          <option value="Active" <?php echo ($up_status == 'Active') ? 'selected' : ''; ?>>Active</option>
-                          <option value="Inactive" <?php echo ($up_status == 'Inactive') ? 'selected' : ''; ?>>Inactive
+                          <option value="Active" <?php echo ($up_status == 'Active') ? 'selected' : ''; ?>>សកម្ម</option>
+                          <option value="Inactive" <?php echo ($up_status == 'Inactive') ? 'selected' : ''; ?>>អសកម្ម
                           </option>
                         </select>
                       </div>
@@ -281,7 +279,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <button type="submit" name="update_partnership" class="btn btn-dynamic" data-bs-toggle="tooltip"
                           data-bs-placement="top" title="Click to save">
                           <i class="ri-save-fill"></i>
-                          Save</button>
+                          រក្សាទុក</button>
                       </div>
                     </form>
                   </div>

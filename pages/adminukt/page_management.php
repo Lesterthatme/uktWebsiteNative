@@ -55,31 +55,30 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="doc-tabs-container mt-3">
               <ul class="doc-tabs d-flex list-unstyled">
                 <li class="me-3">
-                  <a class="doc-link active" href="page_management">Highlights</a>
+                  <a class="doc-link active" href="page_management">ចំណុចសំខាន់ៗ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="partnership">Partnership</a>
+                  <a class="doc-link" href="partnership">ភាពជាដៃគូ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="calendar">University Calendar</a>
+                  <a class="doc-link" href="calendar">ប្រតិទិនសាកលវិទ្យាល័យ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="FaQ">FAQ</a>
+                  <a class="doc-link" href="FaQ">សំណួរដែលសួរញឹកញាប់</a>
                 </li>
               </ul>
               <hr class="doc-tabs-divider">
             </div>
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-              <h5 class="card-title fs-6 mb-2 mb-md-0">Highlights</h5>
+              <h5 class="card-title fs-6 mb-2 mb-md-0">ចំណុចសំខាន់ៗ</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic float-end" data-bs-toggle="modal"
                 data-bs-target="#addHighlightModal" data-bs-toggle="tooltip" data-bs-placement="top"
                 title="Click to add highlights">
-                <i class="ri-add-line"></i> Add Highlights
+                <i class="ri-add-line"></i> បន្ថែម​ចំណុច​សំខាន់ៗ
               </button>
             </div>
 
-            <p class="card-text text-muted small">Discover the latest university achievements, events, and important
-              updates that shape the academic community</p>
+            <p class="card-text text-muted small">ស្វែងយល់ពីសមិទ្ធផល ព្រឹត្តិការណ៍ និងព័ត៌មានថ្មីៗបំផុតរបស់សាកលវិទ្យាល័យ ដែលជះឥទ្ធិពលដល់សហគមន៍សិក្សា</p>
 
 
             <!-- Modal to add highlights -->
@@ -90,45 +89,45 @@ if ($row = mysqli_fetch_assoc($result)) {
                   <div class="modal-content">
                     <div class="modal-header">
                       <h1 class="modal-title fw-bold text-muted" id="addHighlightModalLabel" style="font-size: 18px;">
-                        Add Highlights</h1>
+                        បន្ថែម​ចំណុច​សំខាន់ៗ</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                       <div class="mb-3">
-                        <label for="icon_class" class="form-label">Select Icon</label>
+                        <label for="icon_class" class="form-label">ជ្រើសរើសរូបតំណាង</label>
                         <div class="dropdown">
                           <button class="btn btn-dynamic dropdown-toggle w-100" type="button" id="iconDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Click here to select icon">
-                            Select Icon
+                            data-bs-placement="top" title="ចុចទីនេះដើម្បីជ្រើសរើសរូបតំណាង">
+                            ជ្រើសរើសរូបតំណាង
                           </button>
                           <div class="dropdown-menu w-100 p-2" id="iconDropdownMenu" aria-labelledby="iconDropdown"
                             style="max-height: 300px; overflow-y: auto; overflow-x: hidden; border: 1px solid #ccc;">
-                            <input type="text" id="iconSearch" class="form-control mb-2" placeholder="Search Icon..."
+                            <input type="text" id="iconSearch" class="form-control mb-2" placeholder="រូបតំណាងស្វែងរក..."
                               onkeyup="filterIcons()" />
                             <ul id="iconList" style="list-style: none; padding: 0; margin: 0;">
                             </ul>
                           </div>
                         </div>
                         <input type="hidden" name="icon_class" id="selectedIconInput" />
-                        <p class="mt-3"> Selected Icon: <i id="selectedIconPreview"></i>
+                        <p class="mt-3"> រូបតំណាងដែលបានជ្រើសរើស៖ <i id="selectedIconPreview"></i>
                           <span id="selectedIconName" class="fw-bold"></span>
                         </p>
                       </div>
                       <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" name="title" class="form-control" id="title" placeholder="Enter Title"
+                        <label for="title" class="form-label">ចំណងជើង</label>
+                        <input type="text" name="title" class="form-control" id="title" placeholder="បញ្ចូលចំណងជើង"
                           required />
                       </div>
                       <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
+                        <label for="description" class="form-label">ការពិពណ៌នា</label>
                         <textarea name="description" class="form-control" id="description" rows="3"
-                          placeholder="Enter Description" required></textarea>
+                          placeholder="បញ្ចូលការពិពណ៌នា" required></textarea>
                       </div>
                     </div>
                     <div class="modal-footer">
                       <button type="submit" name="add_highlights" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> Save</button>
+                        data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i> រក្សាទុក</button>
                     </div>
                   </div>
                 </form>

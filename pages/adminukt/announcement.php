@@ -2,8 +2,8 @@
 include '../../connection/dbconnection.php';
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-    exit;
+  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  exit;
 }
 // Fetch all site settings start
 $settings = [];
@@ -51,17 +51,15 @@ if ($row = mysqli_fetch_assoc($result)) {
         <div class="card border-0 pb-3">
           <div class="card-body">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-              <h5 class="card-title fs-6 mb-2 mb-md-0">Manage Announcements</h5>
+              <h5 class="card-title fs-6 mb-2 mb-md-0">គ្រប់គ្រងការប្រកាស</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic"
                 data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-toggle="tooltip"
                 data-bs-placement="top" title="Click to add a new announcement">
-                <i class="ri-add-line"></i> Add Announcement
+                <i class="ri-add-line"></i> បន្ថែមការប្រកាស
               </button>
             </div>
             <p class="card-text text-muted small">
-              Stay informed with the latest updates, important notices, key announcements. This section keeps you
-              connected with recent events, system updates, and essential information to ensure you’re always in the
-              loop.
+              តាមដានព័ត៌មានថ្មីៗ ការជូនដំណឹងសំខាន់ៗ និងសេចក្តីប្រកាសសំខាន់ៗ។ ផ្នែកនេះជួយអ្នកឱ្យទទួលបានព័ត៌មានថ្មីៗ ការអាប់ដេតប្រព័ន្ធ និងព័ត៌មានសំខាន់ៗ ដើម្បីធានាថាអ្នកតែងតែទទួលបានព័ត៌មានថ្មីៗជានិច្ច។
             </p>
           </div>
 
@@ -71,20 +69,20 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Add Announcement</h1>
+                  <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">បន្ថែមការប្រកាស</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pb-0">
                   <form method="POST" action="../../function/announcement_function.php" enctype="multipart/form-data">
                     <div class="mb-3">
-                      <label class="form-label fw-semibold text-muted">Upload Image:</label>
+                      <label class="form-label fw-semibold text-muted">ផ្ទុកឡើងរូបភាព៖</label>
                       <div class="upload-area" id="uploadArea"
                         style="position: relative; text-align: center; border: 2px dashed #ccc; padding: 20px; cursor: pointer;">
                         <!-- Placeholder content -->
                         <img id="uploadIcon" src="https://cdn-icons-png.flaticon.com/512/126/126477.png"
                           alt="Upload Icon" style="width: 50px;">
-                        <p id="uploadText" class="mb-0">Drag & Drop <br><span class="text-success">or browse</span></p>
-                        <small class="text-muted">Supports: JPEG, JPG, PNG</small>
+                        <p id="uploadText" class="mb-0">អូស និង ទម្លាក់ <br><span class="text-success">ឬរកមើល</span></p>
+                        <small class="text-muted">គាំទ្រ៖ JPEG, JPG, PNG</small>
                         <input type="file" id="fileInput" name="announcement_image" class="d-none"
                           accept="image/jpeg, image/jpg, image/png">
                       </div>
@@ -98,15 +96,15 @@ if ($row = mysqli_fetch_assoc($result)) {
                     </div>
 
                     <div class="mb-3">
-                      <label for="title" class="form-label fw-semibold text-muted">Title:</label>
+                      <label for="title" class="form-label fw-semibold text-muted">ចំណងជើង៖</label>
                       <input type="text" class="form-control" id="title" name="announcement_title"
-                        placeholder="Enter Announcement Title" required>
+                        placeholder="បញ្ចូលចំណងជើងនៃការប្រកាស" required>
                     </div>
 
                     <div class="mb-3">
-                      <label for="description" class="form-label fw-semibold text-muted">Description:</label>
+                      <label for="description" class="form-label fw-semibold text-muted">ការពិពណ៌នា៖</label>
                       <textarea class="form-control" id="description" name="announcement_description" rows="3"
-                        placeholder="Enter Announcement Description" required></textarea>
+                        placeholder="បញ្ចូលការពិពណ៌នាអំពីការប្រកាស" required></textarea>
                     </div>
 
                     <!-- <div class="mb-3">
@@ -121,7 +119,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <div class="modal-footer">
                       <button type="submit" name="add_announcement" class="btn btn-md btn-dynamic" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Click to save">
-                        <i class="ri-save-fill"></i> Save
+                        <i class="ri-save-fill"></i> រក្សាទុក
                       </button>
                     </div>
                   </form>
@@ -186,12 +184,12 @@ if ($row = mysqli_fetch_assoc($result)) {
                                     data-bs-target="#editModal"
                                     data-id="<?php echo $row['announcement_id']; ?>"
                                     data-title="<?php echo htmlspecialchars($title); ?>"
-                                     data-description="<?= htmlspecialchars($row['announcement_description'], ENT_QUOTES, 'UTF-8'); ?>"
-                                    
+                                    data-description="<?= htmlspecialchars($row['announcement_description'], ENT_QUOTES, 'UTF-8'); ?>"
+
                                     data-image="../../assets/uploads/announcement/<?php echo $image; ?>"
                                     data-status="<?php echo $status; ?>"
                                     data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Click to edit this announcement"><i class="ri-pencil-line"></i> Edit
+                                    title="Click to edit this announcement"><i class="ri-pencil-line"></i> កែសម្រួល
                                   </a>
                                 </li>
 
@@ -200,7 +198,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                     data-id="<?= $row['announcement_id']; ?>" onclick="openModal(event, this.dataset.id);" data-bs-toggle="tooltip"
                                     data-bs-placement="top"
                                     title="Click to delete this announcement"><i class="ri-delete-bin-line"></i>
-                                    Delete
+                                    លុប
                                   </a>
                                 </li>
 
@@ -215,12 +213,12 @@ if ($row = mysqli_fetch_assoc($result)) {
                               data-bs-target="#viewModal"
                               data-title="<?= htmlspecialchars($title, ENT_QUOTES); ?>"
                               data-description="<?= htmlspecialchars($row['announcement_description'], ENT_QUOTES, 'UTF-8'); ?>"
-                       
+
                               data-image="../../assets/uploads/announcement/<?= $image; ?>"
-                              data-bs-toggle="tooltip"  data-bs-placement="top"
+                              data-bs-toggle="tooltip" data-bs-placement="top"
                               title="Click to view this announcement"
                               onclick="setModalContent(this)">
-                              Read More <i class="ri-arrow-right-line"></i>
+                              អានបន្ថែម <i class="ri-arrow-right-line"></i>
                             </button>
                           </div>
 
@@ -228,7 +226,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <?php
                       }
                     } else {
-                      echo "<p>No announcements available.</p>";
+                      echo "<p>គ្មានការប្រកាសណាមួយអាចរកបានទេ។</p>";
                     }
                     $conn->close();
                     ?>
@@ -278,7 +276,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5 text-muted fw-bold" id="editModalLabel">Edit Announcement</h1>
+                  <h1 class="modal-title fs-5 text-muted fw-bold" id="editModalLabel">កែសម្រួលការប្រកាស</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pb-0">
@@ -286,7 +284,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <input type="hidden" name="announcement_id" id="edit-announcement-id">
 
                     <div class="mb-3">
-                      <label class="form-label fw-semibold text-muted">Current Image:</label>
+                      <label class="form-label fw-semibold text-muted">រូបភាពបច្ចុប្បន្ន៖</label>
                       <div id="edit-previewContainer" class="text-center">
                         <img id="edit-previewImage" class="img-fluid"
                           style="max-width: 30%; height: auto; border: 2px solid #ccc; border-radius: 8px;">
@@ -294,34 +292,34 @@ if ($row = mysqli_fetch_assoc($result)) {
                     </div>
 
                     <div class="mb-3">
-                      <label class="form-label fw-semibold text-muted">Upload New Image:</label>
+                      <label class="form-label fw-semibold text-muted">ផ្ទុកឡើងរូបភាពថ្មី៖</label>
                       <input type="file" class="form-control" name="announcement_image" id="edit-image-input"
                         accept="image/*">
                     </div>
 
                     <div class="mb-3">
-                      <label class="form-label fw-semibold text-muted">Title:</label>
+                      <label class="form-label fw-semibold text-muted">ចំណងជើង៖</label>
                       <input type="text" class="form-control" id="edit-title" name="announcement_title" required>
                     </div>
 
                     <div class="mb-3">
-                      <label class="form-label fw-semibold text-muted">Description:</label>
+                      <label class="form-label fw-semibold text-muted">ការពិពណ៌នា៖</label>
                       <textarea class="form-control" id="edit-description" name="announcement_description" rows="3"
                         required></textarea>
                     </div>
 
                     <div class="mb-3">
-                      <label class="form-label fw-semibold text-muted">Status:</label>
+                      <label class="form-label fw-semibold text-muted">ស្ថានភាព៖</label>
                       <select class="form-control" id="edit-status" name="announcement_status" required>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="active">សកម្ម</option>
+                        <option value="inactive">អសកម្ម</option>
                       </select>
                     </div>
 
                     <div class="modal-footer">
                       <button type="submit" name="update_announcement" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Click to save">
-                        <i class="ri-save-fill"></i> Save
+                        <i class="ri-save-fill"></i> រក្សាទុក
                       </button>
                     </div>
                   </form>

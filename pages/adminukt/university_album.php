@@ -51,19 +51,19 @@ if ($row = mysqli_fetch_assoc($result)) {
         <div class="card border-0 pb-3">
           <div class="card-body">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
-              <h5 class="card-title fs-6 mb-2 mb-md-0">University Album</h5>
+              <h5 class="card-title fs-6 mb-2 mb-md-0">អាល់ប៊ុមសាកលវិទ្យាល័យ</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 data-bs-toggle="tooltip" data-bs-placement="top" title="Click to add new album">
-                <i class="ri-add-line"></i> Add Album
+                <i class="ri-add-line"></i> បន្ថែមអាល់ប៊ុម
               </button>
             </div>
-            <p class="card-text text-muted small">This Albums is for University Events</p>
+            <p class="card-text text-muted small">អាល់ប៊ុមនេះគឺសម្រាប់ព្រឹត្តិការណ៍សាកលវិទ្យាល័យ</p>
             <!-- modal for adding album start-->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Add Album</h1>
+                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">បន្ថែមអាល់ប៊ុម</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
@@ -82,18 +82,18 @@ if ($row = mysqli_fetch_assoc($result)) {
                                             </div> -->
 
                       <div class="mb-3">
-                        <label for="album_name" class="form-label fw-semibold text-muted"><strong>Album Name:</strong></label>
+                        <label for="album_name" class="form-label fw-semibold text-muted"><strong>ឈ្មោះអាល់ប៊ុម៖</strong></label>
                         <input type="text" class="form-control" id="album_name" name="album_name" placeholder="Enter Album Name" required>
                       </div>
                       <div class="mb-3">
-                        <label for="album_description" class="form-label fw-semibold text-muted"><strong>Album Description:</strong></label>
+                        <label for="album_description" class="form-label fw-semibold text-muted"><strong>ការពិពណ៌នាអំពីអាល់ប៊ុម៖</strong></label>
                         <textarea class="form-control" id="album_description" name="album_description" placeholder="Enter Album Name" required></textarea>
                       </div>
 
                       <!-- Image Upload with Preview and Remove Option -->
                       <div class="mb-3">
                         <div id="imagePreview" class="mt-3 d-flex flex-wrap"></div>
-                        <label for="images" class="form-label fw-semibold text-muted"><strong>Upload Images:</strong></label>
+                        <label for="images" class="form-label fw-semibold text-muted"><strong>ផ្ទុកឡើងរូបភាព៖</strong></label>
                         <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*" onchange="previewImages()" required>
 
                       </div>
@@ -101,7 +101,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                       <hr>
                       <button type="submit" name="add_album" class="btn btn-dynamic float-end"
                         data-bs-toggle="tooltip" data-bs-placement="top"
-                        title="Click to save"><i class="ri-save-line"></i> Save</button>
+                        title="Click to save"><i class="ri-save-line"></i> រក្សាទុក</button>
                     </form>
                   </div>
                 </div>
@@ -167,13 +167,13 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <ul class="dropdown-menu dropdown-menu-end" onclick="event.stopPropagation();">
                           <li>
                             <a class="dropdown-item text-dark" href="#editModal<?php echo $row['album_id']; ?>" data-bs-toggle="modal">
-                              <i class="ri-pencil-line"></i> Edit
+                              <i class="ri-pencil-line"></i> កែសម្រួល
                             </a>
                           </li>
                           <li>
                             <a class="dropdown-item text-dark" href="../../function/album_function.php?album_id=<?php echo $row['album_id']; ?>"
                               onclick="return confirm('Are you sure you want to delete this album?')">
-                              <i class="ri-delete-bin-line"></i> Delete
+                              <i class="ri-delete-bin-line"></i> លុប
                             </a>
                           </li>
                         </ul>
@@ -198,41 +198,41 @@ if ($row = mysqli_fetch_assoc($result)) {
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Update Album</h5>
+                        <h5 class="modal-title fw-bold">ធ្វើបច្ចុប្បន្នភាពអាល់ប៊ុម</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                         <form action="../../function/album_function.php" method="POST" enctype="multipart/form-data">
                           <input type="hidden" name="album_id" value="<?php echo $row['album_id']; ?>">
                           <div class="mb-3">
-                            <label for="date_added" class="form-label"><strong>Date</strong></label>
+                            <label for="date_added" class="form-label"><strong>កាលបរិច្ឆេទ</strong></label>
                             <input type="date" class="form-control" style="width: 150px;"
                               name="date_created"
                               value="<?php echo htmlspecialchars($row['date_created']); ?>"
                               required>
                           </div>
                           <div class="mb-3">
-                            <label for="status" class="form-label"><strong>Status</strong></label>
+                            <label for="status" class="form-label"><strong>ស្ថានភាព</strong></label>
                             <select class="form-select" name="status" style="width: 150px;" required>
-                              <option value="Active" <?php if ($row['status'] == 'Active') echo 'selected'; ?>>Active</option>
-                              <option value="Inactive" <?php if ($row['status'] == 'Inactive') echo 'selected'; ?>>Inactive</option>
+                              <option value="Active" <?php if ($row['status'] == 'Active') echo 'selected'; ?>>សកម្ម</option>
+                              <option value="Inactive" <?php if ($row['status'] == 'Inactive') echo 'selected'; ?>>អសកម្ម</option>
                             </select>
                           </div>
                           <div class="mb-3">
-                            <label for="album_name" class="form-label"><strong>Album Name</strong></label>
+                            <label for="album_name" class="form-label"><strong>ឈ្មោះអាល់ប៊ុម</strong></label>
                             <input type="text" class="form-control"
                               name="album_name" value="<?php echo htmlspecialchars($row['album_name']); ?>"
                               required>
                           </div>
 
                           <div class="mb-3">
-                            <label for="album_description" class="form-label"><strong>Album Description</strong></label>
+                            <label for="album_description" class="form-label"><strong>ការពិពណ៌នាអំពីអាល់ប៊ុម</strong></label>
                             <textarea class="form-control" name="album_description" rows="4" required><?php echo htmlspecialchars($row['album_description']); ?></textarea>
                           </div>
                           <hr>
                           <button type="submit" name="update_album" class="btn btn-dynamic float-end" data-bs-toggle="tooltip"
                             data-bs-placement="top"
-                            title="Click to save"><i class="ri-save-line"></i> Save</button>
+                            title="Click to save"><i class="ri-save-line"></i> រក្សាទុក</button>
 
                         </form>
 

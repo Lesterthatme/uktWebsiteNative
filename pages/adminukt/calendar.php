@@ -99,63 +99,61 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="doc-tabs-container mt-3">
               <ul class="doc-tabs d-flex list-unstyled">
                 <li class="me-3">
-                  <a class="doc-link" href="page_management">Highlights</a>
+                  <a class="doc-link" href="page_management">ចំណុចសំខាន់ៗ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="partnership">Partnership</a>
+                  <a class="doc-link " href="partnership">ភាពជាដៃគូ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link active" href="calendar">University Calendar</a>
+                  <a class="doc-link active" href="calendar">ប្រតិទិនសាកលវិទ្យាល័យ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="FaQ">FAQ</a>
+                  <a class="doc-link" href="FaQ">សំណួរដែលសួរញឹកញាប់</a>
                 </li>
               </ul>
               <hr class="doc-tabs-divider">
             </div>
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-              <h5 class="card-title fs-6 mb-2 mb-md-0">University Calendar</h5>
+              <h5 class="card-title fs-6 mb-2 mb-md-0">ប្រតិទិនសាកលវិទ្យាល័យ</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic float-end" data-bs-toggle="modal"
                 data-bs-target="#exampleModal" TOOLTIP: data-bs-toggle="tooltip" data-bs-placement="top"
                 title="Click to add a new event">
-                <i class="ri-add-line"></i> Add Event in Calendar </button>
+                <i class="ri-add-line"></i> បន្ថែមព្រឹត្តិការណ៍នៅក្នុងប្រតិទិន </button>
             </div>
-            <p class="card-text text-muted small">Stay informed with the key academic dates, deadlines and events to
-              help you plan your academic journey.</p>
+            <p class="card-text text-muted small">ទទួលបានព័ត៌មានថ្មីៗអំពីកាលបរិច្ឆេទ ថ្ងៃផុតកំណត់ និងព្រឹត្តិការណ៍សិក្សាសំខាន់ៗ ដើម្បីជួយអ្នករៀបចំផែនការសិក្សារបស់អ្នក។</p>
             <!-- Modal to add hightlights start -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fw-bold text-muted" id="exampleModalLabel" style="font-size: 18px;">Add Event
-                      in Calendar</h1>
+                    <h1 class="modal-title fw-bold text-muted" id="exampleModalLabel" style="font-size: 18px;">បន្ថែមព្រឹត្តិការណ៍នៅក្នុងប្រតិទិន</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <form action="../../function/event_calendar.php" method="POST">
                       <div class="mb-3">
-                        <label for="monthInput" class="form-label fw-semibold text-muted">Choose Month:</label>
+                        <label for="monthInput" class="form-label fw-semibold text-muted">ជ្រើសរើសខែ៖</label>
                         <input type="month" class="form-control" id="monthInput" name="uc_month" required>
                       </div>
                       <div class="mb-3">
-                        <label for="dayInput" class="form-label fw-semibold text-muted">Day:</label>
+                        <label for="dayInput" class="form-label fw-semibold text-muted">ថ្ងៃ៖</label>
                         <input type="number" class="form-control" id="dayInput" name="uc_day" placeholder="day" min="1"
                           max="31" required>
                       </div>
                       <div class="mb-3">
-                        <label for="titleInput" class="form-label fw-semibold text-muted">Event Title:</label>
+                        <label for="titleInput" class="form-label fw-semibold text-muted">ចំណងជើងព្រឹត្តិការណ៍៖</label>
                         <textarea class="form-control" id="titleInput" name="uc_title"
-                          placeholder="Event Title" required></textarea>
+                          placeholder="ចំណងជើងព្រឹត្តិការណ៍" required></textarea>
                       </div>
                       <div class="mb-3">
-                        <label for="descriptionInput" class="form-label fw-semibold text-muted">Description:</label>
+                        <label for="descriptionInput" class="form-label fw-semibold text-muted">ការពិពណ៌នា៖</label>
                         <textarea class="form-control border border-2 rounded-2" id="descriptionInput"
-                          name="uc_description" rows="5" placeholder="Event Description"></textarea>
+                          name="uc_description" rows="5" placeholder="ការពិពណ៌នាអំពីព្រឹត្តិការណ៍"></textarea>
                       </div>
                       <button type="submit" class="btn btn-dynamic btn-md float-end" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Click to save">
-                        <i class="ri-save-fill"></i> Save
+                        <i class="ri-save-fill"></i> រក្សាទុក
                       </button>
                     </form>
                   </div>
@@ -166,14 +164,14 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="log_container mt-4">
               <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center mb-md-0">
-                  <label class="me-2">Show</label>
+                  <label class="me-2">បង្ហាញ</label>
                   <select id="entriesSelect" class="form-select custom-dropdown">
                     <option value="5">5</option>
                     <option value="10" selected>10</option>
                     <option value="15">15</option>
                     <option value="20">20</option>
                   </select>
-                  <label class="ms-2 me-3">entries</label>
+                  <label class="ms-2 me-3">ធាតុចូល</label>
                 </div>
                 <div class="search-container me-2">
                   <i class="ri-search-line"></i>
@@ -193,10 +191,10 @@ if ($row = mysqli_fetch_assoc($result)) {
                 <table class="table table-hover text-center" id="activityTable">
                   <thead>
                     <tr>
-                      <th>Day</th>
-                      <th>Month</th>
-                      <th>Event Title</th>
-                      <th>Event Description</th>
+                      <th>ថ្ងៃ</th>
+                      <th>ខែ</th>
+                      <th>ចំណងជើងព្រឹត្តិការណ៍</th>
+                      <th>ការពិពណ៌នាអំពីព្រឹត្តិការណ៍</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -233,13 +231,13 @@ ORDER BY uc_month ASC, uc_day ASC";
                                 <li>
                                   <a href="#" class="dropdown-item text-dark" data-bs-toggle="modal" data-bs-target="#editEventModal"
                                     onclick="loadEditEvent(<?php echo $uc_id; ?>)" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Click here to edit this event"><i class="ri-pencil-line"></i> Edit</a>
+                                    data-bs-placement="top" title="Click here to edit this event"><i class="ri-pencil-line"></i> កែសម្រួល</a>
                                 </li>
                                 <li>
                                   <a href="javascript:void(0);" class="dropdown-item text-dark text-decoration-none"
                                     data-id="<?= $uc_id ?>" onclick="openModal(event, this.dataset.id);" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Click here to delete this event"><i class="ri-delete-bin-line"></i>
-                                    Delete
+                                    លុប
                                   </a>
                                 </li>
                               </ul>
@@ -270,37 +268,36 @@ ORDER BY uc_month ASC, uc_day ASC";
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fw-bold text-muted" id="editEventModalLabel" style="font-size: 18px;">Edit
-                      Event</h1>
+                    <h1 class="modal-title fw-bold text-muted" id="editEventModalLabel" style="font-size: 18px;">កែសម្រួលព្រឹត្តិការណ៍</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <form id="editEventForm" action="" method="POST">
                       <input type="hidden" name="uc_id" id="editUcId" />
                       <div class="mb-3">
-                        <label for="editMonthInput" class="form-label fw-semibold text-muted">Choose Month:</label>
+                        <label for="editMonthInput" class="form-label fw-semibold text-muted">ជ្រើសរើសខែ៖</label>
                         <input type="month" class="form-control" id="editMonthInput" name="uc_month" required />
                       </div>
                       <div class="mb-3">
-                        <label for="editDayInput" class="form-label fw-semibold text-muted">Day:</label>
+                        <label for="editDayInput" class="form-label fw-semibold text-muted">ថ្ងៃ៖</label>
                         <input type="number" class="form-control" id="editDayInput" name="uc_day" placeholder="Day"
                           min="1" max="31" maxlength="2"
                           oninput="this.value = this.value.slice(0, 2); this.value = Math.min(Math.max(this.value, 1), 31);"
                           required />
                       </div>
                       <div class="mb-3">
-                        <label for="editTitleInput" class="form-label fw-semibold text-muted">Event Title:</label>
+                        <label for="editTitleInput" class="form-label fw-semibold text-muted">ចំណងជើងព្រឹត្តិការណ៍៖</label>
                         <textarea class="form-control" id="editTitleInput" name="uc_title"
                           placeholder="Event Title" required></textarea>
                       </div>
                       <div class="mb-3">
-                        <label for="editDescriptionInput" class="form-label fw-semibold text-muted">Description:</label>
+                        <label for="editDescriptionInput" class="form-label fw-semibold text-muted">ការពិពណ៌នា៖</label>
                         <textarea class="form-control border border-2 rounded-2" id="editDescriptionInput"
                           name="uc_description" rows="5" placeholder="Event Description"></textarea>
                       </div>
                       <button type="submit" name="edit_event" class="btn btn-dynamic btn-md float-end" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Click to save">
-                        <i class="ri-save-fill"></i> Save
+                        <i class="ri-save-fill"></i> រក្សាទុក
                       </button>
                     </form>
                   </div>

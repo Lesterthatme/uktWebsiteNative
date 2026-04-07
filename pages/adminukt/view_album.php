@@ -70,18 +70,18 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <div class="d-flex gap-2"> <!-- Added div to wrap buttons -->
                             <a href="university_album" class="btn btn-sm rounded-2 px-4 btn-outline-secondary"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Back to the album"><i class="ri-arrow-left-line"></i>
-                                Back
+                                ថយក្រោយ
                             </a>
 
                             <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="top"
                                 title="Click to add a new photo">
-                                <i class="ri-add-line"></i> Add Photo
+                                <i class="ri-add-line"></i> បន្ថែមរូបថត
                             </button>
 
                             <button class="btn btn-dynamic btn-sm rounded-2 px-4" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-toggle="tooltip" data-bs-placement="top"
                                 title="Click to add a new video">
-                                <i class="ri-add-line pe-1"></i>Add Video
+                                <i class="ri-add-line pe-1"></i>បន្ថែមវីដេអូ
                             </button>
                         </div>
                     </div>
@@ -91,7 +91,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Add Photo</h1>
+                                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">បន្ថែមរូបថត</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -99,16 +99,16 @@ if ($row = mysqli_fetch_assoc($result)) {
                                         <input type="hidden" name="album_id" value="<?php echo isset($_GET['album_id']) ? $_GET['album_id'] : ''; ?>">
 
                                         <div class="mb-3">
-                                            <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date:</strong></label>
+                                            <label for="date_added" class="form-label fw-semibold text-muted"><strong>កាលបរិច្ឆេទ៖</strong></label>
                                             <input type="date" class="form-control" id="date_created" name="date_created" value="<?php echo date('Y-m-d'); ?>" style="width: 150px;" required>
                                         </div>
                                         <div class="mb-3">
                                             <div id="imagePreview" class="mt-3 d-flex flex-wrap"></div>
-                                            <label for="images" class="form-label fw-semibold text-muted"><strong>Upload Images:</strong></label>
+                                            <label for="images" class="form-label fw-semibold text-muted"><strong>ផ្ទុកឡើងរូបភាព៖</strong></label>
                                             <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*" onchange="previewImages()" required>
                                         </div>
                                         <hr>
-                                        <button type="submit" name="add_photo" class="btn btn-dynamic float-end" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Save"><i class="ri-save-line"></i> Save</button>
+                                        <button type="submit" name="add_photo" class="btn btn-dynamic float-end" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Save"><i class="ri-save-line"></i> រក្សាទុក</button>
                                     </form>
                                 </div>
 
@@ -121,7 +121,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">Add Video</h1>
+                                    <h1 class="modal-title fs-5 text-muted fw-bold" id="exampleModalLabel">បន្ថែមវីដេអូ</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -129,11 +129,11 @@ if ($row = mysqli_fetch_assoc($result)) {
                                     <form action="../../function/album_function.php?loc=adminukt" method="POST">
 
                                         <div class="mb-3">
-                                            <label for="date_added" class="form-label fw-semibold text-muted"><strong>Date:</strong></label>
+                                            <label for="date_added" class="form-label fw-semibold text-muted"><strong>កាលបរិច្ឆេទ៖</strong></label>
                                             <input type="date" class="form-control" id="date_created" name="date_created" value="<?php echo date('Y-m-d'); ?>" style="width: 150px;" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label fw-semibold text-muted">Add YouTube link</label>
+                                            <label class="form-label fw-semibold text-muted">បន្ថែមតំណភ្ជាប់ YouTube</label>
 
                                             <div id="link-container">
                                                 <div class="input-group mb-2 link-row">

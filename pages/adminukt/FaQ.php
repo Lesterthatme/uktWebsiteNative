@@ -54,34 +54,34 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="doc-tabs-container mt-3">
               <ul class="doc-tabs d-flex list-unstyled">
                 <li class="me-3">
-                  <a class="doc-link" href="page_management">Highlights</a>
+                  <a class="doc-link" href="page_management">ចំណុចសំខាន់ៗ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="partnership">Partnership</a>
+                  <a class="doc-link" href="partnership">ភាពជាដៃគូ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link" href="calendar">University Calendar</a>
+                  <a class="doc-link" href="calendar">ប្រតិទិនសាកលវិទ្យាល័យ</a>
                 </li>
                 <li class="me-3">
-                  <a class="doc-link active" href="FaQ">FAQ</a>
+                  <a class="doc-link active" href="FaQ">សំណួរដែលសួរញឹកញាប់</a>
                 </li>
               </ul>
               <hr class="doc-tabs-divider">
             </div>
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-              <h5 class="card-title fs-6 mb-2 mb-md-0">Frequently Asked Questions (FAQ)</h5>
+              <h5 class="card-title fs-6 mb-2 mb-md-0">សំណួរដែលសួរញឹកញាប់ (FAQ)</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic float-end" data-bs-toggle="modal" data-bs-target="#exampleModal" title="Click to Add FAQ">
-                <i class="ri-add-line"></i> Add FAQ </button>
+                <i class="ri-add-line"></i> បន្ថែម FAQ </button>
             </div>
 
-            <p class="card-text text-muted small">Find quick answers to common questions about admissions, programs, student services, and university life.</p>
+            <p class="card-text text-muted small">ស្វែងរកចម្លើយរហ័សចំពោះសំណួរទូទៅអំពីការចូលរៀន កម្មវិធីសិក្សា សេវាកម្មនិស្សិត និងជីវិតនៅសាកលវិទ្យាល័យ។</p>
 
             <!-- Modal to add hightlights start -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fw-bold text-muted" id="exampleModalLabel" style="font-size: 18px;">Add FAQ</h1>
+                    <h1 class="modal-title fw-bold text-muted" id="exampleModalLabel" style="font-size: 18px;">បន្ថែម FAQ</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body pb-0">
@@ -92,14 +92,14 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <form method="POST" action="../../function/faq_function.php">
                       <div class="modal-body">
                         <div class="mb-3">
-                          <label for="faq_question" class="form-label fw-semibold text-muted">Question:</label>
+                          <label for="faq_question" class="form-label fw-semibold text-muted">សំណួរ៖</label>
                           <textarea class="form-control border border-2 rounded-2" id="faq_question" name="faq_question"
-                            rows="3" placeholder="Enter Question" required></textarea>
+                            rows="3" placeholder="បញ្ចូលសំណួរ" required></textarea>
                         </div>
                         <div class="mb-3">
-                          <label for="faq_answer" class="form-label fw-semibold text-muted">Answer:</label>
+                          <label for="faq_answer" class="form-label fw-semibold text-muted">ចម្លើយ៖</label>
                           <textarea class="form-control border border-2 rounded-2" id="faq_answer" name="faq_answer"
-                            rows="5" placeholder="Enter Answer" required></textarea>
+                            rows="5" placeholder="បញ្ចូលចម្លើយ" required></textarea>
                         </div>
                         <!-- <div class="mb-3">
                         <label for="faq_status" class="form-label fw-semibold text-muted">Status:</label>
@@ -113,7 +113,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                       <div class="modal-footer">
                         <button type="submit" name="add_faq" class="btn btn-dynamic btn-md" data-bs-toggle="tooltip"
                           data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
-                          Save</button>
+                          រក្សាទុក</button>
                       </div>
                     </form>
                   </div>
