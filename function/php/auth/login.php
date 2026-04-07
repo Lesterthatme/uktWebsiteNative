@@ -11,11 +11,13 @@ if (isset($_POST["login_button"])) {
             exit;
         }
 
-        $url = "../../../pages/$location/university_video.php";
+        $url = "../../../pages/$location/login.php";
         if ($message !== null) {
             $url .= "?message=" . urlencode($message);
         }
 
+
+        // echo $url;
         header("Location: $url");
         exit;
     }
