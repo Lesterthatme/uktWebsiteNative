@@ -14,7 +14,7 @@
 
     if ($result && $result->num_rows > 0) {
         $card = $result->fetch_assoc();
-        ?>
+    ?>
         <div class="rector-container mt-4 p-4">
             <div class="row align-items-center">
                 <div class="col-md-4 text-center">
@@ -31,14 +31,14 @@
                 </div>
             </div>
         </div>
-        <?php
+    <?php
     } else {
-        echo "<p class='text-center text-danger'>No active rector data available.</p>";
+        echo "<p class='text-center text-danger'>មិនមានទិន្នន័យសាកលវិទ្យាធិការសកម្មទេ។</p>";
     }
     ?>
 
 
-    <h3 class="mt-5 section-title"><i class="ri-group-line"></i> Previous Rector</h3>
+    <h3 class="mt-5 section-title"><i class="ri-group-line"></i> សាកលវិទ្យាធិការមុន</h3>
     <?php
     include 'connection/dbconnection.php';
 
@@ -53,7 +53,7 @@
         <?php
         if ($result && $result->num_rows > 0) {
             while ($card = $result->fetch_assoc()) {
-                ?>
+        ?>
                 <div class="univ-management-item">
                     <img src="assets/uploads/rector_image/<?= htmlspecialchars($card['image']) ?>" alt="Person">
                     <div class="univ-management-details">
@@ -61,10 +61,10 @@
                         <p>សម្ដេច ហ៊ុន សែន</p>
                     </div>
                 </div>
-                <?php
+        <?php
             }
         } else {
-            echo "<p class='text-center text-danger'>No additional active rectors found.</p>";
+            echo "<p class='text-center text-danger'>រកមិនឃើញសាកលវិទ្យាធិការសកម្មបន្ថែមទេ។</p>";
         }
         ?>
     </div>

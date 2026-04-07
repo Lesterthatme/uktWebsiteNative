@@ -31,14 +31,14 @@ $result = mysqli_query($conn, $query);
                     </small>
                     <p class="news-desc"><?php echo $news_description; ?></p>
                     <a href="news_view?news_slug=<?php echo $news_slug; ?>" class="news-btn">
-                      Read More <i class="ri-arrow-right-line"></i>
+                      អានបន្ថែម <i class="ri-arrow-right-line"></i>
                     </a>
                   </div>
                 </div>
             <?php
               }
             } else {
-              echo "<p class='text-muted'>No news articles available.</p>";
+              echo "<p class='text-muted'>គ្មានអត្ថបទព័ត៌មានទេ។</p>";
             }
             ?>
           </div>

@@ -50,13 +50,13 @@ if ($result && $result->num_rows > 0) {
             <!-- University Info -->
             <div class="col-lg-4 col-md-6">
                 <img src="assets/images/officiallogo (1).png" alt="University Logo" class="footer-logo">
-                <h4 class="footer-text"><a href="contactus" class="fs-3 text-decoration-none">UNIVERSITY OF KRATIE</a></h4>
-                <p><strong>Contact Us</strong></p>
+                <h4 class="footer-text"><a href="contactus" class="fs-3 text-decoration-none">សាកលវិទ្យាល័យក្រចេះ</a></h4>
+                <p><strong>ទំនាក់ទំនងមកយើងខ្ញុំ</strong></p>
                 <p class="mb-1"><?php echo $address; ?></p>
-                <p class="mb-1">Email: <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a></p>
+                <p class="mb-1">អ៊ីមែល: <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a></p>
                 <div class="row">
                     <div class="col-2">
-                        <p>Phone: </p>
+                        <p>ទូរស័ព្ទ: </p>
                     </div>
                     <div class="col-10 text-start">
                         <p> <?php echo nl2br($contact) ?></p>
@@ -72,18 +72,18 @@ if ($result && $result->num_rows > 0) {
 
             <!-- More Links -->
             <div class="col-lg-2 col-md-6">
-                <h5>More</h5>
+                <h5>ច្រើនទៀត</h5>
                 <ul class="footer-links">
-                    <li><a href="home">Home</a></li>
-                    <li><a href="university_background">University Background</a></li>
-                    <li><a href="forms">Student Forms</a></li>
-                    <li><a href="job_opportunities">Job Opportunities</a></li>
+                    <li><a href="home">ផ្ទះ</a></li>
+                    <li><a href="university_background">ប្រវត្តិសាកលវិទ្យាល័យ</a></li>
+                    <li><a href="forms">ទម្រង់បែបបទសិស្ស</a></li>
+                    <li><a href="job_opportunities">ឱកាសការងារ</a></li>
                 </ul>
             </div>
 
             <!-- Colleges -->
             <div class="col-lg-3 col-md-6">
-                <h5>Academics</h5>
+                <h5>អ្នកសិក្សា</h5>
                 <ul class="footer-links">
                     <?php
                     include 'connection/dbconnection.php';
@@ -108,7 +108,7 @@ if ($result && $result->num_rows > 0) {
 
             <!-- University Partnerships -->
             <div class="col-lg-3 col-md-6">
-                <h5>University Partnership</h5>
+                <h5>ភាពជាដៃគូសាកលវិទ្យាល័យ</h5>
                 <ul class="footer-links">
                     <?php
                     include 'connection/dbconnection.php';

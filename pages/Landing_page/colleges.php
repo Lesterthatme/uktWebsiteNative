@@ -63,58 +63,61 @@
   .image-overlay p {
     font-size: 0.9rem;
   }
-   .gallery-breadcrumb-section {
-      background-color: #fff;
-      width: 100%;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      padding: 16px 0;
-    }
 
-    .gallery-breadcrumb-wrapper {
-      padding: 0 15px;
-    }
+  .gallery-breadcrumb-section {
+    background-color: #fff;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 16px 0;
+  }
 
+  .gallery-breadcrumb-wrapper {
+    padding: 0 15px;
+  }
+
+  .gallery-custom-breadcrumb {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .gallery-breadcrumb-link {
+    color: #6c757d;
+    text-decoration: none;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: color 0.2s ease-in-out;
+    font-weight: 500;
+  }
+
+  .gallery-breadcrumb-link:hover {
+    color: #14532d;
+  }
+
+  .gallery-breadcrumb-active {
+    color: #6c757d;
+    /* Secondary color */
+    font-weight: 600;
+    /* Semibold */
+    cursor: default;
+    text-decoration: none;
+  }
+
+  .gallery-separator-icon {
+    font-size: 16px;
+    color: #adb5bd;
+  }
+
+  @media (max-width: 576px) {
     .gallery-custom-breadcrumb {
-      font-size: 14px;
-      color: #6c757d;
-      margin-bottom: 0;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
+      font-size: 13px;
+      gap: 4px;
     }
-
-    .gallery-breadcrumb-link {
-      color: #6c757d;
-      text-decoration: none;
-      padding: 6px 8px;
-      border-radius: 8px;
-      transition: color 0.2s ease-in-out;
-      font-weight: 500;
-    }
-
-    .gallery-breadcrumb-link:hover {
-      color: #14532d;
-    }
-
-    .gallery-breadcrumb-active {
-      color: #6c757d; /* Secondary color */
-      font-weight: 600; /* Semibold */
-      cursor: default;
-      text-decoration: none;
-    }
-
-    .gallery-separator-icon {
-      font-size: 16px;
-      color: #adb5bd;
-    }
-
-    @media (max-width: 576px) {
-      .gallery-custom-breadcrumb {
-        font-size: 13px;
-        gap: 4px;
-      }
-    }
+  }
 </style>
 
 <?php include 'banner.php'; ?>
@@ -185,7 +188,7 @@ function getDepartmentDetails($conn, $department_id)
                 class="img-fluid rounded"
                 alt="Department Image"
                 style="width: 500px; height: auto; object-fit: cover; display: block; margin-left: auto; margin-right: auto;">
-              <h3 class="section-title mt-5"><i class="ri-building-line"></i> ABOUT</h3>
+              <h3 class="section-title mt-5"><i class="ri-building-line"></i> អំពី</h3>
               <p class="text-muted mt-5 about-text" style="text-align: justify;">
                 <?= nl2br(htmlspecialchars($department_details['about'])) ?>
               </p>
@@ -193,7 +196,7 @@ function getDepartmentDetails($conn, $department_id)
           </div>
 
 
-          <h3 class="mt-5 section-title"><i class="ri-group-line"></i> Faculty Members</h3>
+          <h3 class="mt-5 section-title"><i class="ri-group-line"></i> សមាជិក​សាស្ត្រាចារ្យ</h3>
           <div class="faculty-container mt-5">
             <?php
             include 'connection/dbconnection.php';
@@ -222,68 +225,68 @@ function getDepartmentDetails($conn, $department_id)
             <?php
                 }
               } else {
-                echo "<p class='text-muted mt-3'>No faculty members found for this department.</p>";
+                echo "<p class='text-muted mt-3'>រកមិនឃើញសមាជិក هيئة التدريس សម្រាប់នាយកដ្ឋាននេះទេ។</p>";
               }
 
               mysqli_stmt_close($stmt);
             } else {
-              echo "<p class='text-danger mt-3'>Error fetching faculty members.</p>";
+              echo "<p class='text-danger mt-3'>មានបញ្ហាក្នុងការទាញយកសមាជិក هيئة التدريس។</p>";
             }
             ?>
 
           </div>
-          <h3 class="mt-5 section-title"><i class="ri-building-4-line"></i>Facilities</h3>
-<div class="container py-3">
-    <!-- Main Gallery -->
-    <?php
-    include 'connection/dbconnection.php';
-    $facility_query = "SELECT * FROM department_facilities WHERE department_id = $department_id";
-    $facility_result = mysqli_query($conn, $facility_query);
+          <h3 class="mt-5 section-title"><i class="ri-building-4-line"></i>សម្ភារៈបរិក្ខារ</h3>
+          <div class="container py-3">
+            <!-- Main Gallery -->
+            <?php
+            include 'connection/dbconnection.php';
+            $facility_query = "SELECT * FROM department_facilities WHERE department_id = $department_id";
+            $facility_result = mysqli_query($conn, $facility_query);
 
-    if ($facility_result && mysqli_num_rows($facility_result) > 0) {
-        $facilities = mysqli_fetch_all($facility_result, MYSQLI_ASSOC);
-    } else {
-        $facilities = [];
-    }
-    ?>
+            if ($facility_result && mysqli_num_rows($facility_result) > 0) {
+              $facilities = mysqli_fetch_all($facility_result, MYSQLI_ASSOC);
+            } else {
+              $facilities = [];
+            }
+            ?>
 
-    <?php if (!empty($facilities)): ?>
-        <section class="splide splide-gallery mb-3" aria-label="Dessert Gallery">
-            <div class="splide__track splide-gallery__track">
-                <ul class="splide__list splide-gallery__list">
+            <?php if (!empty($facilities)): ?>
+              <section class="splide splide-gallery mb-3" aria-label="Dessert Gallery">
+                <div class="splide__track splide-gallery__track">
+                  <ul class="splide__list splide-gallery__list">
                     <?php foreach ($facilities as $facility): ?>
-                        <li class="splide__slide splide-gallery__slide">
-                            <div class="image-wrapper">
-                                <img src="assets/uploads/department_facility/<?= $facility['facility_image'] ?>" alt="<?= htmlspecialchars($facility['facility_name']) ?>">
-                                <div class="image-overlay d-flex flex-column justify-content-center align-items-center text-center">
-                                    <h5 class="fw-bold"><?= htmlspecialchars($facility['facility_name']) ?></h5>
-                                    <p><?= htmlspecialchars($facility['facility_description']) ?></p>
-                                </div>
-                            </div>
-                        </li>
+                      <li class="splide__slide splide-gallery__slide">
+                        <div class="image-wrapper">
+                          <img src="assets/uploads/department_facility/<?= $facility['facility_image'] ?>" alt="<?= htmlspecialchars($facility['facility_name']) ?>">
+                          <div class="image-overlay d-flex flex-column justify-content-center align-items-center text-center">
+                            <h5 class="fw-bold"><?= htmlspecialchars($facility['facility_name']) ?></h5>
+                            <p><?= htmlspecialchars($facility['facility_description']) ?></p>
+                          </div>
+                        </div>
+                      </li>
                     <?php endforeach; ?>
-                </ul>
-            </div>
-        </section>
+                  </ul>
+                </div>
+              </section>
 
-        <!-- Thumbnail Navigation -->
-        <section class="splide splide-gallery-thumbs" aria-label="Thumbnail Navigation">
-            <div class="splide__track splide-gallery-thumbs__track">
-                <ul class="splide__list splide-gallery-thumbs__list">
+              <!-- Thumbnail Navigation -->
+              <section class="splide splide-gallery-thumbs" aria-label="Thumbnail Navigation">
+                <div class="splide__track splide-gallery-thumbs__track">
+                  <ul class="splide__list splide-gallery-thumbs__list">
                     <?php foreach ($facilities as $facility): ?>
-                        <li class="splide__slide splide-gallery-thumbs__slide">
-                            <img src="assets/uploads/department_facility/<?= $facility['facility_image'] ?>" class="img-thumbnail" alt="<?= htmlspecialchars($facility['facility_name']) ?>">
-                        </li>
+                      <li class="splide__slide splide-gallery-thumbs__slide">
+                        <img src="assets/uploads/department_facility/<?= $facility['facility_image'] ?>" class="img-thumbnail" alt="<?= htmlspecialchars($facility['facility_name']) ?>">
+                      </li>
                     <?php endforeach; ?>
-                </ul>
-            </div>
-        </section>
-    <?php else: ?>
-        <div class="text-center text-muted">
-            No facilities available for this department.
-        </div>
-    <?php endif; ?>
-</div>
+                  </ul>
+                </div>
+              </section>
+            <?php else: ?>
+              <div class="text-center text-muted">
+                គ្មាន​គ្រឿងបរិក្ខារ​សម្រាប់​នាយកដ្ឋាន​នេះ​ទេ។
+              </div>
+            <?php endif; ?>
+          </div>
 
 
         </div>
@@ -298,28 +301,27 @@ function getDepartmentDetails($conn, $department_id)
 </div>
 
 <script>
-
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     const main = new Splide('.splide-gallery', {
-      type      : 'fade',
+      type: 'fade',
       heightRatio: 0.5,
       pagination: false,
-      arrows    : false,
-      cover     : true,
+      arrows: false,
+      cover: true,
     });
 
     const thumbs = new Splide('.splide-gallery-thumbs', {
-      fixedWidth  : 100,
-      fixedHeight : 64,
+      fixedWidth: 100,
+      fixedHeight: 64,
       isNavigation: true,
-      gap         : 10,
-      focus       : 'center',
-      pagination  : false,
-      cover       : true,
-      arrows      : true,
-      breakpoints : {
+      gap: 10,
+      focus: 'center',
+      pagination: false,
+      cover: true,
+      arrows: true,
+      breakpoints: {
         600: {
-          fixedWidth : 66,
+          fixedWidth: 66,
           fixedHeight: 40,
         },
       },
@@ -329,5 +331,4 @@ function getDepartmentDetails($conn, $department_id)
     main.mount();
     thumbs.mount();
   });
-
 </script>

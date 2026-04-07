@@ -13,17 +13,17 @@ $result = $conn->query($sql);
         <?php
         if ($result && $result->num_rows > 0) {
             while ($card = $result->fetch_assoc()) {
-                ?>
+        ?>
                 <div class="univ-management-item">
                     <img src="assets/uploads/founder_image/<?= htmlspecialchars($card['image']) ?>" alt="Person">
                     <div class="univ-management-details">
-                        <h3><?= htmlspecialchars($card['founder_fname']) ?>         <?= htmlspecialchars($card['founder_lname']) ?></h3>
+                        <h3><?= htmlspecialchars($card['founder_fname']) ?> <?= htmlspecialchars($card['founder_lname']) ?></h3>
                     </div>
                 </div>
-                <?php
+        <?php
             }
         } else {
-            echo "<p class='text-center text-danger'>No active board members found.</p>";
+            echo "<p class='text-center text-danger'>រកមិនឃើញសមាជិកក្រុមប្រឹក្សាភិបាលសកម្មទេ។</p>";
         }
         ?>
     </div>

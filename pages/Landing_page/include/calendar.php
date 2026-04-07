@@ -3,22 +3,22 @@ $sql = "SELECT
   uc_day, 
   uc_month, 
   uc_title, 
-  CONCAT(uc_month, '-', LPAD(uc_day, 2, '0')) AS full_date
+  CONCAT(LPAD(uc_month, 2, '0'), '-', LPAD(uc_day, 2, '0')) AS full_date
 FROM university_calendar
 ORDER BY 
   uc_month ASC,
   uc_day ASC";
 
-$result = $conn->query($sql);
+$query = $conn->query($sql);
 
-$today = date('Y-m-d');
+$today = date('m-d'); // ✅ SAME FORMAT as full_date
 
 $past = [];
 $today_or_next = null;
 $upcoming = [];
 
 // Separate dates
-while ($row = $result->fetch_assoc()) {
+while ($row = $query->fetch_assoc()) {
     $date = $row['full_date'];
 
     if ($date < $today) {
@@ -26,29 +26,60 @@ while ($row = $result->fetch_assoc()) {
     } elseif ($date == $today && !$today_or_next) {
         $today_or_next = $row;
     } elseif (!$today_or_next) {
-        // first future date becomes today_or_next
         $today_or_next = $row;
     } else {
         $upcoming[] = $row;
     }
 }
 
-// Pick items according to your rule
-$result = [];
+// Final result
+$final = [];
 
-// 2 old
-$result = array_merge($result, array_slice($past, -2));
 
-// 1 today or soon
+
+// 2 past
+foreach (array_slice($past, -2) as $item) {
+    $final[] = $item;
+}
+
+// 1 today or next
 if ($today_or_next) {
-    $result[] = $today_or_next;
+    $final[] = $today_or_next;
 }
 
-// 2 upcoming (if available)
-$result = array_merge($result, array_slice($upcoming, 0, 2));
-
-// Fill remaining if less than 5
-if (count($result) < 5) {
-    $needed = 5 - count($result);
-    $result = array_merge($result, array_slice($past, max(0, count($past) - 2 - $needed), $needed));
+// 2 upcoming
+foreach (array_slice($upcoming, 0, 2) as $item) {
+    $final[] = $item;
 }
+
+// ✅ Remove duplicates (IMPORTANT FIX)
+$unique = [];
+$seen = [];
+
+foreach ($final as $item) {
+    if (!in_array($item['full_date'], $seen)) {
+        $seen[] = $item['full_date'];
+        $unique[] = $item;
+    }
+}
+
+// Replace final with unique values
+$final = $unique;
+
+if (count($final) < 5) {
+    foreach ($past as $item) {
+        if (!in_array($item['full_date'], array_column($final, 'full_date'))) {
+            $final[] = $item;
+        }
+    }
+
+    foreach ($upcoming as $item) {
+        if (!in_array($item['full_date'], array_column($final, 'full_date'))) {
+            $final[] = $item;
+        }
+    }
+}
+// // debug
+// echo "<pre>";
+// print_r($final);
+// echo "</pre>";

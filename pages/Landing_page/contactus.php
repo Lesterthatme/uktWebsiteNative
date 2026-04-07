@@ -98,21 +98,21 @@ mysqli_close($conn);
               <div class="contact-card">
                 <i class="ri-map-pin-line"></i>
               </div>
-              <p><strong>Address:</strong> <?php echo $address; ?></p>
+              <p><strong>អាសយដ្ឋាន៖</strong> <?php echo $address; ?></p>
             </div>
 
             <div class="col-md-4 info-box text-center">
               <div class="contact-card">
                 <i class="ri-phone-line"></i>
               </div>
-              <p><strong>Phone:</strong> <?php echo $contact; ?></p>
+              <p><strong>ទូរស័ព្ទ៖</strong> <?php echo $contact; ?></p>
             </div>
 
             <div class="col-md-4 info-box text-center">
               <div class="contact-card">
                 <i class="ri-mail-line"></i>
               </div>
-              <p><strong>Email:</strong> <?php echo $email; ?></p>
+              <p><strong>អ៊ីមែល៖</strong> <?php echo $email; ?></p>
             </div>
           </div>
 
@@ -124,25 +124,25 @@ mysqli_close($conn);
         <form action="" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
           <div class="row gy-4">
             <div class="col-md-6">
-              <input type="text" name="sender_fname" class="form-control" placeholder="Your First Name" required>
+              <input type="text" name="sender_fname" class="form-control" placeholder="ឈ្មោះ​របស់​អ្នក" required>
             </div>
             <div class="col-md-6">
-              <input type="text" name="sender_mname" class="form-control" placeholder="Your Middle Name">
+              <input type="text" name="sender_mname" class="form-control" placeholder="ឈ្មោះកណ្តាលរបស់អ្នក">
             </div>
             <div class="col-md-6">
-              <input type="text" name="sender_lname" class="form-control" placeholder="Your Last Name" required>
+              <input type="text" name="sender_lname" class="form-control" placeholder="នាមត្រកូលរបស់អ្នក" required>
             </div>
             <div class="col-md-6">
-              <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+              <input type="email" class="form-control" name="email" placeholder="អ៊ីមែលរបស់អ្នក" required>
             </div>
             <div class="col-12">
-              <input type="text" class="form-control" name="message_subject" placeholder="Subject" required>
+              <input type="text" class="form-control" name="message_subject" placeholder="ប្រធានបទ" required>
             </div>
             <div class="col-12">
-              <textarea class="form-control" name="message_body" rows="8" placeholder="Message" required></textarea>
+              <textarea class="form-control" name="message_body" rows="8" placeholder="សារ" required></textarea>
             </div>
             <div class="col-12 text-center">
-              <button type="submit" name="send_message" class="news-btn w-100">Send Message</button>
+              <button type="submit" name="send_message" class="news-btn w-100">ផ្ញើសារ</button>
             </div>
           </div>
         </form>

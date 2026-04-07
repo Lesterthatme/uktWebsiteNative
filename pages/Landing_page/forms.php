@@ -41,10 +41,10 @@
             <table class="table table-bordered" id="studentTable">
               <thead>
                 <tr class="text-center">
-                  <th>File Name</th>
-                  <th>Date Uploaded</th>
-                  <th>Attachment</th>
-                  <th>Action</th>
+                  <th>ឈ្មោះឯកសារ</th>
+                  <th>កាលបរិច្ឆេទ​ដែល​បាន​ផ្ទុក​ឡើង</th>
+                  <th>ឯកសារភ្ជាប់</th>
+                  <th>សកម្មភាព</th>
                 </tr>
               </thead>
               <tbody class="text-center">
@@ -75,7 +75,7 @@
         </div>
       <?php
       } else {
-        echo "<p class='text-center text-danger'>No forms available.</p>";
+        echo "<p class='text-center text-danger'>គ្មានទម្រង់បែបបទដែលអាចប្រើបានទេ។</p>";
       }
       ?>
     </div>

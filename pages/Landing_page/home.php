@@ -75,10 +75,10 @@ if ($result && $result->num_rows > 0) {
     </div>
     <div class="info" data-aos="zoom-out" data-aos-duration="1500">
       <h3 class="fw-bold"><?= htmlspecialchars($card['first_name']) ?> <?= htmlspecialchars($card['last_name']) ?></h3>
-      <h4>Rector</h4>
+      <h4>សាកលវិទ្យាធិការ</h4>
 
       <p class="text-justify"><?= htmlspecialchars($rectorText) ?></p>
-      <a href="rector" class="btn">Read More</a>
+      <a href="rector" class="btn">អានបន្ថែម</a>
     </div>
   </div>
 <?php
@@ -103,9 +103,8 @@ $result = $conn->query($query);
 <div class="py-5 my-3" data-aos="fade-up" data-aos-delay="800">
   <div class="container">
     <div class="carousel-section">
-      <h2>University Partnership</h2>
-      <p>We are proud to collaborate with leading universities and institutions worldwide, fostering academic
-        excellence, research development, and student opportunities.</p>
+      <h2>ភាពជាដៃគូសាកលវិទ្យាល័យ</h2>
+      <p>យើងមានមោទនភាពក្នុងការសហការជាមួយសាកលវិទ្យាល័យ និងស្ថាប័នឈានមុខគេទូទាំងពិភពលោក ដើម្បីលើកកម្ពស់ឧត្តមភាពសិក្សា ការអភិវឌ្ឍការស្រាវជ្រាវ និងឱកាសរបស់និស្សិត។</p>
     </div>
 
     <section class="splide" id="logo-carousel" aria-label="University Partnership Carousel">
@@ -141,10 +140,8 @@ $result = $conn->query($sql);
 ?>
 
 <section class="announcement p-4 my-3" data-aos="fade-up" data-aos-delay="900">
-  <h2>Announcements</h2>
-  <p>
-    Get the latest updates on academic schedules, events, and important university news. Stay informed and never miss an
-    announcement!
+  <h2>ការប្រកាស</h2>
+  <p>ទទួលបានព័ត៌មានថ្មីៗបំផុតអំពីកាលវិភាគសិក្សា ព្រឹត្តិការណ៍ និងព័ត៌មានសំខាន់ៗរបស់សាកលវិទ្យាល័យ។ ទទួលបានព័ត៌មានថ្មីៗ និងកុំឲ្យខកខានការប្រកាសណាមួយឡើយ!
   </p>
 
   <div class="announcement-container">
@@ -163,7 +160,7 @@ $result = $conn->query($sql);
             <h3 class="announcement-title"><?php echo $announcement_title; ?></h3>
             <p class="announcement-desc"><?php echo $announcement_description; ?></p>
             <a href="announcement_view?announcement_slug=<?php echo $announcement_slug; ?>" class="news-btn">
-              Read More <i class="ri-arrow-right-line"></i>
+              អានបន្ថែម <i class="ri-arrow-right-line"></i>
             </a>
 
           </div>
@@ -171,7 +168,7 @@ $result = $conn->query($sql);
     <?php
       }
     } else {
-      echo "<p class='text-muted'>No announcements available.</p>";
+      echo "<p class='text-muted'>គ្មានការប្រកាសណាមួយដែលអាចរកបានទេ។</p>";
     }
     ?>
   </div>
@@ -179,7 +176,7 @@ $result = $conn->query($sql);
 
   <div class="view-all-container">
     <a href="announcements" class="view-all-btn">
-      <span>VIEW ALL ANNOUNCEMENTS</span> <i class="ri-arrow-right-line"></i>
+      <span>មើលការប្រកាសទាំងអស់</span> <i class="ri-arrow-right-line"></i>
     </a>
   </div>
 </section>
@@ -200,9 +197,9 @@ $result = $conn->query($query);
 
 <!-- START >> DISPLAY NEWS -->
 <section class="news-section p-4" data-aos="fade-up" data-aos-delay="800">
-  <h2>Latest News</h2>
+  <h2>ព័ត៌មានថ្មីៗបំផុត</h2>
   <p class="news-text-muted">
-    Stay updated with the latest university news, events, and achievements.
+    តាមដានព័ត៌មាន ព្រឹត្តិការណ៍ និងសមិទ្ធផលថ្មីៗបំផុតរបស់សាកលវិទ្យាល័យ។
   </p>
 
   <div class="news-container">
@@ -220,14 +217,14 @@ $result = $conn->query($query);
             <h3 class="news-title"><?php echo $news_title; ?></h3>
             <p class="news-desc"><?php echo $news_description; ?></p>
             <a href="news_view?news_slug=<?php echo $news_slug; ?>" class="news-btn">
-              Read More <i class="ri-arrow-right-line"></i>
+              អានបន្ថែម <i class="ri-arrow-right-line"></i>
             </a>
           </div>
         </div>
     <?php
       }
     } else {
-      echo "<p class='text-muted'>No news articles available.</p>";
+      echo "<p class='text-muted'>គ្មានអត្ថបទព័ត៌មានទេ។</p>";
     }
     ?>
   </div>
@@ -235,7 +232,7 @@ $result = $conn->query($query);
 
   <div class="view-all-container ">
     <a href="news" class="view-all-btn ">
-      <span>VIEW ALL NEWS </span><i class="ri-arrow-right-line"></i>
+      <span>មើលព័ត៌មានទាំងអស់ </span><i class="ri-arrow-right-line"></i>
     </a>
   </div>
 </section>
@@ -249,42 +246,56 @@ include 'connection/dbconnection.php';
 include 'include/calendar.php';
 ?>
 <div class="calendar-container my-3" data-aos="fade-up" data-aos-delay="500">
-  <h2>University Calendar</h2>
-  <p>Keep track of important university events, academic schedules, and activities with our calendar.</p>
+  <h2>ប្រតិទិនសាកលវិទ្យាល័យ</h2>
+  <p>តាមដានព្រឹត្តិការណ៍សំខាន់ៗរបស់សាកលវិទ្យាល័យ កាលវិភាគសិក្សា និងសកម្មភាពនានាជាមួយប្រតិទិនរបស់យើង។</p>
 
   <div class="container">
     <div class="row justify-content-center g-4">
       <?php
-      foreach ($result as $university_calendar) {
+      $today = date('m-d'); // ✅ FIXED format
+
+      foreach ($final as $university_calendar) {
+
+        // ✅ جلوگیری undefined errors
+        if (!isset(
+          $university_calendar['uc_month'],
+          $university_calendar['uc_day'],
+          $university_calendar['uc_title'],
+          $university_calendar['full_date']
+        )) {
+          continue;
+        }
       ?>
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 text-center">
           <div class="calendar-card">
-            <?php
-            $today = $today = date('Y-m-d');
 
-            if ($university_calendar['full_date'] == $today) {
-            ?>
-              <div class="calendar-month active"><?= date("F", strtotime($university_calendar["uc_month"])) ?></div>
-            <?php
-            } else {
-            ?>
-              <div class="calendar-month"><?= date("F", strtotime($university_calendar["uc_month"])) ?></div>
-            <?php
-            }
-            ?>
+            <?php if ($university_calendar['full_date'] == $today): ?>
+              <div class="calendar-month active">
+                <?= date("F", strtotime($university_calendar["uc_month"])) ?>
+              </div>
+            <?php else: ?>
+              <div class="calendar-month">
+                <?= date("F", strtotime($university_calendar["uc_month"])) ?>
+              </div>
+            <?php endif; ?>
 
-            <div class="calendar-day"><?= htmlspecialchars($university_calendar['uc_day']) ?></div>
+            <div class="calendar-day">
+              <?= htmlspecialchars($university_calendar['uc_day']) ?>
+            </div>
+
           </div>
-          <div class="calendar-label"><?= htmlspecialchars($university_calendar['uc_title']) ?></div>
-          <!--<p class="calendar_event_desc text-center"><?= htmlspecialchars($university_calendar['uc_description']) ?></p>-->
+
+          <div class="calendar-label">
+            <?= htmlspecialchars($university_calendar['uc_title']) ?>
+          </div>
+
         </div>
-      <?php
-      }
-      ?>
+      <?php } ?>
     </div>
+
     <div class="view-all-container">
       <a href="university_calendar" class="view-all-btn">
-        VIEW UNIVERSITY CALENDAR <i class="ri-arrow-right-line"></i>
+        មើលប្រតិទិនសាកលវិទ្យាល័យ <i class="ri-arrow-right-line"></i>
       </a>
     </div>
   </div>
@@ -306,10 +317,9 @@ $result = $conn->query($query);
 <section class="gallery my-5 py-5">
   <div class="container">
     <div class="container gallery-container">
-      <h2 class="mb-4" data-aos="fade-up">Explore Our University Moments</h2>
+      <h2 class="mb-4" data-aos="fade-up">ស្វែងយល់ពីពេលវេលានៅសាកលវិទ្យាល័យរបស់យើង</h2>
       <p class="text-center" data-aos="fade-up" data-aos-delay="100">
-        Discover the best memories from campus life, graduation day, sports events, and more. Click an album to explore
-        the images inside.
+        ស្វែងយល់ពីអនុស្សាវរីយ៍ដ៏ល្អបំផុតពីជីវិតក្នុងបរិវេណសាលា ថ្ងៃបញ្ចប់ការសិក្សា ព្រឹត្តិការណ៍កីឡា និងច្រើនទៀត។ ចុចលើអាល់ប៊ុមដើម្បីរុករករូបភាពនៅខាងក្នុង។
       </p>
 
       <div class="row g-4">
@@ -339,7 +349,7 @@ $result = $conn->query($query);
         <?php endwhile; ?>
       </div>
       <div class="text-center" data-aos="fade-up" data-aos-delay="500">
-        <a href="university_gallery" class="news-btn w-25 mt-5">View University Album</a>
+        <a href="university_gallery" class="news-btn w-25 mt-5">មើលអាល់ប៊ុមសាកលវិទ្យាល័យ</a>
       </div>
     </div>
   </div>
@@ -359,9 +369,8 @@ $result = $conn->query($sql);
 ?>
 
 <section class="faq-container" data-aos="fade-up" data-aos-duration="2000">
-  <h2 class="faq-title">Frequently Asked Questions</h2>
-  <p class="text-center">Explore our FAQ section for answers to common questions about the university, academic
-    programs, admissions, and campus life.</p>
+  <h2 class="faq-title">សំណួរដែលសួរញឹកញាប់</h2>
+  <p class="text-center">ស្វែងយល់ពីផ្នែកសំណួរដែលសួរញឹកញាប់របស់យើងសម្រាប់ចម្លើយចំពោះសំណួរទូទៅអំពីសាកលវិទ្យាល័យ កម្មវិធីសិក្សា ការចូលរៀន និងជីវិតក្នុងបរិវេណសាលា។</p>
 
   <?php
   $faqIndex = 1;

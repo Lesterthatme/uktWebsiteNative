@@ -21,7 +21,7 @@ if ($result && $result->num_rows > 0) {
         display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center ;
+        text-align: center;
         padding: 20px;
         background-attachment: fixed;
     }
@@ -39,17 +39,17 @@ if ($result && $result->num_rows > 0) {
         border-radius: 5px;
     }
 
-    .about-banner-updated {
+    /* .about-banner-updated {
         border-bottom: : 4px solid white;
         padding-left: 15px;
         margin-top: 15px;
-    }
+    } */
 </style>
 
 <section class="about-banner" style="background-image: linear-gradient(to right, rgba(78, 78, 78, 0.64), rgba(0, 70, 0, 0.57)), url('<?php echo $site_banner; ?>');">
     <div class="banner-content">
-        <span class="banner-tag" data-aos="fade-down">ABOUT</span>
+        <span class="banner-tag" data-aos="fade-down">អំពី</span>
         <h1 class="mt-3 fw-bold" data-aos="fade-up" data-aos-delay="200"></h1>
-        <p class="about-banner-updated" data-aos="fade-up" data-aos-delay="400">Know more about our university.</p>
+        <p class="about-banner-updated" data-aos="fade-up" data-aos-delay="400">ស្វែងយល់បន្ថែមអំពីសាកលវិទ្យាល័យរបស់យើង។</p>
     </div>
 </section>

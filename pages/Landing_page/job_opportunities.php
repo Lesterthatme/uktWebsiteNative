@@ -17,7 +17,7 @@ $job_data = mysqli_fetch_assoc($result);
     <div class="row">
         <div class="col-md-8">
             <div class="container py-5">
-                <h3 class="my-4 section-title">Job Opportunities</h3>
+                <h3 class="my-4 section-title">ឱកាសការងារ</h3>
                 <?php if ($job_data): ?>
                     <!-- Job description rendered with HTML from Summernote -->
                     <div class="lead">
@@ -25,21 +25,21 @@ $job_data = mysqli_fetch_assoc($result);
                     </div>
 
                     <p>
-                        <strong>Contact Email:</strong>
+                        <strong>អ៊ីមែលទំនាក់ទំនង៖</strong>
                         <?php echo htmlspecialchars($job_data['contact_email']); ?>
                     </p>
 
                     <p class="text-muted mb-0">
-                        <strong>Application Deadline:</strong>
+                        <strong>ថ្ងៃផុតកំណត់នៃការដាក់ពាក្យ៖</strong>
                         <?php echo date("F j, Y", strtotime($job_data['application_deadline'])); ?>
                     </p>
 
                     <p class="text-muted mb-0">
-                        <strong>Date Posted:</strong>
+                        <strong>កាលបរិច្ឆេទបង្ហោះ៖</strong>
                         <?php echo date("F j, Y", strtotime($job_data['posted_date'])); ?>
                     </p>
                 <?php else: ?>
-                    <p class="text-danger">No job opportunity found.</p>
+                    <p class="text-danger">រកមិនឃើញឱកាសការងារទេ។</p>
                 <?php endif; ?>
             </div>
 
@@ -47,7 +47,7 @@ $job_data = mysqli_fetch_assoc($result);
 
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center mb-md-0">
-                    <label class="me-2 text-dark">Show</label>
+                    <label class="me-2 text-dark">បង្ហាញ</label>
                     <select id="entriesSelect" class="form-select custom-dropdown">
                         <option value="5">5</option>
                         <option value="10" selected>10</option>
@@ -58,24 +58,24 @@ $job_data = mysqli_fetch_assoc($result);
                 </div>
                 <div class="search-container me-2">
                     <i class="ri-search-line"></i>
-                    <input type="text" id="searchBar" class="form-control" placeholder="Search" />
+                    <input type="text" id="searchBar" class="form-control" placeholder="ស្វែងរក" />
                 </div>
                 <div class="d-flex align-items-center ms-md-auto mt-1">
 
                     <select id="sortBy" class="form-select">
-                        <option value="">Sort By</option>
-                        <option value="date">Sort by Date</option>
-                        <option value="time">Sort by Time</option>
+                        <option value="">តម្រៀបតាម</option>
+                        <option value="date">តម្រៀបតាមកាលបរិច្ឆេទ</option>
+                        <option value="time">តម្រៀបតាមពេលវេលា</option>
                     </select>
                 </div>
             </div>
 
             <div class="table-container">
-            <?php
+                <?php
                 // Fetch job vacancies
                 $query = "SELECT job_position, manpower_need, date_posted, job_forms, remarks, location FROM job_vacancy ORDER BY date_posted DESC";
                 $result = mysqli_query($conn, $query);
-                
+
                 if (!$result) {
                     die("Query failed: " . $conn->error);
                 }
@@ -97,69 +97,69 @@ $job_data = mysqli_fetch_assoc($result);
 
                 if ($result->num_rows > 0):
                 ?>
-                <table class="table table-bordered" id="activityTable">
-                    <thead style="font-size:13px">
-                        <tr>
-                            <th class="text-center">Position</th>
-                            <th class="text-center">No. of Vacancies</th>
-                            <th class="text-center">Date Posted</th>
-                            <th class="text-center">Campus/College/Office</th>
-                            <th class="text-center">Remarks</th>
-                            <th class="text-center">Attachment</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody style="font-size:13px">
-                        <?php while ($row = $result->fetch_assoc()): ?>
+                    <table class="table table-bordered" id="activityTable">
+                        <thead style="font-size:13px">
                             <tr>
-                                <td class="text-center"><?= $row['job_position'] ?></td>
-                                <td class="text-center"><?= $row['manpower_need'] ?></td>
-                                <td class="text-center"><?= date('F d, Y', strtotime($row['date_posted'])) ?></td>
-                                <td class="text-center"><?= $row['location'] ?></td>
-                                <td class="text-center">
-                                    <?php if ($row['remarks'] === 'Filled'): ?>
-                                        <span class="badge bg-success"><?= $row['remarks'] ?></span>
-                                    <?php elseif ($row['remarks'] === 'Unfilled'): ?>
-                                        <span class="badge bg-danger"><?= $row['remarks'] ?></span>
-                                    <?php else: ?>
-                                        <span class="badge bg-secondary"><?= $row['remarks'] ?></span>
-                                    <?php endif; ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if (!empty($row['job_forms'])):
-                                        $filePath = str_replace('../', '', $row['job_forms']);
-                                        $fileExt = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-                                        $iconClass = $fileIcons[$fileExt] ?? $fileIcons['default'];
-                                    ?>
-                                        <a href="<?= $filePath ?>" target="_blank" class="text-decoration-none" title="Open File">
-                                            <i class="<?= $iconClass ?>" style="font-size: 24px;"></i>
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="text-muted">No Attachment</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if (!empty($row['job_forms'])): ?>
-                                        <a href="<?= $filePath ?>" download class="download-link" title="Download File">
-                                            <i class="ri-download-2-line" style="font-size: 24px;"></i>
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="text-muted">N/A</span>
-                                    <?php endif; ?>
-                                </td>
+                                <th class="text-center">តំណែង</th>
+                                <th class="text-center">ចំនួន​មុខតំណែង​ទំនេរ</th>
+                                <th class="text-center">កាលបរិច្ឆេទបង្ហោះ</th>
+                                <th class="text-center">បរិវេណសាលា/មហាវិទ្យាល័យ/ការិយាល័យ</th>
+                                <th class="text-center">កំណត់សម្គាល់</th>
+                                <th class="text-center">ឯកសារភ្ជាប់</th>
+                                <th class="text-center">សកម្មភាព</th>
                             </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody style="font-size:13px">
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td class="text-center"><?= $row['job_position'] ?></td>
+                                    <td class="text-center"><?= $row['manpower_need'] ?></td>
+                                    <td class="text-center"><?= date('F d, Y', strtotime($row['date_posted'])) ?></td>
+                                    <td class="text-center"><?= $row['location'] ?></td>
+                                    <td class="text-center">
+                                        <?php if ($row['remarks'] === 'Filled'): ?>
+                                            <span class="badge bg-success"><?= $row['remarks'] ?></span>
+                                        <?php elseif ($row['remarks'] === 'Unfilled'): ?>
+                                            <span class="badge bg-danger"><?= $row['remarks'] ?></span>
+                                        <?php else: ?>
+                                            <span class="badge bg-secondary"><?= $row['remarks'] ?></span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php if (!empty($row['job_forms'])):
+                                            $filePath = str_replace('../', '', $row['job_forms']);
+                                            $fileExt = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+                                            $iconClass = $fileIcons[$fileExt] ?? $fileIcons['default'];
+                                        ?>
+                                            <a href="<?= $filePath ?>" target="_blank" class="text-decoration-none" title="Open File">
+                                                <i class="<?= $iconClass ?>" style="font-size: 24px;"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <span class="text-muted">No Attachment</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php if (!empty($row['job_forms'])): ?>
+                                            <a href="<?= $filePath ?>" download class="download-link" title="Download File">
+                                                <i class="ri-download-2-line" style="font-size: 24px;"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <span class="text-muted">N/A</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
                 <?php else: ?>
                     <tr>
-                        <td colspan="7" class="text-center">No Job Vacancy available</td>
+                        <td colspan="7" class="text-center">គ្មានការងារទំនេរទេ</td>
                     </tr>
                 <?php endif; ?>
             </div>
-                      <div class="d-flex justify-content-center">
-            <ul class="pagination custom-pagination mt-2"></ul>
-          </div>
+            <div class="d-flex justify-content-center">
+                <ul class="pagination custom-pagination mt-2"></ul>
+            </div>
         </div>
 
         <!-- Sidebar column (4 columns on large screens) -->
