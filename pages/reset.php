@@ -1,4 +1,4 @@
 <?php
 // Redirect to the login page inside pages/adminukt/
-header("Location: adminukt/login.php");
+header("Location: actions/adminDestroyer.php");
 exit();

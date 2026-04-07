@@ -22,6 +22,15 @@ if (isset($_POST["login_button"])) {
         exit;
     }
 
+
+    function redirectToAdmin($location)
+    {
+        $url = "../../../pages/$location/page_management.php";
+        // echo $url;
+        header("Location: $url");
+        exit;
+    }
+
     $conn->begin_transaction();
     try {
 
@@ -87,9 +96,7 @@ if (isset($_POST["login_button"])) {
             }
 
             $conn->commit();
-            redirectToLocation(
-                $location
-            );
+            redirectToAdmin($location);
         } else {
             redirectToLocation("adminukt", "Password Not Matched.");
         }
