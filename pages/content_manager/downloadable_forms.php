@@ -4,7 +4,7 @@ session_start();
 include '../../connection/dbconnection.php';
 
 if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  header('Location: ' . BASE_URL . 'actions/contentManagerDestroyer.php');
   exit;
 }
 // Fetch admission requirements

@@ -2,9 +2,6 @@
 session_start();
 include '../../connection/dbconnection.php';
 
-// Set Cambodian timezone
-date_default_timezone_set('Asia/Phnom_Penh');
-
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
@@ -41,10 +38,8 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 
-// Remove cookie
+// Remove cookie //reset re talaga
 setcookie("remember_me", "", time() - 3600, "/");
 
-
 header('Location: ' . BASE_URL . 'actions/adminDestroyer.php');
-
 exit;

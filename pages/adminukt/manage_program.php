@@ -1,10 +1,5 @@
 <?php
-session_start();
-include("../../connection/dbconnection.php");
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-    exit;
-}
+include 'include/session.php';
 include '../../function/department_function.php';
 if (isset($_GET['department_id'])) {
     $department_id = intval($_GET['department_id']);

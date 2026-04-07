@@ -2,32 +2,33 @@
 include '../../connection/dbconnection.php';
 session_start();
 
-
 // Already logged in - prevent access
-// if (isset($_SESSION['user_id'])) {
-//     header("Location: page_management");
-//     exit();
-// }
+if (isset($_SESSION['user_id'])) {
+    header("Location: page_management");
+    exit();
+}
 
-
-// temp commented
+// di pato ayos
 // Auto-login with remember_me cookie
 if (isset($_COOKIE['remember_me'])) {
-    $session_token = $_COOKIE['remember_me'];
-
-    $stmt = $conn->prepare("SELECT * FROM user_account WHERE session_token = ?");
-    $stmt->bind_param("s", $session_token);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-
-    if ($user) {
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['email'] = $user['email'];
-        $_SESSION['user_type'] = $user['user_type'];
-        header("Location: page_management.php");
-        exit();
+    $session_token = $_COOKIE['remember_me'] ?? '';
+    if ($session_token) {
+        $stmt = $conn->prepare("SELECT * FROM user_account WHERE session_token = ?");
+        $stmt->bind_param("s", $session_token);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        if ($user) {
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['user_type'] = $user['user_type'];
+            header("Location: page_management.php");
+            exit();
+        } else {
+            // 🔥 clean invalid cookie
+            setcookie("remember_me", "", time() - 3600, "/");
+        }
     }
 }
 
@@ -81,6 +82,31 @@ if ($row = mysqli_fetch_assoc($result)) {
             background: url('../../assets/uploads/site settings/website background/<?php echo $website_background; ?>') no-repeat center center/cover;
         }
     </style>
+
+    <script type="text/javascript">
+        function noBack() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Please logout your account first.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            }).then(() => {
+                setTimeout(function() {
+                    window.history.forward();
+                }, 100);
+            });
+        }
+
+        window.onpageshow = function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                noBack();
+            }
+        };
+
+        // Block browser back button
+        window.history.forward();
+    </script>
 </head>
 
 <body>
@@ -119,10 +145,12 @@ if ($row = mysqli_fetch_assoc($result)) {
             <button type="submit" name="login_button" class="btn btn-dynamic w-100 mt-3 py-2 fw-bold">Login</button>
         </form>
 
-        <!-- New images at the bottom -->
-        <div class="bottom-images">
-            <img src="../../assets/images/basc.png" alt="Image 1">
-            <img src="../../assets/images/ICS.png" alt="Image 2">
+        <div class="bottom-images text-center mt-4 pt-3 border-top" style="border-color: #ccc;">
+            <p class="mb-2 fw-semibold">Powered by <span class="text-primary">Bulacan State Agricultural College</span></p>
+            <div class="d-flex justify-content-center align-items-center gap-3">
+                <img src="../../assets/images/basc.png" alt="BASC Logo" style="height: 60px; width: auto; cursor:help;" title="Official BASC logo">
+                <img src="../../assets/images/ICS.png" alt="ICS Logo" style="height: 60px; width: auto; cursor:help;" title="Intitute of Computer Studies (BASC)">
+            </div>
         </div>
     </div>
 

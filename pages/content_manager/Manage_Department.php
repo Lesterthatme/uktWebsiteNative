@@ -4,7 +4,7 @@ include '../../connection/dbconnection.php';
 session_start();
 include '../../function/content_manager/department_function.php';
 if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/content_manager/login.php');
+  header('Location: ' . BASE_URL . 'actions/contentManagerDestroyer.php');
   exit;
 }
 // Fetch all site settings start

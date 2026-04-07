@@ -1,10 +1,6 @@
 <?php
-include("../../connection/dbconnection.php");
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-    exit;
-}
+include 'include/session.php';
+
 
 // Get album_id from URL
 if (!isset($_GET['album_id']) || empty($_GET['album_id'])) {
@@ -169,7 +165,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                             $videoLink->bind_param('s', $album_id);
                             $videoLink->execute();
                             $result2 = $videoLink->get_result();
-                            
+
                             while ($row = $result2->fetch_assoc()) {
                                 // Get YouTube link from DB
                                 $video_url = $row['video_link'];

@@ -1,13 +1,9 @@
 <?php
-session_start();
-include("../../connection/dbconnection.php");
+include 'include/session.php';
+
 include '../../function/department_function.php';
 $department_id = $_GET['department_id'] ?? null;
 $department_name = '';
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-    exit;
-}
 // Check if there is an existing Main Building
 $main_building_exists = false;
 if ($department_id) {

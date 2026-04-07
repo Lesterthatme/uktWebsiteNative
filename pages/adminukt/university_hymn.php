@@ -1,10 +1,5 @@
 <?php
-include '../../connection/dbconnection.php';
-session_start();
-if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-  exit;
-}
+include 'include/session.php';
 // Updated query to join university_hymn and university_profile tables
 $query = "
     SELECT 

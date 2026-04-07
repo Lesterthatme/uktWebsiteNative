@@ -1,11 +1,6 @@
 <?php
-include("../../connection/dbconnection.php");
-session_start();
+include 'include/session.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-    exit;
-}
 
 if (isset($_GET['message_id'])) {
     $message_id = intval($_GET['message_id']);

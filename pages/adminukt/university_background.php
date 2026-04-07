@@ -1,10 +1,5 @@
 <?php
-session_start();
-include '../../connection/dbconnection.php';
-if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-  exit;
-}
+include 'include/session.php';
 // Query to get the university profile data
 $query = "SELECT university_logo, university_name, university_background FROM university_profile WHERE up_id = 1";
 $result = mysqli_query($conn, $query);

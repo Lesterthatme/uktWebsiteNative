@@ -1,10 +1,5 @@
 <?php
-require '../../connection/dbconnection.php';
-session_start();
-if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-  exit;
-}
+include 'include/session.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -293,7 +288,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                         <h5 class="modal-title fw-bold text-muted">View Details</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
-                                                       <div class="modal-body">
+                                                    <div class="modal-body">
                                                         <?= $row['founder_description']; ?>
                                                     </div>
                                                 </div>

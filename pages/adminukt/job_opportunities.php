@@ -1,11 +1,7 @@
 <?php
 session_start();
+include 'include/session.php';
 
-include '../../connection/dbconnection.php';
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-    exit;
-}
 // Query to get the job data
 $query = "SELECT job_id, job_description, posted_date, application_deadline, contact_email
            FROM job_opportunities WHERE up_id = 1";

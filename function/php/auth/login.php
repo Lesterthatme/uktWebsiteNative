@@ -4,52 +4,56 @@ require $_SERVER['DOCUMENT_ROOT'] . '/ukt' . '/connection/dbconnection.php';
 
 if (isset($_POST["login_button"])) {
 
-    $conn->begin_transaction();
-    try {
-        $login_value = $_POST["email"];
-
-        $password = $_POST["password"];
-
-        echo $login_value;
-
-        echo $password;
-        $stmt = $conn->prepare("SELECT * FROM user_account WHERE (email = ? OR username = ?) AND `password` = ?");
-        $stmt->bind_param("sss", $login_value, $login_value, $password);
-
-        if (!$stmt->execute()) {
-            header("Location: ../../../pages/adminukt/login.php?message=Account not found.");
+    function redirectToLocation($location = "adminukt", $message = null)
+    {
+        if (!in_array($location, ['adminukt', 'content_manager'])) {
+            echo "Invalid location.";
             exit;
         }
 
-        $result = $stmt->get_result();
+        $url = "../../../pages/$location/university_video.php";
+        if ($message !== null) {
+            $url .= "?message=" . urlencode($message);
+        }
 
+        header("Location: $url");
+        exit;
+    }
+
+    $conn->begin_transaction();
+    try {
+
+
+        $login_value = $_POST["email"];
+        $password = $_POST["password"];
+
+        $stmt = $conn->prepare("SELECT * FROM user_account WHERE (email = ? OR username = ?) AND `password` = ?");
+        $stmt->bind_param("sss", $login_value, $login_value, $password);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
+
+            $location = $row['user_type'] == "Administrator" ? 'adminukt' : 'content_manager';
+            $user_type = $location == "adminukt" ? 'Administrator' : 'Content Manager';
+
+
             $userId = $row['user_id'];
-
-            if ($row['user_type'] !== 'Administrator') {
-                header("Location: /ukt/pages/adminukt/login.php?message=You don't have a privilege to log in as an Administrator.");
-                exit;
-            }
-
-
-            // bakit need pa neto e meron na ngang auto direct ngani (2026)
-            if (!empty($row['session_token'])) {
-                header("Location: /ukt/pages/adminukt/login.php?message=You are already logged in. Please log out the previous session.");
-                exit;
-            }
 
             // Generate and save session token
             session_regenerate_id();
             $session_token = session_id();
+
             $stmt2 = $conn->prepare("UPDATE user_account SET session_token = ? WHERE user_id = ?");
             $stmt2->bind_param("ss", $session_token, $userId);
             if (!$stmt2->execute()) {
                 $conn->rollback();
-                header("Location: /ukt/pages/adminukt/login.php?message=Backend Error #2");
-                exit;
+                redirectToLocation(
+                    "adminukt",
+                    "Session Token Failed."
+                );
             }
-
 
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['username'] = $row['username'];
@@ -63,14 +67,14 @@ if (isset($_POST["login_button"])) {
             $log_time = date('H:i:s');
             $user_id = $row['user_id'];
 
-
             $stmt3 = $conn->prepare("INSERT INTO history_log (`description`, log_date, log_time, user_id) VALUES (?, ?, ?, ?)");
             $stmt3->bind_param("ssss", $description, $log_date, $log_time, $user_id);
             if (!$stmt3->execute()) {
                 $conn->rollback();
-
-                header("Location: /ukt/pages/adminukt/login.php?message=Backend Error #3");
-                exit;
+                redirectToLocation(
+                    "adminukt",
+                    "Log in trail Failed to save."
+                );
             }
 
             // Set Remember Me cookie (valid for 30 days)
@@ -81,16 +85,15 @@ if (isset($_POST["login_button"])) {
             }
 
             $conn->commit();
-            header("Location: /ukt/pages/adminukt/page_management.php");
-            exit;
+            redirectToLocation(
+                $location
+            );
         } else {
-            header("Location: ../../../pages/adminukt/login.php?message=Password Not Matched.");
-            exit;
+            redirectToLocation("adminukt", "Password Not Matched.");
         }
     } catch (Exception $e) {
         $conn->rollback();
-        header("Location: /ukt/pages/adminukt/login.php?message=Something Went Wrong. Please try again.");
-        exit;
+        redirectToLocation("adminukt", "Something Went Wrong. Please try again.");
     }
 }
 

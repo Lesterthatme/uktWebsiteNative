@@ -40,8 +40,8 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 
-session_unset();
-session_destroy();
+// Remove cookie //reset re talaga
+setcookie("remember_me", "", time() - 3600, "/");
 
-header('Location: login');
+header('Location: ' . BASE_URL . 'actions/adminDestroyer.php');
 exit;

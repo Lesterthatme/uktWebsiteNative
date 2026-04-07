@@ -4,7 +4,7 @@ include '../../connection/dbconnection.php';
 session_start();
 // Fetch all site settings start
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+    header('Location: ' . BASE_URL . 'actions/contentManagerDestroyer.php');
     exit;
 }
 $settings = [];

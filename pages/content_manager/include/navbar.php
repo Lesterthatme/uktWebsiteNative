@@ -89,7 +89,7 @@ if (!empty($user['image']) && file_exists('../../assets/uploads/profile_pic/' . 
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "../../actions/contentManagerDestroyer.php";
+        window.location.href = "logout.php";
       }
     });
   }

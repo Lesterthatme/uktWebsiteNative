@@ -1,12 +1,6 @@
 <?php
-require '../../connection/dbconnection.php';
-session_start();
+include 'include/session.php';
 include '../../function/department_function.php';
-
-if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-  exit;
-}
 
 // Fetch all site settings start
 $settings = [];

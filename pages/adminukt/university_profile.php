@@ -1,11 +1,6 @@
 <?php
 
-session_start();
-include '../../connection/dbconnection.php';
-if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-  exit;
-}
+include 'include/session.php';
 $sql = "SELECT * FROM university_profile LIMIT 1";
 $result = $conn->query($sql);
 

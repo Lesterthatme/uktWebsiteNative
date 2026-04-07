@@ -1,11 +1,5 @@
 <?php
-session_start();
-// include '../../function/partnership_function.php';
-include("../../connection/dbconnection.php");
-if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-  exit;
-}
+include 'include/session.php';
 
 // Fetch  scholarship
 $sql = "SELECT * FROM university_scholarship";

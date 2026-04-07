@@ -1,12 +1,8 @@
 <?php
-include '../../connection/dbconnection.php';
-session_start();
+include 'include/session.php';
+
 include '../../function/department_function.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-    exit;
-}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -42,16 +38,16 @@ if ($row = mysqli_fetch_assoc($result)) {
 
 <body class="bg-light">
 
-   <!-- include side bar start -->
-   <?php include 'include/alert.php';?>
-  <?php include 'confirmation.php';?>
+  <!-- include side bar start -->
+  <?php include 'include/alert.php'; ?>
+  <?php include 'confirmation.php'; ?>
   <?php include 'include/sidebar.php'; ?>
   <!-- include side bar end -->
 
   <main class="bg-light">
 
     <!-- include navbar start -->
-    <?php include 'include/navbar.php';?>
+    <?php include 'include/navbar.php'; ?>
     <!-- include navbar end -->
 
     <!-- start: Content -->

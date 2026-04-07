@@ -4,7 +4,7 @@ require '../../connection/dbconnection.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
+  header('Location: ' . BASE_URL . 'actions/contentManagerDestroyer.php');
   exit;
 }
 $page = isset($_GET['page']) ? 'developers/' . $_GET['page'] : 'developers/2026';

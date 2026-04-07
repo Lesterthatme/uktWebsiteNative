@@ -1,11 +1,7 @@
 <?php
-include '../../connection/dbconnection.php';
-session_start();
+include 'include/session.php';
+
 include '../../function/partnership_function.php';
-if (!isset($_SESSION['user_id'])) {
-  header('Location: ' . BASE_URL . 'pages/adminukt/login.php');
-  exit;
-}
 // Fetch all site settings start
 $settings = [];
 $sql = "SELECT * FROM site_settings LIMIT 1";
@@ -45,7 +41,7 @@ if ($row = mysqli_fetch_assoc($result)) {
   <main class="bg-light">
 
     <!-- include navbar start -->
-    <?php include 'include/navbar.php';?>
+    <?php include 'include/navbar.php'; ?>
     <!-- include navbar end -->
 
     <!-- start: Content -->
@@ -73,7 +69,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
               <h5 class="card-title fs-6 mb-2 mb-md-0">Partnership</h5>
               <button type="button" class="btn btn-sm rounded-2 px-4 btn-dynamic" data-bs-toggle="modal"
-                data-bs-target="#exampleModal"  data-bs-toggle="tooltip" data-bs-placement="top" 
+                data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="top"
                 title="Click to add new partnership">
                 <i class="ri-add-line"></i> Add Partnership
               </button>
@@ -120,8 +116,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                   </div>
                   <div class="modal-footer">
 
-                    <button type="submit" name="add_partnership" class="btn btn-dynamic" data-bs-toggle="tooltip" 
-                    data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
+                    <button type="submit" name="add_partnership" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                      data-bs-placement="top" title="Click to save"><i class="ri-save-fill"></i>
                       Save</button>
                   </div>
                   </form>
@@ -129,7 +125,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               </div>
             </div>
             <!-- START > MAIN CONTENT -->
-            <?php 
+            <?php
             include '../../connection/dbconnection.php';
             $query = "SELECT up_link, up_id, up_name, up_image, up_date, up_time, up_status FROM university_partnership";
             $result = $conn->query($query);
@@ -154,8 +150,8 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                         <div class="partner-card">
                           <div class="dropdown three-dots">
-                          <button class="btn p-0 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" 
-                            data-bs-placement="top" title="Click here to see the action">
+                            <button class="btn p-0 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip"
+                              data-bs-placement="top" title="Click here to see the action">
                               <span></span><span></span><span></span>
                             </button>
                             <!-- DROPDOWN EDIT/DELETE -->
@@ -167,7 +163,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                   data-name="<?= htmlspecialchars($row['up_name']) ?>"
                                   data-link="<?= htmlspecialchars($row['up_link']) ?>"
                                   data-status="<?= htmlspecialchars($row['up_status']) ?>"
-                                  data-image="<?= htmlspecialchars($row['up_image']) ?>" data-bs-toggle="tooltip" 
+                                  data-image="<?= htmlspecialchars($row['up_image']) ?>" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click here to edit this partnership details">
                                   <i class="ri-pencil-line"></i> Edit
                                 </a>
@@ -175,7 +171,7 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                               <li>
                                 <a class="dropdown-item text-dark text-decoration-none" href="javascript:void(0);"
-                                  data-id="<?= $row['up_id'] ?>" onclick="return openModal(event, this.dataset.id);" data-bs-toggle="tooltip" 
+                                  data-id="<?= $row['up_id'] ?>" onclick="return openModal(event, this.dataset.id);" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Click here to delete this partnership">
                                   <i class="ri-delete-bin-line"></i> Delete
                                 </a>
@@ -282,9 +278,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                         </select>
                       </div>
                       <div class="modal-footer pb-0">
-                        <button type="submit" name="update_partnership" class="btn btn-dynamic" data-bs-toggle="tooltip" 
-                        data-bs-placement="top" title="Click to save">
-                        <i class="ri-save-fill"></i>
+                        <button type="submit" name="update_partnership" class="btn btn-dynamic" data-bs-toggle="tooltip"
+                          data-bs-placement="top" title="Click to save">
+                          <i class="ri-save-fill"></i>
                           Save</button>
                       </div>
                     </form>
