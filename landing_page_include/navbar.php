@@ -106,7 +106,7 @@ if ($result->num_rows > 0) {
         <li class="dropdown">
           <button id="translateBtn2" class="btn btn-warning" title="Change Language">
             <span class="notranslate">
-              <img id="flagIcon" src="/ukt/assets/uploads/logo/usaFlag.png"
+              <img id="flagIcon" src="/ukt/assets/uploads/logo/flagCambodia.png"
                 alt="Language Flag" class="img-fluid" style="max-width: 40px;">
             </span>
           </button>
@@ -175,7 +175,7 @@ if ($result->num_rows > 0) {
 <script>
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
-      pageLanguage: 'km', // Default = Khmer
+      pageLanguage: 'en', // Default = En
       includedLanguages: 'en,km',
       autoDisplay: false
     }, 'google_translate_element');
@@ -185,7 +185,7 @@ if ($result->num_rows > 0) {
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
-  let currentLang = 'km'; // default Khmer
+  let currentLang = 'en'; // default English
 
   document.getElementById("translateBtn2").addEventListener("click", function() {
     const select = document.querySelector(".goog-te-combo");
