@@ -43,26 +43,25 @@ if ($result->num_rows > 0) {
 
     <nav id="navmenu" class="navmenu">
       <ul>
-        <li class="dropdown"><a href="#"><span>អំពី</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+        <li class="dropdown"><a href="#"><span>About</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
-            <li><a href="university_profile">ប្រវត្តិរូបសាកលវិទ្យាល័យ</a></li>
-            <li><a href="university_background">ប្រវត្តិសាកលវិទ្យាល័យ</a></li>
-            <li><a href="vmgo">ចក្ខុវិស័យ បេសកកម្ម និងគោលដៅ</a></li>
-            <li><a href="university_hymn">ទំនុកតម្កើង</a></li>
-            <li><a href="contactus">ទំនាក់ទំនង និងទីតាំង</a></li>
+            <li><a href="university_profile">University Profile</a></li>
+            <li><a href="university_background">University Background</a></li>
+            <li><a href="vmgo">Vision, Mission and Goals</a></li>
+            <li><a href="university_hymn">University Hymn</a></li>
+            <li><a href="contactus">Contact and Location</a></li>
           </ul>
         </li>
-        <li class="dropdown"><a href="#"><span>អ្នកសិក្សា</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-          <ul>
-            <li><a href="program_offerings">ការផ្តល់ជូនកម្មវិធី</a></li>
-            <?php
 
+        <li class="dropdown"><a href="#"><span>Academics</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <ul>
+            <li><a href="program_offerings">Program Offerings</a></li>
+            <?php
             $query = "SELECT * FROM department WHERE dm_status = 'Active' ORDER BY dm_name ASC";
             $result = mysqli_query($conn, $query);
 
             if ($result && mysqli_num_rows($result) > 0) {
               while ($row = mysqli_fetch_assoc($result)) {
-                // Convert department name to a URL-friendly slug
                 $department_slug = strtolower(str_replace(" ", "-", $row['dm_name']));
                 echo "<li><a href='colleges?department_slug=" . urlencode($department_slug) . "'>" . htmlspecialchars($row['dm_name']) . "</a></li>";
               }
@@ -72,44 +71,43 @@ if ($result->num_rows > 0) {
             ?>
           </ul>
         </li>
-        <li class="dropdown"><a href="#"><span>ព្រឹត្តិបត្រ</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+
+        <li class="dropdown"><a href="#"><span>Bulletin</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
-            <li><a href="announcements">សេចក្តីប្រកាស</a></li>
-            <li><a href="news">ព័ត៌មាន</a></li>
-            <li><a href="university_gallery">វិចិត្រសាលសាកលវិទ្យាល័យ</a></li>
-            <li><a href="university_calendar">ប្រតិទិនសាកលវិទ្យាល័យ</a></li>
-            <li><a href="job_opportunities">ឱកាសការងារ</a></li>
-          </ul>
-        </li>
-        <li class="dropdown"><a href="#"><span>ការគ្រប់គ្រង</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-          <ul>
-            <li><a href="founder">ស្ថាបនិក</a></li>
-            <li><a href="rector">សាកលវិទ្យាធិការ</a></li>
-            <!--<li><a href="board_of_directors">Board of Directors</a></li>-->
-            <!--<li><a href="univ_heads">Head of Department & Head of Office</a></li>-->
+            <li><a href="announcements">Announcements</a></li>
+            <li><a href="news">News</a></li>
+            <li><a href="university_gallery">University Gallery</a></li>
+            <li><a href="university_calendar">University Calendar</a></li>
+            <li><a href="job_opportunities">Job Opportunities</a></li>
           </ul>
         </li>
 
-        <li class="dropdown"><a href="#"><span>សិស្ស</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+        <li class="dropdown"><a href="#"><span>Administration</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
-            <li><a href="admission_requirements">តម្រូវការចូលរៀន</a></li>
-            <li><a href="scholarships">អាហារូបករណ៍</a></li>
-            <!--<li><a href="university_library">University Library</a></li>-->
-            <li><a href="https://www.elibraryofcambodia.org/">បណ្ណាល័យសាកលវិទ្យាល័យ</a></li>
-            <!--<li><a href="computer_practice_center">Computer Practice Center</a></li>-->
-            <li><a href="forms">ទម្រង់បែបបទ</a></li>
-            <li><a href="computer_laboratory">មន្ទីរពិសោធន៍កុំព្យូទ័រ</a></li>
-
+            <li><a href="founder">Founder</a></li>
+            <li><a href="rector">Rector</a></li>
           </ul>
         </li>
+
+        <li class="dropdown"><a href="#"><span>Students</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <ul>
+            <li><a href="admission_requirements">Admission Requirements</a></li>
+            <li><a href="scholarships">Scholarships</a></li>
+            <li><a href="https://www.elibraryofcambodia.org/">University Library</a></li>
+            <li><a href="forms">Forms</a></li>
+            <li><a href="computer_laboratory">Computer Laboratory</a></li>
+          </ul>
+        </li>
+
         <li class="dropdown">
-          <button id="translateBtn2" class="btn btn-warning" title="ប្តូរភាសា">
+          <button id="translateBtn2" class="btn btn-warning" title="Switch Language">
             <span class="notranslate">
               <img id="flagIcon" src="/ukt/assets/uploads/logo/usaFlag.png"
                 alt="Language Flag" class="img-fluid" style="max-width: 40px;">
             </span>
           </button>
         </li>
+
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
     </nav>
   </div>
