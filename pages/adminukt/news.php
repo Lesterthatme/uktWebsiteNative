@@ -131,7 +131,6 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div id="partnerCarousel" class="carousel slide" data-bs-ride="carousel">
               <div class="carousel-inner p-4">
                 <?php
-                include '../../connection/dbconnection.php';
                 $query = "SELECT * FROM news ORDER BY news_date DESC";
                 $result = mysqli_query($conn, $query);
 
@@ -172,7 +171,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                               </button>
                               <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                  <a class="dropdown-item text-dark fw-normal" href="#" data-bs-toggle="modal"
+                                  <a class="dropdown-item text-dark fw-normal edit-btn" href="#" data-bs-toggle="modal"
                                     data-bs-target="#editModal" data-id="<?= $row['news_id']; ?>"
                                     data-title="<?= htmlspecialchars($news_title); ?>"
                                     data-description="<?= htmlspecialchars($row['news_description'], ENT_QUOTES, 'UTF-8'); ?>"
@@ -311,6 +310,8 @@ if ($row = mysqli_fetch_assoc($result)) {
           </div>
           <!-- edit modal end -->
         </div>
+
+
         <!-- View  News Modal Structure -->
         <div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
@@ -353,12 +354,13 @@ if ($row = mysqli_fetch_assoc($result)) {
 
       editButtons.forEach(button => {
         button.addEventListener("click", function() {
+
           const id = this.getAttribute("data-id");
           const title = this.getAttribute("data-title");
           const description = this.getAttribute("data-description");
           const image = this.getAttribute("data-image");
           const status = this.getAttribute("data-status");
-          const date = this.getAttribute("data-date"); // GET THE DATE
+          const date = this.getAttribute("data-date");
 
           document.getElementById("edit-news-id").value = id;
           document.getElementById("edit-title").value = title;
@@ -383,7 +385,6 @@ if ($row = mysqli_fetch_assoc($result)) {
     });
     // script for getting immedietly the imgae end
   </script>
-
   <!-- end js -->
 
   <!-- START >> JS SCRIPT IN ALERT -->

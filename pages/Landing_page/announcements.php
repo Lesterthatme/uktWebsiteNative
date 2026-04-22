@@ -3,7 +3,7 @@
 <?php
 include 'connection/dbconnection.php';
 include_once 'landing_page_include/slugify.php';
-$sql = "SELECT * FROM announcement";
+$sql = "SELECT * FROM announcement WHERE announcement_status = 'Active' ORDER BY announcement_id DESC";
 $result = mysqli_query($conn, $sql);
 ?>
 

@@ -136,7 +136,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM announcement WHERE announcement_status = 'Active' LIMIT 3";
+$sql = "SELECT * FROM announcement WHERE announcement_status = 'Active' ORDER BY announcement_id DESC LIMIT 3";
 $result = $conn->query($sql);
 ?>
 
@@ -194,7 +194,7 @@ include_once 'landing_page_include/slugify.php';
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-$query = "SELECT * FROM news WHERE news_status = 'Active' ORDER BY news_date DESC LIMIT 3";
+$query = "SELECT * FROM news WHERE news_status = 'Active' ORDER BY news_id DESC LIMIT 3";
 $result = $conn->query($query);
 ?>
 
@@ -255,33 +255,46 @@ include 'include/calendar.php';
   <div class="container">
     <div class="row justify-content-center g-4">
       <?php
-      foreach ($result as $university_calendar) {
+      $today = date('m-d'); // ✅ FIXED format
+
+      foreach ($final as $university_calendar) {
+
+        if (!isset(
+          $university_calendar['uc_month'],
+          $university_calendar['uc_day'],
+          $university_calendar['uc_title'],
+          $university_calendar['full_date']
+        )) {
+          continue;
+        }
       ?>
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 text-center">
           <div class="calendar-card">
-            <?php
-            $today = $today = date('Y-m-d');
 
-            if ($university_calendar['full_date'] == $today) {
-            ?>
-              <div class="calendar-month active"><?= date("F", strtotime($university_calendar["uc_month"])) ?></div>
-            <?php
-            } else {
-            ?>
-              <div class="calendar-month"><?= date("F", strtotime($university_calendar["uc_month"])) ?></div>
-            <?php
-            }
-            ?>
+            <?php if ($university_calendar['full_date'] == $today): ?>
+              <div class="calendar-month active">
+                <?= date("F", strtotime($university_calendar["uc_month"])) ?>
+              </div>
+            <?php else: ?>
+              <div class="calendar-month">
+                <?= date("F", strtotime($university_calendar["uc_month"])) ?>
+              </div>
+            <?php endif; ?>
 
-            <div class="calendar-day"><?= htmlspecialchars($university_calendar['uc_day']) ?></div>
+            <div class="calendar-day">
+              <?= htmlspecialchars($university_calendar['uc_day']) ?>
+            </div>
+
           </div>
-          <div class="calendar-label"><?= htmlspecialchars($university_calendar['uc_title']) ?></div>
-          <!--<p class="calendar_event_desc text-center"><?= htmlspecialchars($university_calendar['uc_description']) ?></p>-->
+
+          <div class="calendar-label">
+            <?= htmlspecialchars($university_calendar['uc_title']) ?>
+          </div>
+
         </div>
-      <?php
-      }
-      ?>
+      <?php } ?>
     </div>
+
     <div class="view-all-container">
       <a href="university_calendar" class="view-all-btn">
         VIEW UNIVERSITY CALENDAR <i class="ri-arrow-right-line"></i>

@@ -103,16 +103,15 @@ if ($result->num_rows > 0) {
 
           </ul>
         </li>
-        <li class="dropdown">
-          <button id="translateBtn2" class="btn btn-warning" title="Change Language">
-            <span class="notranslate">
-              <img id="flagIcon" src="/ukt/assets/uploads/logo/flagCambodia.png"
-                alt="Language Flag" class="img-fluid" style="max-width: 40px;">
-            </span>
-          </button>
+        <li class="dropdown" style="cursor: pointer;">
+          <span class="notranslate" id="translateBtn2" title="Change Language">
+            <img id="flagIcon" src="/ukt/assets/uploads/logo/flagCambodia.png"
+              alt="Language Flag" class="img-fluid" style="max-width: 50px;">
+          </span>
+
         </li>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
     </nav>
+    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
   </div>
 </header>
 
@@ -188,6 +187,9 @@ if ($result->num_rows > 0) {
   let currentLang = 'en'; // default English
 
   document.getElementById("translateBtn2").addEventListener("click", function() {
+
+    // alert("pumasok");
+    // return;
     const select = document.querySelector(".goog-te-combo");
     const flag = document.getElementById("flagIcon");
 
