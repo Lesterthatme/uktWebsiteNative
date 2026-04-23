@@ -1,7 +1,7 @@
 <?php
 include '../connection/dbconnection.php';
-session_start(); 
-date_default_timezone_set('Asia/Phnom_Penh'); 
+session_start();
+date_default_timezone_set('Asia/Phnom_Penh');
 
 if (isset($_POST['update_university'])) {
 
@@ -16,20 +16,22 @@ if (isset($_POST['update_university'])) {
     $university_emailaddress = $_POST['university_emailaddress'];
     $university_website = $_POST['university_website'];
     $fb_link = $_POST['fb_link'];
+    $tg_link = $_POST['tg_link'];
     $youtube_link = $_POST['youtube_link'];
     $university_yearestablished = $_POST['university_yearestablished'];
     $university_president = $_POST['university_president'];
-    $user_id = $_SESSION['user_id']; 
+    $user_id = $_SESSION['user_id'];
     $log_date = date("Y-m-d");
     $log_time = date("H:i:s");
 
     // Fetch old data
     $fetch_query = "SELECT university_name, university_street, city_municipality, university_province, university_country, 
                            university_postalcode, university_contactnumber, university_emailaddress, university_website, 
-                           fb_link, youtube_link, university_yearestablished, university_president, university_logo
+                           fb_link, telegram_link, youtube_link, university_yearestablished, university_president, university_logo
                     FROM university_profile WHERE up_id = ?";
-    
+
     $fetch_stmt = $conn->prepare($fetch_query);
+
     if (!$fetch_stmt) {
         $_SESSION['toastMsg'] = "Database error while preparing fetch query!";
         $_SESSION['toastType'] = "toast-error";
@@ -39,9 +41,21 @@ if (isset($_POST['update_university'])) {
     $fetch_stmt->bind_param("i", $up_id);
     $fetch_stmt->execute();
     $fetch_stmt->bind_result(
-        $old_name, $old_street, $old_city, $old_province, $old_country, 
-        $old_postalcode, $old_contact, $old_email, $old_website, 
-        $old_fb_link, $old_youtube_link, $old_year, $old_president, $old_image
+        $old_name,
+        $old_street,
+        $old_city,
+        $old_province,
+        $old_country,
+        $old_postalcode,
+        $old_contact,
+        $old_email,
+        $old_website,
+        $old_fb_link,
+        $old_tg_link,
+        $old_youtube_link,
+        $old_year,
+        $old_president,
+        $old_image
     );
     $fetch_stmt->fetch();
     $fetch_stmt->close();
@@ -57,12 +71,13 @@ if (isset($_POST['update_university'])) {
     if ($university_contactnumber !== $old_contact) $changes[] = "Contact Number";
     if ($university_emailaddress !== $old_email) $changes[] = "Email";
     if ($university_website !== $old_website) $changes[] = "Website";
-    if ($fb_link !== $old_fb_link) $changes[] = "Facebook Link"; 
-    if ($youtube_link !== $old_youtube_link) $changes[] = "Youtube Link"; 
+    if ($fb_link !== $old_fb_link) $changes[] = "Facebook Link";
+    if ($tg_link !== $old_tg_link) $changes[] = "Telegram Link";
+    if ($youtube_link !== $old_youtube_link) $changes[] = "Youtube Link";
     if ($university_yearestablished !== $old_year) $changes[] = "Year Established";
     if ($university_president !== $old_president) $changes[] = "President";
 
-    $new_image = $old_image; 
+    $new_image = $old_image;
     if (!empty($_FILES['university_logo']['name'])) {
         $target_dir = "../assets/uploads/university_image/";
         $file_name = basename($_FILES["university_logo"]["name"]);
@@ -90,7 +105,7 @@ if (isset($_POST['update_university'])) {
     $update_query = "UPDATE university_profile SET 
                 university_name = ?, university_street = ?, city_municipality = ?, university_province = ?, 
                 university_country = ?, university_postalcode = ?, university_contactnumber = ?, university_emailaddress = ?, 
-                university_website = ?, fb_link = ?, youtube_link = ?, university_yearestablished = ?, university_president = ?, university_logo = ? 
+                university_website = ?, fb_link = ?, telegram_link = ?, youtube_link = ?, university_yearestablished = ?, university_president = ?, university_logo = ? 
                 WHERE up_id = ?";
 
     $stmt = $conn->prepare($update_query);
@@ -101,10 +116,23 @@ if (isset($_POST['update_university'])) {
         exit;
     }
     $stmt->bind_param(
-        "ssssssssssssssi", 
-        $university_name, $university_street, $city_municipality, $university_province, 
-        $university_country, $university_postalcode, $university_contactnumber, $university_emailaddress, 
-        $university_website, $fb_link, $youtube_link, $university_yearestablished, $university_president, $new_image, $up_id
+        "sssssssssssssssi",
+        $university_name,
+        $university_street,
+        $city_municipality,
+        $university_province,
+        $university_country,
+        $university_postalcode,
+        $university_contactnumber,
+        $university_emailaddress,
+        $university_website,
+        $fb_link,
+        $tg_link,
+        $youtube_link,
+        $university_yearestablished,
+        $university_president,
+        $new_image,
+        $up_id
     );
 
     if ($stmt->execute()) {
@@ -136,4 +164,3 @@ if (isset($_POST['update_university'])) {
     header("Location: ../pages/adminukt/university_profile");
     exit();
 }
-?>

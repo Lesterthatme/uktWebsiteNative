@@ -102,6 +102,7 @@ if ($row = mysqli_fetch_assoc($result)) {
               $university_contact = $row["university_contactnumber"];
               $university_website = $row["university_website"];
               $university_fb = $row["fb_link"];
+              $university_tg = $row["telegram_link"];
               $university_youtube = $row["youtube_link"];
               $university_postalcode = $row["university_postalcode"];
               $university_yearestablished = $row["university_yearestablished"];
@@ -137,6 +138,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                     <a href="<?php echo htmlspecialchars($university_fb); ?>" target="_blank">
                       <?php echo htmlspecialchars($university_fb); ?>
                     </a>
+                  </p>
+                  <p><i class="ri-telegram-fill"></i> Telegram:&nbsp;
+                    <?= $university_tg ?>
                   </p>
                   <p><i class="ri-youtube-fill"></i> Youtube:&nbsp;
                     <a href="<?php echo htmlspecialchars($university_youtube); ?>" target="_blank">
@@ -241,22 +245,31 @@ if ($row = mysqli_fetch_assoc($result)) {
                           <input type="text" class="form-control" name="fb_link"
                             value="<?php echo isset($row['fb_link']) ? htmlspecialchars($row['fb_link']) : ''; ?>">
                         </div>
+
                       </div>
 
+
                       <div class="row pb-0 mb-3">
+                        <div class="col-md-6">
+                          <label class="form-label fw-semibold text-muted">Telegram Link</label>
+                          <input type="text" class="form-control" name="tg_link"
+                            value="<?php echo isset($row['telegram_link']) ? htmlspecialchars($row['telegram_link']) : ''; ?>">
+                        </div>
                         <div class="col-md-6">
                           <label class="form-label fw-semibold text-muted">Youtube Link</label>
                           <input type="text" class="form-control" name="youtube_link"
                             value="<?php echo isset($row['youtube_link']) ? htmlspecialchars($row['youtube_link']) : ''; ?>">
                         </div>
+
+
+                      </div>
+
+                      <div class="row pb-0 mb-3">
                         <div class="col-md-6">
                           <label class="form-label fw-semibold text-muted">Year Established</label>
                           <input type="text" class="form-control" name="university_yearestablished"
                             value="<?php echo isset($row['university_yearestablished']) ? htmlspecialchars($row['university_yearestablished']) : ''; ?>">
                         </div>
-                      </div>
-
-                      <div class="row pb-0">
                         <div class="col-md-6">
                           <label class="form-label fw-semibold text-muted">Name of President</label>
                           <input type="text" class="form-control" name="university_president"
@@ -275,11 +288,12 @@ if ($row = mysqli_fetch_assoc($result)) {
                 </div>
               </div>
             </div>
-            <!-- Modal for edit university profile start-->
           </div>
+          <!-- Modal for edit university profile start-->
         </div>
       </div>
-      <?php include 'include/footer.php'; ?>
+    </div>
+    <?php include 'include/footer.php'; ?>
     </div>
   </main>
 

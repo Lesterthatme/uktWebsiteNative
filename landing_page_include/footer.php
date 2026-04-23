@@ -29,24 +29,26 @@ if ($result && $result->num_rows > 0) {
             include 'connection/dbconnection.php';
 
             $sql = "SELECT university_street, city_municipality, university_province, university_country, 
-               university_postalcode, university_contactnumber, university_emailaddress
+               university_postalcode, university_contactnumber, university_emailaddress, telegram_link
         FROM university_profile 
-        WHERE up_id = 1";
+        ";
 
             $result = mysqli_query($conn, $sql);
             if ($result && mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
                 $address = $row['university_street'] . ", " . $row['city_municipality'] . ", " . $row['university_province'] . ", " . $row['university_country'] . ", " . $row['university_postalcode'];
+                $telegram = $row['telegram_link'];
                 $contact = $row['university_contactnumber'];
                 $email = $row['university_emailaddress'];
             } else {
                 $address = "No profile available";
                 $contact = "No contact number available";
                 $email = "No email available";
+                $telegram = "No telegram available";
             }
 
             ?>
-
+            <!-- <?= $telegram . "meronnnnnnnnnnnnnnn" ?> -->
             <!-- University Info -->
             <div class="col-lg-4 col-md-6">
                 <img src="assets/images/officiallogo (1).png" alt="University Logo" class="footer-logo">
@@ -54,12 +56,20 @@ if ($result && $result->num_rows > 0) {
                 <p><strong>Contact Us</strong></p>
                 <p class="mb-1"><?php echo $address; ?></p>
                 <p class="mb-1">Email: <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a></p>
-                <div class="row">
+                <div class="row mb-0">
                     <div class="col-2">
                         <p>Phone: </p>
                     </div>
                     <div class="col-10 text-start">
                         <p> <?php echo nl2br($contact) ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p>Telegram: </p>
+                    </div>
+                    <div class="col-10 text-start">
+                        <p> <?= $telegram ?> </p>
                     </div>
                 </div>
 
